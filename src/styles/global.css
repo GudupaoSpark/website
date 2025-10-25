@@ -23,6 +23,15 @@
   --modal-bg: #ffffff;
   --modal-text: #111827;
 
+  /* Footer specific colors */
+  --footer-bg: #f9fafb;
+  --footer-border: #e5e7eb;
+  --footer-text-primary: #111827;
+  --footer-text-secondary: #6b7280;
+  --footer-text-link: #6b7280;
+  --footer-text-link-hover: #374151;
+  --footer-text-copyright: #6b7280;
+
   /* Glass effect */
   --glass-bg: rgba(255, 255, 255, 0.1);
   --glass-border: rgba(255, 255, 255, 0.2);
@@ -44,6 +53,15 @@
   /* Modal specific colors for dark mode */
   --modal-bg: #374151;
   --modal-text: #ffffff;
+
+  /* Footer specific colors for dark mode */
+  --footer-bg: #0f172a;
+  --footer-border: #334155;
+  --footer-text-primary: #f1f5f9;
+  --footer-text-secondary: #cbd5e1;
+  --footer-text-link: #cbd5e1;
+  --footer-text-link-hover: #f1f5f9;
+  --footer-text-copyright: #94a3b8;
 
   /* Glass effect for dark mode */
   --glass-bg: rgba(30, 41, 59, 0.3);
