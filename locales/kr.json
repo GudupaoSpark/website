@@ -1,0 +1,17 @@
+{
+  "footer": {
+    "language": "언어:"
+  },
+  "modal": {
+    "chooseLanguage": "언어 선택"
+  },
+  "languages": {
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "ja": "日本語",
+    "kr": "한국어",
+    "zh-hans": "简体中文",
+    "zh-hant": "繁體中文"
+  }
+}

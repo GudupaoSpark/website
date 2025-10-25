@@ -1,0 +1,172 @@
+---
+// Language Modal Component
+import { getTranslator } from '@gudupao/astro-i18n';
+const lang = Astro.params.lang || 'en';
+const t = getTranslator(lang);
+---
+
+<div id="language-modal" class="fixed inset-0 z-50 hidden">
+  <!-- Overlay -->
+  <div id="language-modal-overlay" class="absolute inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm transition-colors duration-300"></div>
+
+  <!-- Modal Content -->
+  <div id="language-modal-content" class="absolute bottom-0 left-0 right-0 rounded-t-3xl p-6 shadow-2xl transform translate-y-full transition-all duration-300 ease-out border-t-2 border-gray-200 dark:border-gray-500" style="background-color: var(--modal-bg);">
+    <div class="flex justify-center mb-6">
+      <div class="w-12 h-1 bg-gray-300 dark:bg-gray-500 rounded-full transition-colors duration-300"></div>
+    </div>
+
+    <h3 class="text-lg font-roboto font-bold text-center mb-8 transition-colors duration-300" style="color: var(--modal-text);">{t('modal.chooseLanguage')}</h3>
+
+    <!-- Language Options -->
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <button id="lang-en" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
+        <span class="text-xl flag-emoji">🇺🇸</span>
+        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.en')}</span>
+      </button>
+
+      <button id="lang-es" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
+        <span class="text-xl flag-emoji">🇪🇸</span>
+        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.es')}</span>
+      </button>
+
+      <button id="lang-fr" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
+        <span class="text-xl flag-emoji">🇫🇷</span>
+        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.fr')}</span>
+      </button>
+
+      <button id="lang-ja" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
+        <span class="text-xl flag-emoji">🇯🇵</span>
+        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.ja')}</span>
+      </button>
+
+      <button id="lang-kr" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
+        <span class="text-xl flag-emoji">🇰🇷</span>
+        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.kr')}</span>
+      </button>
+
+      <button id="lang-zh-hans" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
+        <span class="text-xl flag-emoji">🇨🇳</span>
+        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.zh-hans')}</span>
+      </button>
+
+      <button id="lang-zh-hant" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
+        <span class="text-xl flag-emoji">🇭🇰</span>
+        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.zh-hant')}</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Language modal functionality
+  class LanguageModal {
+    modal: HTMLElement | null;
+    overlay: HTMLElement | null;
+    content: HTMLElement | null;
+    toggleBtn: HTMLElement | null;
+    currentLang: string;
+
+    constructor() {
+      this.modal = document.getElementById('language-modal');
+      this.overlay = document.getElementById('language-modal-overlay');
+      this.content = document.getElementById('language-modal-content');
+      this.toggleBtn = document.getElementById('language-toggle');
+      this.currentLang = this.getCurrentLang();
+
+      this.init();
+    }
+
+    getCurrentLang() {
+      const path = window.location.pathname;
+      const match = path.match(/^\/([a-z]{2}(-[a-z]{2})?)/);
+      return match ? match[1] : 'en';
+    }
+
+    init() {
+      // Show modal
+      this.toggleBtn?.addEventListener('click', () => this.show());
+
+      // Hide modal on overlay click
+      this.overlay?.addEventListener('click', () => this.hide());
+
+      // Language selection
+      const languages = ['en', 'es', 'fr', 'ja', 'kr', 'zh-hans', 'zh-hant'];
+      languages.forEach(lang => {
+        document.getElementById(`lang-${lang}`)?.addEventListener('click', () => this.setLanguage(lang));
+      });
+
+      // Update active button on load
+      this.updateActiveButton(this.currentLang);
+    }
+
+    show() {
+      this.modal?.classList.remove('hidden');
+      setTimeout(() => {
+        this.content?.classList.remove('translate-y-full');
+      }, 10);
+    }
+
+    hide() {
+      this.content?.classList.add('translate-y-full');
+      setTimeout(() => {
+        this.modal?.classList.add('hidden');
+      }, 300);
+    }
+
+    setLanguage(lang: string) {
+      if (lang === this.currentLang) {
+        this.hide();
+        return;
+      }
+
+      // Get current path without language prefix
+      const currentPath = window.location.pathname;
+      const pathWithoutLang = currentPath.replace(/^\/([a-z]{2}(-[a-z]{2})?)+/, '') || '/';
+
+      // Redirect to new language path
+      window.location.href = `/${lang}${pathWithoutLang}`;
+    }
+
+    updateActiveButton(lang: string) {
+      // Remove active state from all buttons
+      document.querySelectorAll('.language-btn').forEach(btn => {
+        btn.classList.remove('border-blue-500', 'dark:border-blue-400', 'bg-blue-50', 'dark:bg-blue-900/20');
+        btn.classList.add('border-gray-200', 'dark:border-gray-600');
+      });
+
+      // Add active state to current language button
+      const activeBtn = document.getElementById(`lang-${lang}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-gray-200', 'dark:border-gray-600');
+        activeBtn.classList.add('border-blue-500', 'dark:border-blue-400', 'bg-blue-50', 'dark:bg-blue-900/20');
+      }
+    }
+  }
+
+  // Initialize when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = new LanguageModal();
+
+    // Load Twemoji script and parse emojis
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/twemoji@14.0.2/dist/twemoji.min.js';
+    script.onload = () => {
+      if (typeof (window as any).twemoji !== 'undefined') {
+        (window as any).twemoji.parse(document.getElementById('language-modal'), {
+          className: 'twemoji-flag'
+        });
+
+        // Make twemoji images smaller
+        const style = document.createElement('style');
+        style.textContent = `
+          .twemoji-flag {
+            width: 1.25rem !important;
+            height: 1.25rem !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    };
+    document.head.appendChild(script);
+  });
+</script>

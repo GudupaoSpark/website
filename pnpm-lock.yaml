@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@gudupao/astro-i18n':
-        specifier: ^1.0.2
-        version: 1.0.2(astro@5.15.1(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.52.5)(typescript@5.9.3))
+        specifier: 1.0.1
+        version: 1.0.1(astro@5.15.1(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.52.5)(typescript@5.9.3))
       '@tailwindcss/vite':
         specifier: ^4.1.16
         version: 4.1.16(vite@6.4.1(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2))
@@ -223,8 +223,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@gudupao/astro-i18n@1.0.2':
-    resolution: {integrity: sha512-5UkBJGflc9ev8INHHsT4rszXPly5U1nksGedbYTQn//Ug/BOLulNJRSL5xJsthyQwjF6Bo0VyYlHzFa2wqQFhw==}
+  '@gudupao/astro-i18n@1.0.1':
+    resolution: {integrity: sha512-g4aAxvIDwNNrQfSoOjKxzSSTyuir4ZqNwVc8foj2+ZIrytVqd8dw3cGpbUXy28IzGlGgRDD/au3ewO+kXtOesw==}
     peerDependencies:
       astro: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
 
@@ -1833,7 +1833,7 @@ snapshots:
   '@esbuild/win32-x64@0.25.11':
     optional: true
 
-  '@gudupao/astro-i18n@1.0.2(astro@5.15.1(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.52.5)(typescript@5.9.3))':
+  '@gudupao/astro-i18n@1.0.1(astro@5.15.1(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.52.5)(typescript@5.9.3))':
     dependencies:
       astro: 5.15.1(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.52.5)(typescript@5.9.3)
       cookie: 0.6.0

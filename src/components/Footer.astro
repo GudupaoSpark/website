@@ -1,5 +1,8 @@
 ---
 const currentYear = new Date().getFullYear();
+import { getTranslator } from '@gudupao/astro-i18n';
+const lang = Astro.params.lang || 'en';
+const t = getTranslator(lang);
 ---
 
 <footer class="py-8 mt-auto" style="background-color: var(--footer-bg); border-top: 1px solid var(--footer-border);">
@@ -79,6 +82,10 @@ const currentYear = new Date().getFullYear();
       <p style="color: var(--footer-text-copyright);" class="text-sm text-center md:text-left">
         &copy; {currentYear} Gudupao Spark Inc. All rights reserved.
       </p>
+      <button id="language-toggle" class="flex items-center space-x-2 mt-4 md:mt-0 px-3 py-2 rounded-full glass hover:bg-gray-200/70 dark:hover:bg-gray-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
+        <span id="current-language-flag" class="text-sm"></span>
+        <span id="current-language-name" class="text-sm">{t('footer.language')}</span>
+      </button>
     </div>
   </div>
 </footer>
@@ -95,8 +102,64 @@ const currentYear = new Date().getFullYear();
     }
   }
 
+  // Update current language display
+  function updateCurrentLanguageDisplay() {
+    const currentLang = window.location.pathname.split('/')[1] || 'en';
+    const flagElement = document.getElementById('current-language-flag');
+    const nameElement = document.getElementById('current-language-name');
+
+    if (flagElement && nameElement) {
+      // Set flag emoji
+      const flags = {
+        'en': '🇺🇸',
+        'es': '🇪🇸',
+        'fr': '🇫🇷',
+        'ja': '🇯🇵',
+        'kr': '🇰🇷',
+        'zh-hans': '🇨🇳',
+        'zh-hant': '🇭🇰'
+      };
+      flagElement.textContent = flags[currentLang as keyof typeof flags] || '🌐';
+
+      // Set language name
+      const languageNames = {
+        'en': 'English',
+        'es': 'Español',
+        'fr': 'Français',
+        'ja': '日本語',
+        'kr': '한국어',
+        'zh-hans': '简体中文',
+        'zh-hant': '繁體中文'
+      };
+      nameElement.textContent = languageNames[currentLang as keyof typeof languageNames] || 'Language';
+    }
+  }
+
   // 初始调用
   updateFooterLogo();
+  updateCurrentLanguageDisplay();
+
+  // Load Twemoji for footer flag
+  const twemojiScript = document.createElement('script');
+  twemojiScript.src = 'https://unpkg.com/twemoji@14.0.2/dist/twemoji.min.js';
+  twemojiScript.onload = () => {
+    if (typeof (window as any).twemoji !== 'undefined') {
+      (window as any).twemoji.parse(document.getElementById('language-toggle'), {
+        className: 'twemoji-footer-flag'
+      });
+
+      // Make footer twemoji smaller
+      const style = document.createElement('style');
+      style.textContent = `
+        .twemoji-footer-flag {
+          width: 1rem !important;
+          height: 1rem !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  };
+  document.head.appendChild(twemojiScript);
 
   // 监听系统主题变化
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateFooterLogo);

@@ -1,5 +1,8 @@
 ---
 // Header component for the top navigation bar
+import { getTranslator } from '@gudupao/astro-i18n';
+const lang = Astro.params.lang || 'en';
+const t = getTranslator(lang);
 ---
 
 <header class="flex items-center justify-between px-4 py-4 bg-transparent relative">
