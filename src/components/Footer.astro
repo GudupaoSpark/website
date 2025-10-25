@@ -4,9 +4,9 @@ const currentYear = new Date().getFullYear();
 
 <footer class="py-8 mt-auto" style="background-color: var(--footer-bg); border-top: 1px solid var(--footer-border);">
   <div class="container mx-auto px-4">
-    <div class="flex justify-between items-start mb-8">
+    <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-8">
       <div class="flex flex-col">
-        <div class="flex items-center space-x-6 mb-6">
+        <div class="flex items-center justify-center md:justify-start space-x-4 md:space-x-6 mb-6">
           <a href="https://status.gudupao.top" aria-label="System Status" style="color: var(--footer-text-link);" class="hover:opacity-80 transition-opacity duration-200">
             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 1024 1024" aria-hidden="true">
               <path d="M959.825022 191.939717C959.825022 121.2479 902.517291 63.940169 831.825474 63.940169H191.939717C121.2479 63.940169 63.940169 121.2479 63.940169 191.939717v639.885757C63.940169 902.517291 121.2479 959.825022 191.939717 959.825022h639.885757c70.691817 0 127.999548-57.307731 127.999548-127.999548V191.939717zM146.715595 146.66502a63.839021 63.839021 0 0 1 45.372232-18.784682h639.824346A64.037705 64.037705 0 0 1 895.884854 192.001129V480.093133s0.0289 0 0 0h-50.527184l-54.764574-54.710387a31.970084 31.970084 0 0 0-52.933067 12.506263L698.078535 556.676838l-93.482694-186.965389a31.970084 31.970084 0 0 0-58.279477 2.423947l-93.269561 233.168483-102.307883-358.086621a31.970084 31.970084 0 0 0-59.330697-5.519807l-119.264671 238.269247L127.880338 480.093133V192.001129A63.777609 63.777609 0 0 1 146.715595 146.66502z m730.43515 730.536299a63.456102 63.456102 0 0 1-45.253022 18.67631H192.087827c-17.112123 0-33.270563-6.574639-45.372232-18.67631S127.880338 849.110994 127.880338 831.998871V544.033302l64.135241-0.180622a32.024271 32.024271 0 0 0 28.538267-17.668439l91.261045-182.395653L417.236696 712.781162a31.977309 31.977309 0 0 0 29.112645 23.144896q0.823636 0.043349 1.64366 0.043349a31.973697 31.973697 0 0 0 29.676186-20.095998l101.560108-253.900269 96.163124 192.322635a31.970084 31.970084 0 0 0 58.926104-4.186816l47.651681-142.951433 27.552072 27.523172a31.970084 31.970084 0 0 0 22.60303 9.352604H895.884854c0.0289 0 0 0 0 0v287.965569a63.398303 63.398303 0 0 1-18.719659 45.209673z" />
@@ -44,8 +44,8 @@ const currentYear = new Date().getFullYear();
             </svg>
           </a>
         </div>
-        <div class="grid grid-cols-3 gap-12">
-          <div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-12">
+          <div class="text-center md:text-left">
             <h4 class="text-lg font-semibold mb-4" style="color: var(--footer-text-primary);">Products</h4>
             <ul class="space-y-2">
               <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Features</a></li>
@@ -53,7 +53,7 @@ const currentYear = new Date().getFullYear();
               <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Pricing</a></li>
             </ul>
           </div>
-          <div>
+          <div class="text-center md:text-left">
             <h4 class="text-lg font-semibold mb-4" style="color: var(--footer-text-primary);">Resources</h4>
             <ul class="space-y-2">
               <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Documentation</a></li>
@@ -61,7 +61,7 @@ const currentYear = new Date().getFullYear();
               <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Blog</a></li>
             </ul>
           </div>
-          <div>
+          <div class="text-center md:text-left">
             <h4 class="text-lg font-semibold mb-4" style="color: var(--footer-text-primary);">Company</h4>
             <ul class="space-y-2">
               <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">About</a></li>
@@ -71,12 +71,12 @@ const currentYear = new Date().getFullYear();
           </div>
         </div>
       </div>
-      <div class="mt-8">
-        <img src="/home/logo.png" alt="Gudupao Logo" class="h-20 w-auto">
+      <div class="mt-8 md:mt-0 flex justify-center md:justify-end">
+        <img src="/home/logo.png" alt="Gudupao Logo" class="h-16 md:h-20 w-auto">
       </div>
     </div>
-    <div class="pt-6 flex justify-between items-center" style="border-top: 1px solid var(--footer-border);">
-      <p style="color: var(--footer-text-copyright);" class="text-sm">
+    <div class="pt-6 flex flex-col md:flex-row md:justify-between md:items-center" style="border-top: 1px solid var(--footer-border);">
+      <p style="color: var(--footer-text-copyright);" class="text-sm text-center md:text-left">
         &copy; {currentYear} Gudupao Spark Inc. All rights reserved.
       </p>
     </div>
