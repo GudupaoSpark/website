@@ -176,6 +176,26 @@ const t = getTranslator(lang);
       }
     }
 
+    getBallPosition(theme: string) {
+      // Arc parameters (matching the SVG path)
+      const centerX = 128;
+      const centerY = 112;
+      const radius = 96;
+
+      // Define angles for each position (in radians)
+      const angles: Record<string, number> = {
+        light: Math.PI,      // 180 degrees (left)
+        system: Math.PI / 2, // 90 degrees (top)
+        dark: 0              // 0 degrees (right)
+      };
+
+      const angle = angles[theme];
+      const x = centerX + radius * Math.cos(angle) - 16; // -16 to center the ball (half of ball size)
+      const y = centerY - radius * Math.sin(angle) - 16;
+
+      return { x, y };
+    }
+
     moveBallAlongArc(fromTheme: string, toTheme: string) {
       const ball = document.getElementById('theme-ball');
       if (!ball || fromTheme === toTheme) return;
@@ -268,7 +288,12 @@ const t = getTranslator(lang);
     const savedTheme = localStorage.getItem('theme') || 'system';
     modal.currentTheme = savedTheme;
     modal.applyTheme(savedTheme);
-    modal.moveBallAlongArc('system', savedTheme); // Animate from system to saved theme
+    // Set ball position without animation for initial load
+    const ball = document.getElementById('theme-ball');
+    if (ball) {
+      const position = modal.getBallPosition(savedTheme);
+      ball.style.transform = `translate(${position.x}px, ${position.y}px)`;
+    }
     modal.updateActiveButton(savedTheme); // Show active theme indicator
   }
 
