@@ -154,5 +154,20 @@
     "bilibili_desc": "Mira nuestros videos y tutoriales",
     "status_title": "Estado del Sistema",
     "status_desc": "Verificar el estado de nuestro sistema"
+  },
+  "explore": {
+    "page_title": "Explorar | Gudupao",
+    "title": "🚧 En Construcción 🚧",
+    "subtitle": "Contenido emocionante próximamente",
+    "coming_soon": "Estamos trabajando duro para brindarte una mejor experiencia",
+    "stay_tuned": "¡Mantente atento!"
+  },
+  "404": {
+    "title": "Página No Encontrada",
+    "heading": "¡Ups! Página No Encontrada",
+    "description": "La página que buscas no existe o ha sido movida.",
+    "backHome": "Volver al Inicio",
+    "explore": "Explora Nuestros Proyectos",
+    "lost": "¿Perdido en el espacio?"
   }
 }

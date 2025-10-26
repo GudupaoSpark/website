@@ -161,5 +161,13 @@
     "subtitle": "Exciting content coming soon",
     "coming_soon": "We are working hard to bring you a better experience",
     "stay_tuned": "Stay tuned!"
+  },
+  "404": {
+    "title": "Page Not Found",
+    "heading": "Oops! Page Not Found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to Home",
+    "explore": "Explore Our Projects",
+    "lost": "Lost in space?"
   }
 }

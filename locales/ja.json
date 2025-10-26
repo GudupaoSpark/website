@@ -154,5 +154,20 @@
     "bilibili_desc": "動画とチュートリアルを見る",
     "status_title": "システムステータス",
     "status_desc": "システムステータスを確認"
+  },
+  "explore": {
+    "page_title": "探索 | Gudupao",
+    "title": "🚧 工事中 🚧",
+    "subtitle": "エキサイティングなコンテンツが近日公開",
+    "coming_soon": "より良い体験をお届けするために頑張っています",
+    "stay_tuned": "お楽しみに！"
+  },
+  "404": {
+    "title": "ページが見つかりません",
+    "heading": "おっと！ページが見つかりません",
+    "description": "お探しのページは存在しないか、移動されました。",
+    "backHome": "ホームに戻る",
+    "explore": "プロジェクトを探す",
+    "lost": "宇宙で迷子？"
   }
 }
