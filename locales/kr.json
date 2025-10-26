@@ -71,6 +71,55 @@
       "integrity": "성실",
       "integrityDesc": "정직하고 신뢰할 수 있으며, 말과 행동이 일치"
     },
+    "members": {
+      "title": "팀 구성원",
+      "owners": [
+        {
+          "name": "ldx",
+          "role": "회장 겸 CEO",
+          "bio": "비전과 열으로 팀을 이끌고 있습니다",
+          "avatar": "/about/owners/owner-1.jpg"
+        },
+        {
+          "name": "Cherry",
+          "role": "공동 창립자 겸 CTO",
+          "bio": "기술 혁신을 주도합니다",
+          "avatar": "/about/owners/owner-2.jpg"
+        },
+        {
+          "name": "Youzi",
+          "role": "공동 창립자 겸 COO",
+          "bio": "운영과 성장을 관리합니다",
+          "avatar": "/about/owners/owner-3.jpg"
+        }
+      ],
+      "members": [
+        {
+          "name": "RimeRin",
+          "role": "개발자",
+          "bio": "소프트웨어 부서 구성원",
+          "avatar": "/about/members/member-1.jpg"
+        },
+        {
+          "name": "Hank Zhu",
+          "role": "개발자",
+          "bio": "소프트웨어 부서 구성원",
+          "avatar": "/about/members/member-2.jpg"
+        },
+        {
+          "name": "SYSTEM-WEBMONKEY",
+          "role": "개발자",
+          "bio": "소프트웨어 부서 구성원",
+          "avatar": "/about/members/member-3.jpg"
+        },
+        {
+          "name": "LittleKan",
+          "role": "개발자",
+          "bio": "소프트웨어 부서 구성원",
+          "avatar": "/about/members/member-4.jpg"
+        }
+      ]
+    },
     "team": {
       "title": "우리의 팀",
       "content": "우리는 다양한 배경을 가진 다양한 팀이지만 공통의 꿈을 가지고 있습니다. 모든 구성원은 팀에 없어서는 안 될 부분입니다."

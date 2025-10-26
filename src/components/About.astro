@@ -2,6 +2,11 @@
 import { getTranslator } from '@gudupao/astro-i18n';
 const lang = Astro.params.lang || 'en';
 const t = getTranslator(lang);
+
+// Import translations directly to access array data
+const translations = await import(`../../locales/${lang}.json`);
+const owners = translations.default?.about?.members?.owners || [];
+const members = translations.default?.about?.members?.members || [];
 ---
 
 <section id="about">
@@ -45,6 +50,42 @@ const t = getTranslator(lang);
 					<div class="value-icon">⭐</div>
 					<h3>{t('about.values.integrity')}</h3>
 					<p>{t('about.values.integrityDesc')}</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="members-section">
+			<h2>{t('about.members.title')}</h2>
+
+			<div class="member-category">
+				<h3>Owners</h3>
+				<div class="member-grid">
+					{owners.map((member: any) => (
+						<div class="member-card">
+							<div class="member-avatar">
+								<img src={member.avatar} alt={member.name} />
+							</div>
+							<h4>{member.name}</h4>
+							<p class="member-role">{member.role}</p>
+							<p class="member-bio">{member.bio}</p>
+						</div>
+					))}
+				</div>
+			</div>
+
+			<div class="member-category">
+				<h3>Members</h3>
+				<div class="member-grid">
+					{members.map((member: any) => (
+						<div class="member-card">
+							<div class="member-avatar">
+								<img src={member.avatar} alt={member.name} />
+							</div>
+							<h4>{member.name}</h4>
+							<p class="member-role">{member.role}</p>
+							<p class="member-bio">{member.bio}</p>
+						</div>
+					))}
 				</div>
 			</div>
 		</div>
@@ -242,6 +283,145 @@ const t = getTranslator(lang);
 		color: #cbd5e1;
 	}
 
+	.members-section {
+		margin-bottom: 60px;
+	}
+
+	.members-section > h2 {
+		text-align: center;
+		font-size: 36px;
+		color: #333;
+		margin: 0 0 40px;
+		font-weight: 600;
+	}
+
+	:global(.dark) .members-section > h2 {
+		color: #f1f5f9;
+	}
+
+	.member-category {
+		margin-bottom: 40px;
+	}
+
+	.member-category:first-of-type {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.member-category:first-of-type .member-grid {
+		display: flex !important;
+		justify-content: center !important;
+		gap: 24px !important;
+		width: auto !important;
+	}
+
+	.member-category:last-child {
+		margin-bottom: 0;
+	}
+
+	.member-category h3 {
+		font-size: 28px;
+		color: #333;
+		margin: 0 0 24px;
+		font-weight: 600;
+		text-align: center;
+	}
+
+	:global(.dark) .member-category h3 {
+		color: #f1f5f9;
+	}
+
+	.member-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 24px;
+		width: 100%;
+	}
+
+	.member-category:first-child .member-grid {
+		display: flex;
+		justify-content: center;
+		gap: 24px;
+	}
+
+	.member-card {
+		width: 280px;
+		flex-shrink: 0;
+		background: white;
+		border-radius: 16px;
+		padding: 32px 24px;
+		text-align: center;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.member-card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+	}
+
+	:global(.dark) .member-card {
+		background: #1e293b;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+	}
+
+	:global(.dark) .member-card:hover {
+		box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+	}
+
+	.member-avatar {
+		width: 200px;
+		height: 200px;
+		margin: 0 auto 20px;
+		border-radius: 16px;
+		overflow: hidden;
+		border: 4px solid #f1f5f9;
+	}
+
+	:global(.dark) .member-avatar {
+		border-color: #334155;
+	}
+
+	.member-avatar img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.member-card h4 {
+		font-size: 20px;
+		color: #333;
+		margin: 0 0 8px;
+		font-weight: 600;
+	}
+
+	:global(.dark) .member-card h4 {
+		color: #f1f5f9;
+	}
+
+	.member-role {
+		font-size: 14px;
+		color: #667eea;
+		margin: 0 0 12px;
+		font-weight: 500;
+	}
+
+	:global(.dark) .member-role {
+		color: #a78bfa;
+	}
+
+	.member-bio {
+		font-size: 14px;
+		line-height: 1.6;
+		color: #666;
+		margin: 0;
+	}
+
+	:global(.dark) .member-bio {
+		color: #cbd5e1;
+	}
+
 	@media screen and (max-width: 768px) {
 		#about {
 			padding: 100px 20px 60px;
@@ -289,6 +469,34 @@ const t = getTranslator(lang);
 
 		.value-icon {
 			font-size: 40px;
+		}
+
+		.members-section {
+			margin-bottom: 40px;
+		}
+
+		.members-section > h2 {
+			font-size: 28px;
+			margin-bottom: 30px;
+		}
+
+		.member-category {
+			margin-bottom: 30px;
+		}
+
+		.member-category h3 {
+			font-size: 24px;
+			margin-bottom: 20px;
+		}
+
+		.member-grid {
+			grid-template-columns: 1fr;
+			gap: 16px;
+		}
+
+		.member-avatar {
+			width: 160px;
+			height: 160px;
 		}
 	}
 </style>

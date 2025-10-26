@@ -86,6 +86,19 @@ const t = getTranslator(lang);
         }
       });
 
+      // Apply desktop theme on load
+      if (window.innerWidth >= 768) {
+        const savedTheme = localStorage.getItem('theme') || 'system';
+        this.currentTheme = savedTheme;
+        this.applyTheme(savedTheme);
+        const ball = document.getElementById('theme-ball');
+        if (ball) {
+          const position = this.getBallPosition(savedTheme);
+          ball.style.transform = `translate(${position.x}px, ${position.y}px)`;
+        }
+        this.updateActiveButton(savedTheme);
+      }
+
       // Hide modal on overlay click
       this.overlay?.addEventListener('click', () => this.hide());
 
@@ -288,17 +301,7 @@ const t = getTranslator(lang);
   function initThemeModal() {
     const modal = new ThemeModal();
 
-    // Apply saved theme on load
-    const savedTheme = localStorage.getItem('theme') || 'system';
-    modal.currentTheme = savedTheme;
-    modal.applyTheme(savedTheme);
-    // Set ball position without animation for initial load
-    const ball = document.getElementById('theme-ball');
-    if (ball) {
-      const position = modal.getBallPosition(savedTheme);
-      ball.style.transform = `translate(${position.x}px, ${position.y}px)`;
-    }
-    modal.updateActiveButton(savedTheme); // Show active theme indicator
+    // Desktop theme initialization is now handled in the ThemeModal class init method
   }
 
   // Run on initial page load

@@ -71,6 +71,55 @@
       "integrity": "誠信",
       "integrityDesc": "誠實守信，言行一致"
     },
+    "members": {
+      "title": "團隊成員",
+      "owners": [
+        {
+          "name": "ldx",
+          "role": "董事長兼首席執行官",
+          "bio": "以願景和激情帶領團隊",
+          "avatar": "/about/owners/owner-1.jpg"
+        },
+        {
+          "name": "冬瓜",
+          "role": "聯合創始人兼首席技術官",
+          "bio": "推動技術創新",
+          "avatar": "/about/owners/owner-2.jpg"
+        },
+        {
+          "name": "柚子",
+          "role": "聯合創始人兼首席運營官",
+          "bio": "管理運營和增長",
+          "avatar": "/about/owners/owner-3.jpg"
+        }
+      ],
+      "members": [
+        {
+          "name": "然凜",
+          "role": "開發者",
+          "bio": "軟件部成員",
+          "avatar": "/about/members/member-1.jpg"
+        },
+        {
+          "name": "星空木屋",
+          "role": "開發者",
+          "bio": "軟件部成員",
+          "avatar": "/about/members/member-2.jpg"
+        },
+        {
+          "name": "SYSTEM-WEBMONKEY",
+          "role": "開發者",
+          "bio": "軟件部成員",
+          "avatar": "/about/members/member-3.jpg"
+        },
+        {
+          "name": "小闞",
+          "role": "開發者",
+          "bio": "軟件部成員",
+          "avatar": "/about/members/member-4.jpg"
+        }
+      ]
+    },
     "team": {
       "title": "我們的團隊",
       "content": "我們是一支多元化的團隊，來自不同背景，但懷揣著共同的夢想。每個成員都是團隊不可或缺的一部分。"

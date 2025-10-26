@@ -71,6 +71,55 @@
       "integrity": "Intégrité",
       "integrityDesc": "Honnête et digne de confiance, cohérent en paroles et en actes"
     },
+    "members": {
+      "title": "Membres de l'Équipe",
+      "owners": [
+        {
+          "name": "ldx",
+          "role": "Président et PDG",
+          "bio": "Diriger l'équipe avec vision et passion",
+          "avatar": "/about/owners/owner-1.jpg"
+        },
+        {
+          "name": "Cherry",
+          "role": "Co-Fondateur et CTO",
+          "bio": "Conduire l'innovation technique",
+          "avatar": "/about/owners/owner-2.jpg"
+        },
+        {
+          "name": "Youzi",
+          "role": "Co-Fondateur et COO",
+          "bio": "Gérer les opérations et la croissance",
+          "avatar": "/about/owners/owner-3.jpg"
+        }
+      ],
+      "members": [
+        {
+          "name": "RimeRin",
+          "role": "Développeur",
+          "bio": "Membre du département logiciel",
+          "avatar": "/about/members/member-1.jpg"
+        },
+        {
+          "name": "Hank Zhu",
+          "role": "Développeur",
+          "bio": "Membre du département logiciel",
+          "avatar": "/about/members/member-2.jpg"
+        },
+        {
+          "name": "SYSTEM-WEBMONKEY",
+          "role": "Développeur",
+          "bio": "Membre du département logiciel",
+          "avatar": "/about/members/member-3.jpg"
+        },
+        {
+          "name": "LittleKan",
+          "role": "Développeur",
+          "bio": "Membre du département logiciel",
+          "avatar": "/about/members/member-4.jpg"
+        }
+      ]
+    },
     "team": {
       "title": "Notre Équipe",
       "content": "Nous sommes une équipe diversifiée d'horizons différents, mais nous partageons un rêve commun. Chaque membre est une partie indispensable de l'équipe."

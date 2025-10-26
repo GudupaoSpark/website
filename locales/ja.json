@@ -54,7 +54,7 @@
     "subtitle": "未来を照らす革新の光",
     "story": {
       "title": "私たちのストーリー",
-      "content": "Gudupao Spark Inc. は3年前に設立されました。私たちは情熱的なチームで、技術革新を通じて未来を照らすことに専念しています。最初の夢から今日の成果まで、私たちは常に初心を保ち、ユーザーに価値を創造しています。"
+      "content": "Gudupao Spark Inc. は3年前に設立されました。私たちは情熱的なチームで、技術革新を通じて未来を照らすことに専念しています���最初の夢から今日の成果まで、私たちは常に初心を保ち、ユーザーに価値を創造しています。"
     },
     "mission": {
       "title": "私たちの使命",
@@ -70,6 +70,55 @@
       "collaborationDesc": "チームワークと共に成長",
       "integrity": "誠実",
       "integrityDesc": "正直で信頼でき、言行一致"
+    },
+    "members": {
+      "title": "チームメンバー",
+      "owners": [
+        {
+          "name": "ldx",
+          "role": "会長兼CEO",
+          "bio": "ビジョンと情熱でチームをリード",
+          "avatar": "/about/owners/owner-1.jpg"
+        },
+        {
+          "name": "冬瓜",
+          "role": "共同創業者兼CTO",
+          "bio": "技術革新を推進",
+          "avatar": "/about/owners/owner-2.jpg"
+        },
+        {
+          "name": "柚子",
+          "role": "共同創業者兼COO",
+          "bio": "運営と成長を管理",
+          "avatar": "/about/owners/owner-3.jpg"
+        }
+      ],
+      "members": [
+        {
+          "name": "RimeRin",
+          "role": "開発者",
+          "bio": "ソフトウェア部門メンバー",
+          "avatar": "/about/members/member-1.jpg"
+        },
+        {
+          "name": "Hank Zhu",
+          "role": "開発者",
+          "bio": "ソフトウェア部門メンバー",
+          "avatar": "/about/members/member-2.jpg"
+        },
+        {
+          "name": "SYSTEM-WEBMONKEY",
+          "role": "開発者",
+          "bio": "ソフトウェア部門メンバー",
+          "avatar": "/about/members/member-3.jpg"
+        },
+        {
+          "name": "LittleKan",
+          "role": "開発者",
+          "bio": "ソフトウェア部門メンバー",
+          "avatar": "/about/members/member-4.jpg"
+        }
+      ]
     },
     "team": {
       "title": "私たちのチーム",
