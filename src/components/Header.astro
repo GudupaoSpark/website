@@ -47,9 +47,9 @@ const t = getTranslator(lang);
         </svg>
       </button>
       <!-- Explore Button (Desktop only) -->
-      <button class="hidden md:block px-6 py-3 bg-[#fedd58] dark:bg-yellow-500 text-text-primary-light dark:text-text-primary-dark font-roboto font-bold rounded-lg shadow-lg hover:bg-[#fedd58]/80 dark:hover:bg-yellow-600 transition-all duration-300 hover:text-gray-900 dark:hover:text-gray-900">
+      <a href={`/${lang || 'en'}/explore`} class="hidden md:block px-6 py-3 bg-[#fedd58] dark:bg-yellow-500 text-text-primary-light dark:text-text-primary-dark font-roboto font-bold rounded-lg shadow-lg hover:bg-[#fedd58]/80 dark:hover:bg-yellow-600 transition-all duration-300 hover:text-gray-900 dark:hover:text-gray-900 no-underline">
         {t('header.explore')}
-      </button>
+      </a>
     </div>
   </div>
 </header>
