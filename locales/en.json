@@ -13,7 +13,11 @@
     "company": "Company",
     "about": "About",
     "careers": "Careers",
-    "contact": "Contact"
+    "contact": "Contact",
+    "followUs": "Follow Us",
+    "contactInfo": "Contact Info",
+    "email": "Email",
+    "address": "Guangdong Province, Guangzhou, China"
   },
   "modal": {
     "chooseLanguage": "Choose Language",

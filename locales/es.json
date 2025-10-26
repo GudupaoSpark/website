@@ -13,7 +13,11 @@
     "company": "Empresa",
     "about": "Acerca de",
     "careers": "Carreras",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "followUs": "Síguenos",
+    "contactInfo": "Información de Contacto",
+    "email": "Correo Electrónico",
+    "address": "Provincia de Guangdong, Guangzhou, China"
   },
   "modal": {
     "chooseLanguage": "Elegir idioma",

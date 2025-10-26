@@ -13,7 +13,11 @@
     "company": "公司",
     "about": "關於",
     "careers": "職業",
-    "contact": "聯繫"
+    "contact": "聯繫",
+    "followUs": "關注我們",
+    "contactInfo": "聯繫信息",
+    "email": "郵箱",
+    "address": "中國廣東省廣州市"
   },
   "modal": {
     "chooseLanguage": "選擇語言",

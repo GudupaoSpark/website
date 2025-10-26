@@ -13,7 +13,11 @@
     "company": "회사",
     "about": "회사 소개",
     "careers": "채용",
-    "contact": "연락처"
+    "contact": "연락처",
+    "followUs": "팔로우",
+    "contactInfo": "연락처 정보",
+    "email": "이메일",
+    "address": "중국 광둥성 광저우시"
   },
   "modal": {
     "chooseLanguage": "언어 선택",

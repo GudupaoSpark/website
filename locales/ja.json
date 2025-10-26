@@ -13,7 +13,11 @@
     "company": "会社",
     "about": "会社概要",
     "careers": "採用情報",
-    "contact": "お問い合わせ"
+    "contact": "お問い合わせ",
+    "followUs": "フォローする",
+    "contactInfo": "連絡先情報",
+    "email": "メール",
+    "address": "中国広東省広州市"
   },
   "modal": {
     "chooseLanguage": "言語を選択",
