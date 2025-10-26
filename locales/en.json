@@ -48,5 +48,36 @@
   "layout": {
     "title": "Gudupao | Light Up The Future",
     "description": "Gudupao Official Website"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "The Innovative Light That Illuminates the Future",
+    "story": {
+      "title": "Our Story",
+      "content": "Gudupao Spark Inc. was founded three years ago. We are a passionate team dedicated to illuminating the future through technological innovation. From our initial dreams to today's achievements, we have always maintained our original aspirations to create value for our users."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "content": "We believe in the power of technology to change the world. Our mission is to make technology's convenience and beauty accessible to everyone through innovative products and services."
+    },
+    "values": {
+      "title": "Our Values",
+      "innovation": "Innovation",
+      "innovationDesc": "Constantly exploring new technologies, pursuing excellence",
+      "passion": "Passion",
+      "passionDesc": "Passionate about our work, caring for our users",
+      "collaboration": "Collaboration",
+      "collaborationDesc": "Teamwork and growing together",
+      "integrity": "Integrity",
+      "integrityDesc": "Honest and trustworthy, consistent in words and actions"
+    },
+    "team": {
+      "title": "Our Team",
+      "content": "We are a diverse team from different backgrounds, but we share a common dream. Every member is an indispensable part of the team."
+    },
+    "journey": {
+      "title": "Three Years Journey",
+      "content": "From day one to day 1000, we've walked an unforgettable journey together. Thanks to all our friends who support us, let's continue forward together!"
+    }
   }
 }

@@ -1,0 +1,15 @@
+---
+import AboutComponent from '../components/About.astro';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+	<AboutComponent />
+</Layout>
+
+<script>
+	// Ensure SPA navigation works for the about page
+	document.addEventListener('astro:page-load', () => {
+		console.log('📄 About page loaded');
+	});
+</script>

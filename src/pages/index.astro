@@ -11,3 +11,10 @@ import Layout from '../layouts/Layout.astro';
 	<Welcome />
 	<RecentActivities />
 </Layout>
+
+<script>
+	// Ensure SPA navigation works for the home page
+	document.addEventListener('astro:page-load', () => {
+		console.log('🏠 Home page loaded');
+	});
+</script>

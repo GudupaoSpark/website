@@ -143,30 +143,62 @@ const t = getTranslator(lang);
     }
   }
 
-  // Initialize when DOM is loaded
-  document.addEventListener('DOMContentLoaded', () => {
+  // Function to apply modal twemoji styles
+  function applyModalTwemojiStyles() {
+    // Remove existing modal twemoji styles
+    const existingStyle = document.getElementById('twemoji-modal-styles');
+    if (existingStyle) {
+      existingStyle.remove();
+    }
+
+    // Add new modal twemoji styles
+    const style = document.createElement('style');
+    style.id = 'twemoji-modal-styles';
+    style.textContent = `
+      .twemoji-flag {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Function to parse modal twemoji
+  function parseModalTwemoji() {
+    if (typeof (window as any).twemoji !== 'undefined') {
+      (window as any).twemoji.parse(document.getElementById('language-modal'), {
+        className: 'twemoji-flag'
+      });
+      applyModalTwemojiStyles();
+    }
+  }
+
+  // Initialize language modal
+  function initLanguageModal() {
     const modal = new LanguageModal();
 
-    // Load Twemoji script and parse emojis
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/twemoji@14.0.2/dist/twemoji.min.js';
-    script.onload = () => {
-      if (typeof (window as any).twemoji !== 'undefined') {
-        (window as any).twemoji.parse(document.getElementById('language-modal'), {
-          className: 'twemoji-flag'
-        });
+    // Load Twemoji script and parse emojis (only once)
+    if (!(window as any).twemojiLoaded) {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/twemoji@14.0.2/dist/twemoji.min.js';
+      script.onload = () => {
+        (window as any).twemojiLoaded = true;
+        parseModalTwemoji();
+      };
+      document.head.appendChild(script);
+    } else {
+      // Re-parse if already loaded
+      parseModalTwemoji();
+    }
+  }
 
-        // Make twemoji images smaller
-        const style = document.createElement('style');
-        style.textContent = `
-          .twemoji-flag {
-            width: 1.25rem !important;
-            height: 1.25rem !important;
-          }
-        `;
-        document.head.appendChild(style);
-      }
-    };
-    document.head.appendChild(script);
-  });
+  // Run on initial page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLanguageModal);
+  } else {
+    initLanguageModal();
+  }
+
+  // Re-initialize after page transitions
+  document.addEventListener('astro:after-swap', initLanguageModal);
 </script>

@@ -48,5 +48,36 @@
   "layout": {
     "title": "Gudupao | 照亮未来",
     "description": "Gudupao 官方网站"
+  },
+  "about": {
+    "title": "关于我们",
+    "subtitle": "照亮未来的创新之光",
+    "story": {
+      "title": "我们的故事",
+      "content": "Gudupao Spark Inc. 成立于三年前，我们是一支充满激情的团队，致力于通过技术创新照亮未来。从最初的梦想到今天的成就，我们始终保持着初心，为用户创造价值。"
+    },
+    "mission": {
+      "title": "我们的使命",
+      "content": "我们相信技术的力量能够改变世界。我们的使命是通过创新的产品和服务，让每个人都能享受到科技带来的便利和美好。"
+    },
+    "values": {
+      "title": "我们的价值观",
+      "innovation": "创新",
+      "innovationDesc": "不断探索新技术，追求卓越",
+      "passion": "激情",
+      "passionDesc": "对工作充满热情，对用户充满关怀",
+      "collaboration": "协作",
+      "collaborationDesc": "团队合作，共同成长",
+      "integrity": "诚信",
+      "integrityDesc": "诚实守信，言行一致"
+    },
+    "team": {
+      "title": "我们的团队",
+      "content": "我们是一支多元化的团队，来自不同背景，但怀揣着共同的梦想。每个成员都是团队不可或缺的一部分。"
+    },
+    "journey": {
+      "title": "三年历程",
+      "content": "从第一天到第1000天，我们一起走过了难忘的旅程。感谢所有支持我们的朋友，让我们一起继续前行！"
+    }
   }
 }

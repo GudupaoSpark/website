@@ -5,6 +5,7 @@ import ThemeModal from '../components/ThemeModal.astro';
 import LanguageModal from '../components/LanguageModal.astro';
 import Footer from '../components/Footer.astro';
 import { getTranslator } from '@gudupao/astro-i18n';
+import { ClientRouter } from 'astro:transitions';
 const lang = Astro.params.lang || 'en';
 const t = getTranslator(lang);
 ---
@@ -20,6 +21,7 @@ const t = getTranslator(lang);
 		<link rel="apple-touch-icon" href="/icon/icon.png" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{t('layout.title')}</title>
+		<ClientRouter />
 		<!-- Apply theme immediately to prevent flash -->
 		<script is:inline>
 			(function() {
@@ -83,6 +85,70 @@ const t = getTranslator(lang);
 	</body>
 </html>
 
+<script>
+	// Debug: Log when view transitions happen
+	document.addEventListener('astro:page-load', () => {
+		console.log('✅ Astro page loaded (SPA navigation)');
+	});
+
+	document.addEventListener('astro:before-preparation', () => {
+		console.log('🔄 Navigation starting...');
+	});
+
+	document.addEventListener('astro:after-swap', () => {
+		console.log('✨ Page content swapped');
+		// Scroll to top smoothly after navigation
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	});
+
+	// Ensure all internal links use client-side navigation
+	document.addEventListener('astro:page-load', () => {
+		// Get all links on the page
+		const links = document.querySelectorAll('a[href^="/"]');
+		links.forEach(link => {
+			// Make sure they don't have target="_blank" or download attributes
+			if (!link.hasAttribute('target') && !link.hasAttribute('download')) {
+				// Force client-side navigation by removing data-astro-reload if it exists
+				link.removeAttribute('data-astro-reload');
+
+				// Add click listener to verify SPA navigation
+				link.addEventListener('click', (e) => {
+					console.log('🔗 Link clicked:', link.getAttribute('href'));
+				});
+			}
+		});
+	});
+
+	// Handle language-prefixed links for SPA navigation
+	document.addEventListener('astro:page-load', () => {
+		const pathParts = window.location.pathname.split('/').filter(p => p);
+		const currentLang = pathParts[0] || 'en';
+		const links = document.querySelectorAll('a[href^="/"]');
+		links.forEach(link => {
+			const href = link.getAttribute('href');
+			if (href && href !== '/' && !href.startsWith('#') && !href.startsWith(`/${currentLang}`)) {
+				// Prepend current language to internal links
+				link.setAttribute('href', `/${currentLang}${href}`);
+			}
+		});
+	});
+
+	// Fix root path links to include language
+	document.addEventListener('astro:page-load', () => {
+		const pathParts = window.location.pathname.split('/').filter(p => p);
+		const currentLang = pathParts[0] || 'en';
+		const rootLinks = document.querySelectorAll('a[href="/"]');
+		rootLinks.forEach(link => {
+			link.setAttribute('href', `/${currentLang}`);
+		});
+	});
+
+	// Prevent browser's default scroll restoration
+	if ('scrollRestoration' in history) {
+		history.scrollRestoration = 'manual';
+	}
+</script>
+
 <style>
 	html,
 	body {
@@ -94,5 +160,51 @@ const t = getTranslator(lang);
 	main {
 		position: relative;
 		z-index: 1;
+	}
+
+	/* View Transitions Animations */
+	@view-transition {
+		navigation: auto;
+	}
+
+	/* Prevent default fade, use custom slide animation */
+	::view-transition-old(root) {
+		animation: slide-out-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	::view-transition-new(root) {
+		animation: slide-in-right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	/* Slide animations */
+	@keyframes slide-out-left {
+		from {
+			transform: translateX(0);
+			opacity: 1;
+		}
+		to {
+			transform: translateX(-20px);
+			opacity: 0;
+		}
+	}
+
+	@keyframes slide-in-right {
+		from {
+			transform: translateX(20px);
+			opacity: 0;
+		}
+		to {
+			transform: translateX(0);
+			opacity: 1;
+		}
+	}
+
+	/* Keep header and footer in place during transitions */
+	::view-transition-old(header-bar),
+	::view-transition-new(header-bar),
+	::view-transition-old(footer-bar),
+	::view-transition-new(footer-bar) {
+		animation: none;
+		mix-blend-mode: normal;
 	}
 </style>

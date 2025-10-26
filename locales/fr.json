@@ -48,5 +48,36 @@
   "layout": {
     "title": "Gudupao | Illuminer l'Avenir",
     "description": "Site officiel Gudupao"
+  },
+  "about": {
+    "title": "À Propos de Nous",
+    "subtitle": "La Lumière Innovante qui Illumine l'Avenir",
+    "story": {
+      "title": "Notre Histoire",
+      "content": "Gudupao Spark Inc. a été fondée il y a trois ans. Nous sommes une équipe passionnée dédiée à illuminer l'avenir par l'innovation technologique. De nos rêves initiaux aux réalisations d'aujourd'hui, nous avons toujours maintenu nos aspirations originales pour créer de la valeur pour nos utilisateurs."
+    },
+    "mission": {
+      "title": "Notre Mission",
+      "content": "Nous croyons au pouvoir de la technologie pour changer le monde. Notre mission est de rendre la commodité et la beauté de la technologie accessibles à tous grâce à des produits et services innovants."
+    },
+    "values": {
+      "title": "Nos Valeurs",
+      "innovation": "Innovation",
+      "innovationDesc": "Explorer constamment de nouvelles technologies, poursuivre l'excellence",
+      "passion": "Passion",
+      "passionDesc": "Passionnés par notre travail, attentifs à nos utilisateurs",
+      "collaboration": "Collaboration",
+      "collaborationDesc": "Travail d'équipe et grandir ensemble",
+      "integrity": "Intégrité",
+      "integrityDesc": "Honnête et digne de confiance, cohérent en paroles et en actes"
+    },
+    "team": {
+      "title": "Notre Équipe",
+      "content": "Nous sommes une équipe diversifiée d'horizons différents, mais nous partageons un rêve commun. Chaque membre est une partie indispensable de l'équipe."
+    },
+    "journey": {
+      "title": "Voyage de Trois Ans",
+      "content": "Du premier jour au jour 1000, nous avons parcouru ensemble un voyage inoubliable. Merci à tous nos amis qui nous soutiennent, continuons ensemble !"
+    }
   }
 }

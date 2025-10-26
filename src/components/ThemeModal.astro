@@ -260,8 +260,8 @@ const t = getTranslator(lang);
     }
   }
 
-  // Initialize when DOM is loaded
-  document.addEventListener('DOMContentLoaded', () => {
+  // Initialize theme modal
+  function initThemeModal() {
     const modal = new ThemeModal();
 
     // Apply saved theme on load
@@ -270,5 +270,15 @@ const t = getTranslator(lang);
     modal.applyTheme(savedTheme);
     modal.moveBallAlongArc('system', savedTheme); // Animate from system to saved theme
     modal.updateActiveButton(savedTheme); // Show active theme indicator
-  });
+  }
+
+  // Run on initial page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initThemeModal);
+  } else {
+    initThemeModal();
+  }
+
+  // Re-initialize after page transitions
+  document.addEventListener('astro:after-swap', initThemeModal);
 </script>
