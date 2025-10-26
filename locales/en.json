@@ -38,8 +38,12 @@
     "explore": "Explore"
   },
   "welcome": {
-    "heroText": "三年星星眨眼回望，当初我们依旧可爱",
+    "heroText": "Three years of starlight gone by, yet we're still as lovely as then",
     "explore": "Explore"
+  },
+  "recentActivities": {
+    "title": "Recent Activities",
+    "description": "Gudupao's 3rd anniversary celebration video series will be released after December 30, 2025. Please follow our official accounts on all platforms or BiliBili account 冬瓜Cherry. Happy 3rd anniversary, celebrating our journey of over 1000 days!"
   },
   "layout": {
     "title": "Gudupao | Light Up The Future",

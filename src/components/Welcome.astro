@@ -4,21 +4,23 @@ const lang = Astro.params.lang || 'en';
 const t = getTranslator(lang);
 ---
 
-<div id="container">
-	<video id="background-video" autoplay muted loop playsinline>
-		<source src="/home/hero_video.mp4" type="video/mp4" />
-		Your browser does not support the video tag.
-	</video>
-	<main>
-		<section id="hero">
-			<h1 id="hero-text">
-				{t('welcome.heroText')}
-			</h1>
-			<section id="links">
-				<a class="button" href="#explore">{t('welcome.explore')}</a>
+<div id="welcome-wrapper">
+	<div id="container">
+		<video id="background-video" autoplay muted loop playsinline>
+			<source src="/home/hero_video.mp4" type="video/mp4" />
+			Your browser does not support the video tag.
+		</video>
+		<main>
+			<section id="hero">
+				<h1 id="hero-text">
+					{t('welcome.heroText')}
+				</h1>
+				<section id="links">
+					<a class="button" href="#explore">{t('welcome.explore')}</a>
+				</section>
 			</section>
-		</section>
-	</main>
+		</main>
+	</div>
 </div>
 
 <style>
@@ -29,12 +31,17 @@ const t = getTranslator(lang);
 		font-style: normal;
 	}
 
+	#welcome-wrapper {
+		position: relative;
+		height: 100vh;
+	}
+
 	#background-video {
 		position: fixed;
 		top: 0;
 		left: 0;
 		width: 100%;
-		height: 100%;
+		height: 100vh;
 		object-fit: cover;
 		z-index: -1;
 	}
@@ -42,10 +49,32 @@ const t = getTranslator(lang);
 	#container {
 		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
 		height: 100vh;
-		position: relative;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+	}
+
+	#container::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0);
+		z-index: 1;
+		pointer-events: none;
+		transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	:global(.dark) #container::before {
+		background: rgba(0, 0, 0, 0);
 	}
 
 	main {
+		position: relative;
+		z-index: 2;
 		height: 100%;
 		display: flex;
 		justify-content: center;
@@ -60,12 +89,13 @@ const t = getTranslator(lang);
 		padding: 16px;
 		text-align: center;
 		z-index: 1;
+		gap: 24px;
 	}
 
 	#hero-text {
 		font-family: 'ZiKuJiangHuGuFengTi', Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
 		font-size: 64px;
-		margin: 0 0 2em 0;
+		margin: 0;
 		color: white;
 		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 		transition: color 0.3s ease;
@@ -179,15 +209,119 @@ const t = getTranslator(lang);
 		}
 	}
 
+	#recent-activities {
+		padding: 40px 20px;
+		text-align: center;
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(10px);
+		margin-top: 20px;
+	}
+
+	#recent-activities h2 {
+		color: white;
+		font-size: 32px;
+		margin-bottom: 20px;
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+		font-family: 'ZiKuJiangHuGuFengTi', Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+	}
+
+	.activity-image {
+		background: rgba(255, 255, 255, 0.9);
+		border-radius: 16px;
+		padding: 16px;
+		display: inline-block;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	}
+
+	.activity-image img {
+		width: 300px;
+		height: auto;
+		border-radius: 8px;
+	}
+
 	@media screen and (max-width: 768px) {
+		#hero {
+			gap: 16px;
+		}
+
 		#hero-text {
 			font-size: 24px;
-			margin: 0 0 1.5em 0;
+			margin: 0;
 		}
 
 		#links a.button {
 			padding: 12px 20px;
 			font-size: 16px;
 		}
+
+		.activity-image img {
+			width: 250px;
+		}
 	}
 </style>
+
+<script>
+	// 视差滚动效果 - Welcome 组件逐渐变暗
+	function handleParallaxScroll() {
+		const container = document.getElementById('container');
+		if (!container) return;
+
+		const scrollPosition = window.scrollY;
+		const windowHeight = window.innerHeight;
+
+		// 计算滚动进度 (0-1)，一滚动就开始变化
+		const scrollProgress = Math.min(scrollPosition / windowHeight, 1);
+		const easedProgress = scrollProgress * scrollProgress; // 二次缓动
+
+		// 检测当前主题
+		const isDark = document.documentElement.classList.contains('dark');
+
+		// 应用变暗效果 - 深浅色主题使用不同的遮罩
+		if (isDark) {
+			// 深色主题：使用更深的黑色遮罩
+			const darkness = easedProgress * 0.8; // 0-80% 的黑色透明度
+			container.style.setProperty('--overlay-opacity', darkness.toString());
+			(container as HTMLElement).style.setProperty('--overlay-color', `rgba(0, 0, 0, ${darkness})`);
+			container.style.setProperty('--overlay-bg', `rgba(0, 0, 0, ${darkness})`);
+		} else {
+			// 浅色主题：使用较浅的灰黑色遮罩
+			const darkness = easedProgress * 0.6; // 0-60% 的黑色透明度
+			container.style.setProperty('--overlay-opacity', darkness.toString());
+			(container as HTMLElement).style.setProperty('--overlay-color', `rgba(0, 0, 0, ${darkness})`);
+			container.style.setProperty('--overlay-bg', `rgba(0, 0, 0, ${darkness})`);
+		}
+
+		// 通过 filter 实现更自然的变暗
+		const brightness = 100 - (easedProgress * (isDark ? 40 : 30)); // 深色模式变暗更多
+		const contrast = 100 - (easedProgress * 10); // 轻微降低对比度
+		container.style.filter = `brightness(${brightness}%) contrast(${contrast}%)`;
+
+		// 轻微的模糊效果，增加深度感
+		const blur = easedProgress * 2; // 0-2px 模糊
+		container.style.backdropFilter = `blur(${blur}px)`;
+	}
+
+	// 监听主题变化
+	function observeThemeChange() {
+		const observer = new MutationObserver(() => {
+			handleParallaxScroll();
+		});
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ['class']
+		});
+	}
+
+	// 确保在DOM加载完成后执行
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', () => {
+			window.addEventListener('scroll', handleParallaxScroll, { passive: true });
+			observeThemeChange();
+			handleParallaxScroll();
+		});
+	} else {
+		window.addEventListener('scroll', handleParallaxScroll, { passive: true });
+		observeThemeChange();
+		handleParallaxScroll();
+	}
+</script>
