@@ -5,7 +5,7 @@ const lang = Astro.params.lang || 'en';
 const t = getTranslator(lang);
 ---
 
-<header class="flex items-center justify-between px-2 md:px-4 py-2 bg-transparent fixed top-0 left-0 right-0 z-50 transition-all duration-300" transition:persist="header-bar">
+<header class="flex items-center justify-between px-4 py-2 bg-transparent fixed top-0 left-0 right-0 z-50 transition-all duration-300" transition:persist="header-bar">
   <!-- Left section -->
   <div class="flex-shrink-0 w-10 md:w-auto">
     <!-- Hamburger Menu (Mobile) -->
@@ -38,7 +38,7 @@ const t = getTranslator(lang);
 
   <!-- Right section -->
   <div class="flex-shrink-0 w-10 md:w-auto flex justify-end">
-    <div class="flex items-center space-x-4">
+    <div class="flex items-center space-x-4 -mr-4 md:mr-0">
       <!-- Theme Toggle Button -->
       <button id="theme-toggle" class="w-10 h-10 md:w-12 md:h-12 rounded-lg glass flex items-center justify-center hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
         <svg id="theme-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
