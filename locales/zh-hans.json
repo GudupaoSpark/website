@@ -136,5 +136,18 @@
     "search_placeholder": "搜索项目...",
     "view_on_github": "在 GitHub 查看",
     "loading": "加载项目中..."
+  },
+  "contact": {
+    "page_title": "联系 | Gudupao",
+    "email_title": "发送邮件",
+    "send_email": "发送邮件",
+    "links_title": "与我们联系",
+    "discord_desc": "与我们的社区聊天",
+    "qq_desc": "加入我们的 QQ 社区",
+    "github_desc": "查看我们的开源项目",
+    "twitter_desc": "关注我们的最新消息",
+    "bilibili_desc": "观看我们的视频和教程",
+    "status_title": "系统状态",
+    "status_desc": "查看我们的系统状态"
   }
 }

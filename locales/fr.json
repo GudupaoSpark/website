@@ -137,5 +137,18 @@
     "search_placeholder": "Rechercher des projets...",
     "view_on_github": "Voir sur GitHub",
     "loading": "Chargement des projets..."
+  },
+  "contact": {
+    "page_title": "Contact | Gudupao",
+    "email_title": "Nous Écrire",
+    "send_email": "Envoyer un Email",
+    "links_title": "Nous Contacter",
+    "discord_desc": "Discutez avec notre communauté",
+    "qq_desc": "Rejoignez notre communauté QQ",
+    "github_desc": "Découvrez nos projets open source",
+    "twitter_desc": "Restez informé de nos dernières nouvelles",
+    "bilibili_desc": "Regardez nos vidéos et tutoriels",
+    "status_title": "Statut du Système",
+    "status_desc": "Vérifier le statut de notre système"
   }
 }

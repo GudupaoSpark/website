@@ -1,0 +1,470 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getTranslator } from '@gudupao/astro-i18n';
+const lang = Astro.params.lang || 'en';
+const t = getTranslator(lang);
+---
+
+<Layout title={`${t('contact.page_title') || 'Contact Us'}`}>
+	<section id="contact">
+		<div class="contact-container">
+			<!-- Email Address Section -->
+			<div class="email-section">
+				<div class="email-card">
+					<div class="email-icon">
+						<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+							<polyline points="22,6 12,13 2,6"/>
+						</svg>
+					</div>
+					<div class="email-content">
+						<h2>{t('contact.email_title') || 'Email Us'}</h2>
+						<p class="email-address">official@gudupao.top</p>
+						<a href="mailto:official@gudupao.top" class="email-link">
+							{t('contact.send_email') || 'Send Email'}
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M7 17L17 7"/>
+								<path d="M7 7h10v10"/>
+							</svg>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Contact Links Grid -->
+			<div class="links-section">
+				<h3 class="links-title">{t('contact.links_title') || 'Connect With Us'}</h3>
+				<div class="links-grid">
+					<!-- Discord -->
+					<a href="https://discord.gg/SC78fv3ZRF" target="_blank" rel="noopener noreferrer" class="link-card discord-card">
+						<div class="link-icon">
+							<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+								<path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0189 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1568 2.4189Z"/>
+							</svg>
+						</div>
+						<div class="link-content">
+							<h4>Discord</h4>
+							<p>{t('contact.discord_desc') || 'Chat with our community'}</p>
+						</div>
+						<div class="link-arrow">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M7 17L17 7"/>
+								<path d="M7 7h10v10"/>
+							</svg>
+						</div>
+					</a>
+
+					<!-- QQ -->
+					<a href="https://qm.qq.com/q/B3vKejsGBi" target="_blank" rel="noopener noreferrer" class="link-card qq-card">
+						<div class="link-icon">
+							<svg width="32" height="32" viewBox="0 0 1024 1024" fill="currentColor">
+								<path d="M824.8 613.2c-16-51.4-34.4-94.6-62.7-165.3C766.5 262.2 689.3 112 511.5 112 331.7 112 256.2 265.2 261 447.9c-28.4 70.8-46.7 113.7-62.7 165.3-34 109.5-23 154.8-14.6 155.8 18 2.2 70.1-82.4 70.1-82.4 0 49 25.2 112.9 79.8 159-26.4 8.1-85.7 29.9-71.6 53.8 11.4 19.3 196.2 12.3 249.5 6.3 53.3 6 238.1 13 249.5-6.3 14.1-23.8-45.3-45.7-71.6-53.8 54.6-46.2 79.8-110.1 79.8-159 0 0 52.1 84.6 70.1 82.4 8.5-1.1 19.5-46.4-14.5-155.8z"/>
+							</svg>
+						</div>
+						<div class="link-content">
+							<h4>QQ</h4>
+							<p>{t('contact.qq_desc') || 'Join our QQ community'}</p>
+						</div>
+						<div class="link-arrow">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M7 17L17 7"/>
+								<path d="M7 7h10v10"/>
+							</svg>
+						</div>
+					</a>
+
+					<!-- GitHub -->
+					<a href="https://github.com/GudupaoSpark" target="_blank" rel="noopener noreferrer" class="link-card github-card">
+						<div class="link-icon">
+							<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+								<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+							</svg>
+						</div>
+						<div class="link-content">
+							<h4>GitHub</h4>
+							<p>{t('contact.github_desc') || 'Check our open source projects'}</p>
+						</div>
+						<div class="link-arrow">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M7 17L17 7"/>
+								<path d="M7 7h10v10"/>
+							</svg>
+						</div>
+					</a>
+
+					<!-- Twitter/X -->
+					<a href="https://x.com/GudupaoSpark" target="_blank" rel="noopener noreferrer" class="link-card twitter-card">
+						<div class="link-icon">
+							<svg width="32" height="32" viewBox="0 0 1024 1024" fill="currentColor">
+								<path d="M390.097455 157.370182l170.181818 228.119273 195.525818-228.119273h110.824727L611.851636 454.609455l299.112728 400.942545h-232.727273l-190.836364-255.767273-219.205818 255.767273h-110.824727l278.481454-324.898909-278.481454-373.294546h232.727273z m177.396363 348.974545l-35.723636 41.693091L711.586909 789.061818h66.804364L567.505455 506.356364zM356.736 223.872h-66.816l190.277818 255.045818 35.723637-41.669818-159.185455-213.376z"/>
+							</svg>
+						</div>
+						<div class="link-content">
+							<h4>X (Twitter)</h4>
+							<p>{t('contact.twitter_desc') || 'Stay updated with our latest news'}</p>
+						</div>
+						<div class="link-arrow">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M7 17L17 7"/>
+								<path d="M7 7h10v10"/>
+							</svg>
+						</div>
+					</a>
+
+					<!-- Bilibili -->
+					<a href="https://space.bilibili.com/1016857888" target="_blank" rel="noopener noreferrer" class="link-card bilibili-card">
+						<div class="link-icon">
+							<svg width="32" height="32" viewBox="0 0 1024 1024" fill="currentColor">
+								<path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z"/>
+							</svg>
+						</div>
+						<div class="link-content">
+							<h4>Bilibili</h4>
+							<p>{t('contact.bilibili_desc') || 'Watch our videos and tutorials'}</p>
+						</div>
+						<div class="link-arrow">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M7 17L17 7"/>
+								<path d="M7 7h10v10"/>
+							</svg>
+						</div>
+					</a>
+
+					<!-- Status Page -->
+					<a href="https://status.gudupao.top" target="_blank" rel="noopener noreferrer" class="link-card status-card">
+						<div class="link-icon">
+							<svg width="32" height="32" viewBox="0 0 1024 1024" fill="currentColor">
+								<path d="M959.825022 191.939717C959.825022 121.2479 902.517291 63.940169 831.825474 63.940169H191.939717C121.2479 63.940169 63.940169 121.2479 63.940169 191.939717v639.885757C63.940169 902.517291 121.2479 959.825022 191.939717 959.825022h639.885757c70.691817 0 127.999548-57.307731 127.999548-127.999548V191.939717zM146.715595 146.66502a63.839021 63.839021 0 0 1 45.372232-18.784682h639.824346A64.037705 64.037705 0 0 1 895.884854 192.001129V480.093133s0.0289 0 0 0h-50.527184l-54.764574-54.710387a31.970084 31.970084 0 0 0-52.933067 12.506263L698.078535 556.676838l-93.482694-186.965389a31.970084 31.970084 0 0 0-58.279477 2.423947l-93.269561 233.168483-102.307883-358.086621a31.970084 31.970084 0 0 0-59.330697-5.519807l-119.264671 238.269247L127.880338 480.093133V192.001129A63.777609 63.777609 0 0 1 146.715595 146.66502z m730.43515 730.536299a63.456102 63.456102 0 0 1-45.253022 18.67631H192.087827c-17.112123 0-33.270563-6.574639-45.372232-18.67631S127.880338 849.110994 127.880338 831.998871V544.033302l64.135241-0.180622a32.024271 32.024271 0 0 0 28.538267-17.668439l91.261045-182.395653L417.236696 712.781162a31.977309 31.977309 0 0 0 29.112645 23.144896q0.823636 0.043349 1.64366 0.043349a31.973697 31.973697 0 0 0 29.676186-20.095998l101.560108-253.900269 96.163124 192.322635a31.970084 31.970084 0 0 0 58.926104-4.186816l47.651681-142.951433 27.552072 27.523172a31.970084 31.970084 0 0 0 22.60303 9.352604H895.884854c0.0289 0 0 0 0 0v287.965569a63.398303 63.398303 0 0 1-18.719659 45.209673z" />
+							</svg>
+						</div>
+						<div class="link-content">
+							<h4>{t('contact.status_title') || 'System Status'}</h4>
+							<p>{t('contact.status_desc') || 'Check our system status'}</p>
+						</div>
+						<div class="link-arrow">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M7 17L17 7"/>
+								<path d="M7 7h10v10"/>
+							</svg>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>
+
+<script>
+	document.addEventListener('astro:page-load', () => {
+		const linkCards = document.querySelectorAll('.link-card');
+
+		linkCards.forEach((card, index) => {
+			const cardElement = card as HTMLElement;
+
+			// Add fade-in animation with delay
+			setTimeout(() => {
+				cardElement.style.opacity = '1';
+				cardElement.style.transform = 'translateY(0)';
+			}, index * 150);
+
+			// Add hover effect
+			cardElement.addEventListener('mouseenter', () => {
+				const arrow = cardElement.querySelector('.link-arrow') as HTMLElement;
+				if (arrow) {
+					arrow.style.transform = 'translateX(4px)';
+				}
+			});
+
+			cardElement.addEventListener('mouseleave', () => {
+				const arrow = cardElement.querySelector('.link-arrow') as HTMLElement;
+				if (arrow) {
+					arrow.style.transform = 'translateX(0)';
+				}
+			});
+		});
+
+		// Email card animation
+		const emailCard = document.querySelector('.email-card') as HTMLElement;
+		if (emailCard) {
+			setTimeout(() => {
+				emailCard.style.opacity = '1';
+				emailCard.style.transform = 'translateY(0)';
+			}, 200);
+		}
+	});
+</script>
+
+<style>
+	@font-face {
+		font-family: 'ZiKuJiangHuGuFengTi';
+		src: url('/fonts/ZiKuJiangHuGuFengTi-2.ttf') format('truetype');
+		font-weight: normal;
+		font-style: normal;
+	}
+
+	#contact {
+		min-height: 100vh;
+		padding: 120px 20px 80px;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		position: relative;
+		overflow: hidden;
+	}
+
+	:global(.dark) #contact {
+		background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+	}
+
+	#contact::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+		pointer-events: none;
+	}
+
+	.contact-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		position: relative;
+		z-index: 1;
+	}
+
+	/* Email Section */
+	.email-section {
+		margin-bottom: 80px;
+	}
+
+	.email-card {
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
+		border-radius: 24px;
+		padding: 40px;
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		opacity: 0;
+		transform: translateY(30px);
+		transition: all 0.6s ease;
+	}
+
+	:global(.dark) .email-card {
+		background: rgba(30, 41, 59, 0.95);
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+	}
+
+	.email-icon {
+		flex-shrink: 0;
+		color: #667eea;
+		transition: transform 0.3s ease;
+	}
+
+	:global(.dark) .email-icon {
+		color: #a78bfa;
+	}
+
+	.email-card:hover .email-icon {
+		transform: scale(1.1);
+	}
+
+	.email-content {
+		flex: 1;
+		margin-left: 30px;
+	}
+
+	.email-content h2 {
+		font-size: 32px;
+		font-weight: 600;
+		color: #333;
+		margin: 0 0 10px;
+	}
+
+	:global(.dark) .email-content h2 {
+		color: #f1f5f9;
+	}
+
+	.email-address {
+		font-size: 24px;
+		font-weight: 500;
+		color: #667eea;
+		margin: 0 0 20px;
+		font-family: 'Courier New', monospace;
+	}
+
+	:global(.dark) .email-address {
+		color: #a78bfa;
+	}
+
+	.email-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: white;
+		text-decoration: none;
+		padding: 14px 28px;
+		border-radius: 25px;
+		font-weight: 500;
+		transition: all 0.3s ease;
+		box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+	}
+
+	.email-link:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+	}
+
+	/* Links Section */
+	.links-section {
+		margin-bottom: 60px;
+	}
+
+	.links-title {
+		font-size: 28px;
+		font-weight: 600;
+		color: white;
+		text-align: center;
+		margin-bottom: 50px;
+		text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+	}
+
+	.links-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+		gap: 24px;
+	}
+
+	.link-card {
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
+		border-radius: 16px;
+		padding: 24px;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+		transition: all 0.4s ease;
+		text-decoration: none;
+		display: flex;
+		align-items: center;
+		opacity: 0;
+		transform: translateY(30px);
+	}
+
+	:global(.dark) .link-card {
+		background: rgba(30, 41, 59, 0.95);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+	}
+
+	.link-card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+	}
+
+	:global(.dark) .link-card:hover {
+		box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+	}
+
+	.link-icon {
+		flex-shrink: 0;
+		margin-right: 20px;
+		transition: transform 0.3s ease;
+	}
+
+	.link-card:hover .link-icon {
+		transform: scale(1.1);
+	}
+
+	/* Platform specific colors */
+	.discord-card .link-icon { color: #5865f2; }
+	.qq-card .link-icon { color: #12b7f5; }
+	.github-card .link-icon { color: #333; }
+	.twitter-card .link-icon { color: #000; }
+	.bilibili-card .link-icon { color: #00a1d6; }
+	.status-card .link-icon { color: #10b981; }
+
+	:global(.dark) .github-card .link-icon,
+	:global(.dark) .twitter-card .link-icon {
+		color: #f1f5f9;
+	}
+
+	.link-content {
+		flex: 1;
+	}
+
+	.link-content h4 {
+		font-size: 20px;
+		font-weight: 600;
+		color: #333;
+		margin: 0 0 6px;
+	}
+
+	:global(.dark) .link-content h4 {
+		color: #f1f5f9;
+	}
+
+	.link-content p {
+		font-size: 14px;
+		color: #666;
+		margin: 0;
+		line-height: 1.4;
+	}
+
+	:global(.dark) .link-content p {
+		color: #94a3b8;
+	}
+
+	.link-arrow {
+		flex-shrink: 0;
+		color: #999;
+		transition: transform 0.3s ease;
+	}
+
+	:global(.dark) .link-arrow {
+		color: #64748b;
+	}
+
+	/* Responsive */
+	@media screen and (max-width: 768px) {
+		#contact {
+			padding: 100px 20px 60px;
+		}
+
+		.email-card {
+			flex-direction: column;
+			text-align: center;
+			padding: 30px 20px;
+		}
+
+		.email-content {
+			margin-left: 0;
+			margin-top: 20px;
+		}
+
+		.email-content h2 {
+			font-size: 24px;
+		}
+
+		.email-address {
+			font-size: 18px;
+		}
+
+		.links-title {
+			font-size: 24px;
+			margin-bottom: 30px;
+		}
+
+		.links-grid {
+			grid-template-columns: 1fr;
+			gap: 16px;
+		}
+
+		.link-card {
+			padding: 20px;
+		}
+
+		.link-content h4 {
+			font-size: 18px;
+		}
+	}
+</style>

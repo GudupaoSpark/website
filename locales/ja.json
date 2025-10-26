@@ -137,5 +137,18 @@
     "search_placeholder": "プロジェクトを検索...",
     "view_on_github": "GitHub で見る",
     "loading": "プロジェクトを読み込んでいます..."
+  },
+  "contact": {
+    "page_title": "お問い合わせ | Gudupao",
+    "email_title": "メールを送る",
+    "send_email": "メールを送る",
+    "links_title": "お問い合わせ",
+    "discord_desc": "コミュニティとチャット",
+    "qq_desc": "QQ コミュニティに参加",
+    "github_desc": "オープンソースプロジェクトを確認",
+    "twitter_desc": "最新ニュースをフォロー",
+    "bilibili_desc": "動画とチュートリアルを見る",
+    "status_title": "システムステータス",
+    "status_desc": "システムステータスを確認"
   }
 }

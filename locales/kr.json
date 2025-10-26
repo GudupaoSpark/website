@@ -137,5 +137,18 @@
     "search_placeholder": "프로젝트 검색...",
     "view_on_github": "GitHub에서 보기",
     "loading": "프로젝트를 불러오는 중..."
+  },
+  "contact": {
+    "page_title": "연락처 | Gudupao",
+    "email_title": "이메일 보내기",
+    "send_email": "이메일 보내기",
+    "links_title": "연락하기",
+    "discord_desc": "커뮤니티와 채팅",
+    "qq_desc": "QQ 커뮤니티 참여",
+    "github_desc": "오픈소스 프로젝트 확인",
+    "twitter_desc": "최신 뉴스 팔로우",
+    "bilibili_desc": "비디오와 튜토리얼 보기",
+    "status_title": "시스템 상태",
+    "status_desc": "시스템 상태 확인"
   }
 }
