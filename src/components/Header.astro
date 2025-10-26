@@ -9,7 +9,7 @@ const t = getTranslator(lang);
   <!-- Left section -->
   <div class="flex-shrink-0 w-10 md:w-auto">
     <!-- Hamburger Menu (Mobile) -->
-    <button id="hamburger-menu" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg glass hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
+    <button id="hamburger-menu" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg glass hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark hamburger-icon">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
       </svg>
@@ -57,14 +57,14 @@ const t = getTranslator(lang);
 <!-- Mobile Navigation Menu -->
 <div id="mobile-menu" class="md:hidden fixed top-0 left-0 w-full h-full bg-black/50 backdrop-blur-sm z-50 hidden">
   <div class="flex flex-col items-center justify-center h-full space-y-8 relative">
-    <button id="close-menu" class="absolute top-8 right-8 w-10 h-10 flex items-center justify-center rounded-lg glass hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
+    <button id="close-menu" class="absolute top-8 right-8 w-10 h-10 flex items-center justify-center rounded-lg glass hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark close-menu-icon">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>
-    <a href={`/${lang || 'en'}/about`} class="text-2xl text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.about')}</a>
-    <a href={`/${lang || 'en'}#projects`} class="text-2xl text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.projects')}</a>
-    <a href={`/${lang || 'en'}#contact`} class="text-2xl text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.contact')}</a>
+    <a href={`/${lang || 'en'}/about`} class="text-2xl text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold mobile-menu-link">{t('header.about')}</a>
+    <a href={`/${lang || 'en'}#projects`} class="text-2xl text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold mobile-menu-link">{t('header.projects')}</a>
+    <a href={`/${lang || 'en'}#contact`} class="text-2xl text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold mobile-menu-link">{t('header.contact')}</a>
   </div>
 </div>
 
@@ -136,12 +136,30 @@ const t = getTranslator(lang);
    }
  
    @media (max-width: 768px) {
-     header {
-       padding-top: 0.25rem;
-       padding-bottom: 0.25rem;
-     }
-   }
-</style>
+      header {
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+      }
+    }
+    
+    /* Mobile menu link styles - ensure white text in light mode */
+    #mobile-menu .mobile-menu-link {
+      color: white !important;
+    }
+    
+    html.dark #mobile-menu .mobile-menu-link {
+      color: var(--color-text-primary) !important;
+    }
+    
+    /* Mobile close icon styles - ensure white in light mode */
+    #mobile-menu .close-menu-icon {
+      color: white !important;
+    }
+    
+    html.dark #mobile-menu .close-menu-icon {
+      color: var(--color-text-primary) !important;
+    }
+ </style>
 
 <script>
   function applyTheme(theme: string) {
@@ -194,6 +212,13 @@ const t = getTranslator(lang);
       hamburgerMenu.addEventListener('click', () => {
         mobileMenu.classList.toggle('show');
         mobileMenu.classList.toggle('hidden');
+        
+        // Prevent body scroll when mobile menu is open
+        if (mobileMenu.classList.contains('show')) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = '';
+        }
       });
 
       // Close menu when clicking close button
@@ -201,6 +226,7 @@ const t = getTranslator(lang);
         closeMenu.addEventListener('click', () => {
           mobileMenu.classList.remove('show');
           mobileMenu.classList.add('hidden');
+          document.body.style.overflow = '';
         });
       }
 
@@ -209,6 +235,7 @@ const t = getTranslator(lang);
         if (e.target === mobileMenu) {
           mobileMenu.classList.remove('show');
           mobileMenu.classList.add('hidden');
+          document.body.style.overflow = '';
         }
       });
 
@@ -218,6 +245,7 @@ const t = getTranslator(lang);
         link.addEventListener('click', () => {
           mobileMenu.classList.remove('show');
           mobileMenu.classList.add('hidden');
+          document.body.style.overflow = '';
         });
       });
     }
