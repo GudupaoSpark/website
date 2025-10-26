@@ -5,46 +5,52 @@ const lang = Astro.params.lang || 'en';
 const t = getTranslator(lang);
 ---
 
-<header class="flex items-center justify-between px-4 py-2 bg-transparent fixed top-0 left-0 right-0 z-50 transition-all duration-300" transition:persist="header-bar">
-  <!-- Left: Hamburger Menu (Mobile) -->
-  <button id="hamburger-menu" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg glass hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-    </svg>
-  </button>
-
-  <!-- Center: Logo (Mobile versions) -->
-  <div class="md:hidden absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
-    <a href={`/${lang || 'en'}`} class="flex items-center justify-center">
-      <img src="/home/logo-mobile.png" alt="Logo" class="w-32 h-16 object-contain logo-light" draggable="false" oncontextmenu="return false;" />
-      <img src="/home/logo-mobile-dark.png" alt="Logo" class="w-32 h-16 object-contain logo-dark" draggable="false" oncontextmenu="return false;" />
+<header class="flex items-center justify-between px-2 md:px-4 py-2 bg-transparent fixed top-0 left-0 right-0 z-50 transition-all duration-300" transition:persist="header-bar">
+  <!-- Left section -->
+  <div class="flex-shrink-0 w-10 md:w-auto">
+    <!-- Hamburger Menu (Mobile) -->
+    <button id="hamburger-menu" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg glass hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
+    <!-- Desktop Logo -->
+    <a href={`/${lang || 'en'}`} class="hidden md:flex items-center justify-center">
+      <img src="/home/logo.png" alt="Logo" class="w-40 h-24 object-contain logo-light" draggable="false" oncontextmenu="return false;" />
+      <img src="/home/logo-dark.png" alt="Logo" class="w-40 h-24 object-contain logo-dark" draggable="false" oncontextmenu="return false;" />
     </a>
   </div>
 
-  <!-- Desktop: Logo -->
-  <a href={`/${lang || 'en'}`} class="hidden md:flex items-center justify-center">
-    <img src="/home/logo.png" alt="Logo" class="w-40 h-24 object-contain logo-light" draggable="false" oncontextmenu="return false;" />
-    <img src="/home/logo-dark.png" alt="Logo" class="w-40 h-24 object-contain logo-dark" draggable="false" oncontextmenu="return false;" />
-  </a>
+  <!-- Center section -->
+  <div class="flex-1 flex justify-center">
+    <!-- Mobile Logo -->
+    <a href={`/${lang || 'en'}`} class="md:hidden flex items-center justify-center">
+      <img src="/home/logo-mobile.png" alt="Logo" class="w-32 h-16 object-contain logo-light" draggable="false" oncontextmenu="return false;" />
+      <img src="/home/logo-mobile-dark.png" alt="Logo" class="w-32 h-16 object-contain logo-dark" draggable="false" oncontextmenu="return false;" />
+    </a>
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex items-center justify-center px-12 py-3 rounded-full glass">
+      <a href={`/${lang || 'en'}/about`} class="px-6 py-2 text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.about')}</a>
+      <a href={`/${lang || 'en'}#projects`} class="px-6 py-2 text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.projects')}</a>
+      <a href={`/${lang || 'en'}#contact`} class="px-6 py-2 text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.contact')}</a>
+    </nav>
+  </div>
 
-  <!-- Desktop: Navigation -->
-  <nav class="hidden md:flex items-center justify-center px-12 py-3 rounded-full glass absolute left-1/2 transform -translate-x-1/2">
-    <a href={`/${lang || 'en'}/about`} class="px-6 py-2 text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.about')}</a>
-    <a href={`/${lang || 'en'}#projects`} class="px-6 py-2 text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.projects')}</a>
-    <a href={`/${lang || 'en'}#contact`} class="px-6 py-2 text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.contact')}</a>
-  </nav>
-
-  <!-- Right: Buttons -->
-  <div class="flex items-center space-x-4">
-    <button id="theme-toggle" class="w-12 h-12 rounded-lg glass flex items-center justify-center hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
+  <!-- Right section -->
+  <div class="flex-shrink-0 w-10 md:w-auto flex justify-end">
+    <div class="flex items-center space-x-4">
+      <!-- Theme Toggle Button -->
+      <button id="theme-toggle" class="w-10 h-10 md:w-12 md:h-12 rounded-lg glass flex items-center justify-center hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
         <svg id="theme-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
           <path id="moon-path" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           <path id="sun-path" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
         </svg>
       </button>
-    <button class="hidden md:block px-6 py-3 bg-[#fedd58] dark:bg-yellow-500 text-text-primary-light dark:text-text-primary-dark font-roboto font-bold rounded-lg shadow-lg hover:bg-[#fedd58]/80 dark:hover:bg-yellow-600 transition-all duration-300 hover:text-gray-900 dark:hover:text-gray-900">
-      {t('header.explore')}
-    </button>
+      <!-- Explore Button (Desktop only) -->
+      <button class="hidden md:block px-6 py-3 bg-[#fedd58] dark:bg-yellow-500 text-text-primary-light dark:text-text-primary-dark font-roboto font-bold rounded-lg shadow-lg hover:bg-[#fedd58]/80 dark:hover:bg-yellow-600 transition-all duration-300 hover:text-gray-900 dark:hover:text-gray-900">
+        {t('header.explore')}
+      </button>
+    </div>
   </div>
 </header>
 
@@ -77,6 +83,7 @@ const t = getTranslator(lang);
     border: 1px solid var(--glass-hover-border);
   }
 
+  /* Theme icon styles */
   /* Theme icon styles */
   #theme-icon #moon-path {
     display: block;
@@ -138,6 +145,15 @@ const t = getTranslator(lang);
 
 <script>
   function setupHeader() {
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+    }
+
     // Mobile menu toggle
     const hamburgerMenu = document.getElementById('hamburger-menu') as HTMLButtonElement;
     const mobileMenu = document.getElementById('mobile-menu') as HTMLDivElement;

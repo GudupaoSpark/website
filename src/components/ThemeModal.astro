@@ -79,8 +79,12 @@ const t = getTranslator(lang);
     }
 
     init() {
-      // Show modal
-      this.toggleBtn?.addEventListener('click', () => this.show());
+      // Show modal only on desktop
+      this.toggleBtn?.addEventListener('click', () => {
+        if (window.innerWidth >= 768) {
+          this.show();
+        }
+      });
 
       // Hide modal on overlay click
       this.overlay?.addEventListener('click', () => this.hide());
