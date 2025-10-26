@@ -53,6 +53,11 @@ const t = getTranslator(lang);
         <span class="text-xl flag-emoji">🇭🇰</span>
         <span class="font-roboto font-medium transition-colors duration-300">{t('languages.zh-hant')}</span>
       </button>
+
+      <button id="lang-th" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
+        <span class="text-xl flag-emoji">🇹🇭</span>
+        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.th')}</span>
+      </button>
     </div>
   </div>
 </div>
@@ -90,7 +95,7 @@ const t = getTranslator(lang);
       this.overlay?.addEventListener('click', () => this.hide());
 
       // Language selection
-      const languages = ['en', 'es', 'fr', 'ja', 'kr', 'zh-hans', 'zh-hant'];
+      const languages = ['en', 'es', 'fr', 'ja', 'kr', 'zh-hans', 'zh-hant', 'th'];
       languages.forEach(lang => {
         document.getElementById(`lang-${lang}`)?.addEventListener('click', () => this.setLanguage(lang));
       });
