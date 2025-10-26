@@ -129,5 +129,13 @@
       "title": "Three Years Journey",
       "content": "From day one to day 1000, we've walked an unforgettable journey together. Thanks to all our friends who support us, let's continue forward together!"
     }
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "Explore our innovative projects and contributions",
+    "page_title": "Projects | Gudupao",
+    "search_placeholder": "Search projects...",
+    "view_on_github": "View on GitHub",
+    "loading": "Loading projects..."
   }
 }

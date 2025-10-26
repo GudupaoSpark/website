@@ -129,5 +129,13 @@
       "title": "Voyage de Trois Ans",
       "content": "Du premier jour au jour 1000, nous avons parcouru ensemble un voyage inoubliable. Merci à tous nos amis qui nous soutiennent, continuons ensemble !"
     }
+  },
+  "projects": {
+    "title": "Projets",
+    "subtitle": "Explorez nos projets innovants et nos contributions",
+    "page_title": "Projets | Gudupao",
+    "search_placeholder": "Rechercher des projets...",
+    "view_on_github": "Voir sur GitHub",
+    "loading": "Chargement des projets..."
   }
 }

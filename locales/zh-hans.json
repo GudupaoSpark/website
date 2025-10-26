@@ -128,5 +128,13 @@
       "title": "三年历程",
       "content": "从第一天到第1000天，我们一起走过了难忘的旅程。感谢所有支持我们的朋友，让我们一起继续前行！"
     }
+  },
+  "projects": {
+    "title": "项目",
+    "subtitle": "探索我们的创新项目和贡献",
+    "page_title": "项目 | Gudupao",
+    "search_placeholder": "搜索项目...",
+    "view_on_github": "在 GitHub 查看",
+    "loading": "加载项目中..."
   }
 }

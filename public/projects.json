@@ -1,0 +1,44 @@
+[
+  {
+    "id": "astro-i18n",
+    "name": "Astro-i18n",
+    "brief": "An Astro i18n plugin developed by Gudupao",
+    "technologies": ["Astro", "JavaScript", "i18n"],
+    "github": "https://github.com/GudupaoSpark/Astro-i18n"
+  },
+  {
+    "id": "screentime",
+    "name": "ScreenTime",
+    "brief": "屏幕使用时间管理",
+    "technologies": ["Python"],
+    "github": "https://github.com/GudupaoSpark/ScreenTime"
+  },
+  {
+    "id": "gos",
+    "name": "GOS",
+    "brief": "Born for code repositories that need contributions, a sharing platform",
+    "technologies": ["Node.js", "Nuxtjs", "TypeScript"],
+    "github": "https://github.com/GudupaoSpark/gos"
+  },
+  {
+    "id": "captcha",
+    "name": "captcha",
+    "brief": "一个 Python 构建的计算验证码",
+    "technologies": ["Python"],
+    "github": "https://github.com/GudupaoSpark/captcha"
+  },
+  {
+    "id": "haaaash",
+    "name": "Haaaash",
+    "brief": "hash 批量计算器",
+    "technologies": ["Python"],
+    "github": "https://github.com/GudupaoSpark/Haaaash"
+  },
+  {
+    "id": "bfpCode",
+    "name": "BFPCode",
+    "brief": "BFPCode 使Brainfuck语言与Python集成",
+    "technologies": ["Python"],
+    "github": "https://github.com/GudupaoSpark/BFPCode"
+  }
+]

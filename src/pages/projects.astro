@@ -1,0 +1,656 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getTranslator } from '@gudupao/astro-i18n';
+import projectsData from '../../public/projects.json';
+const lang = Astro.params.lang || 'en';
+const t = getTranslator(lang);
+
+// Use imported projects data
+const projects = projectsData;
+---
+
+<Layout title={`${t('projects.page_title')}`}>
+	<section id="projects">
+		<div class="projects-container">
+			<div class="projects-header">
+				<h1>{t('projects.title')}</h1>
+				<p class="subtitle">{t('projects.subtitle')}</p>
+			</div>
+
+			<div class="search-section">
+				<div class="search-container">
+					<input
+						type="text"
+						id="search-input"
+						placeholder={t('projects.search_placeholder')}
+						class="search-input"
+					/>
+					<div class="search-icon">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<circle cx="11" cy="11" r="8"></circle>
+							<path d="m21 21-4.35-4.35"></path>
+						</svg>
+					</div>
+				</div>
+			</div>
+
+			<div class="projects-grid" id="projects-grid">
+				{projects && projects.length > 0 ? projects.map((project: any) => (
+					<div class="project-card" data-project-id={project.id}>
+						<div class="project-content">
+							<h3 class="project-name">{project.name}</h3>
+							<p class="project-brief">{project.brief}</p>
+							<div class="project-technologies">
+								{project.technologies && project.technologies.map((tech: string) => (
+									<span class="tech-tag">{tech}</span>
+								))}
+							</div>
+							<a href={project.github} target="_blank" rel="noopener noreferrer" class="github-link">
+								<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+									<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+								</svg>
+								{t('projects.view_on_github')}
+							</a>
+						</div>
+					</div>
+				)) : (
+					<p>{t('projects.loading')}</p>
+				)}
+			</div>
+		</div>
+	</section>
+
+	<!-- Project Modal -->
+	<div id="project-modal" class="modal-overlay">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2 id="modal-title"></h2>
+				<button id="modal-close" class="modal-close-btn">&times;</button>
+			</div>
+			<div class="modal-body">
+				<p id="modal-description"></p>
+				<p id="modal-detailed"></p>
+				<div id="modal-technologies" class="modal-technologies"></div>
+				<a id="modal-github" href="#" target="_blank" rel="noopener noreferrer" class="modal-github-link">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+						<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+					</svg>
+					{t('projects.view_on_github')}
+				</a>
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<script>
+	document.addEventListener('astro:page-load', () => {
+		const searchInput = document.getElementById('search-input');
+		const projectsGrid = document.getElementById('projects-grid');
+		const modal = document.getElementById('project-modal');
+		const modalTitle = document.getElementById('modal-title');
+		const modalDescription = document.getElementById('modal-description');
+		const modalDetailed = document.getElementById('modal-detailed');
+		const modalTechnologies = document.getElementById('modal-technologies');
+		const modalGithub = document.getElementById('modal-github');
+		const modalClose = document.getElementById('modal-close');
+
+		if (!searchInput || !projectsGrid || !modal || !modalTitle || !modalDescription || !modalDetailed || !modalTechnologies || !modalGithub || !modalClose) {
+			console.error('One or more elements not found');
+			return;
+		}
+		
+		const projectCards = projectsGrid.querySelectorAll('.project-card');
+
+		// Search functionality
+		searchInput.addEventListener('input', (e) => {
+			const target = e.target;
+			if (!(target instanceof HTMLInputElement)) return;
+			const query = target.value.toLowerCase();
+			projectCards.forEach(card => {
+				if (!(card instanceof HTMLElement)) return;
+				const name = card.querySelector('.project-name')?.textContent?.toLowerCase() || '';
+				const brief = card.querySelector('.project-brief')?.textContent?.toLowerCase() || '';
+				const technologies = Array.from(card.querySelectorAll('.tech-tag')).map(tag => tag.textContent?.toLowerCase() || '');
+
+				const matches = name.includes(query) ||
+							   brief.includes(query) ||
+							   technologies.some(tech => tech.includes(query));
+
+				card.style.display = matches ? 'block' : 'none';
+			});
+		});
+
+		// Modal functionality
+		projectCards.forEach(card => {
+			if (!(card instanceof HTMLElement)) return;
+			const projectId = card.getAttribute('data-project-id');
+			if (!projectId) return;
+
+			// Get project data from the HTML template
+			const projectName = card.querySelector('.project-name')?.textContent;
+			const projectBrief = card.querySelector('.project-brief')?.textContent;
+			const projectTechnologies = Array.from(card.querySelectorAll('.tech-tag')).map(tag => tag.textContent?.trim());
+			const projectGithub = card.querySelector('.github-link')?.getAttribute('href');
+
+			if (projectName && projectBrief && projectGithub) {
+				card.addEventListener('click', () => {
+					modalTitle.textContent = projectName;
+					modalDescription.textContent = projectBrief;
+					modalDetailed.textContent = ''; // Remove duplicate description
+					if (modalGithub instanceof HTMLAnchorElement) {
+						modalGithub.href = projectGithub;
+					}
+
+					// Clear previous technologies
+					modalTechnologies.innerHTML = '';
+
+					// Add technologies
+					projectTechnologies.forEach(tech => {
+						if (!tech) return;
+						const techSpan = document.createElement('span');
+						techSpan.className = 'tech-tag';
+						techSpan.textContent = tech;
+						modalTechnologies.appendChild(techSpan);
+					});
+
+					modal.style.display = 'flex';
+					document.body.style.overflow = 'hidden';
+					setTimeout(() => modal.classList.add('show'), 10);
+				});
+			}
+		});
+
+		// Close modal
+		modalClose.addEventListener('click', () => {
+			modal.classList.remove('show');
+			setTimeout(() => {
+				modal.style.display = 'none';
+				document.body.style.overflow = 'auto';
+			}, 30);
+		});
+
+		modal.addEventListener('click', (e) => {
+			if (e.target === modal) {
+				modal.classList.remove('show');
+				setTimeout(() => {
+					modal.style.display = 'none';
+					document.body.style.overflow = 'auto';
+				}, 300);
+			}
+		});
+
+		// Close modal on escape key
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && modal.style.display === 'flex') {
+				modal.classList.remove('show');
+				setTimeout(() => {
+					modal.style.display = 'none';
+					document.body.style.overflow = 'auto';
+				}, 300);
+			}
+		});
+	});
+</script>
+
+<style>
+	@font-face {
+		font-family: 'ZiKuJiangHuGuFengTi';
+		src: url('/fonts/ZiKuJiangHuGuFengTi-2.ttf') format('truetype');
+		font-weight: normal;
+		font-style: normal;
+	}
+
+	#projects {
+		min-height: 100vh;
+		padding: 120px 20px 80px;
+		background: #f8f9fa;
+	}
+
+	:global(.dark) #projects {
+		background: #0f172a;
+	}
+
+	.projects-container {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.projects-header {
+		text-align: center;
+		margin-bottom: 60px;
+	}
+
+	.projects-header h1 {
+		font-family: 'ZiKuJiangHuGuFengTi', Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+		font-size: 56px;
+		color: #333;
+		margin: 0 0 20px;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	:global(.dark) .projects-header h1 {
+		background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.subtitle {
+		font-size: 20px;
+		color: #666;
+		margin: 0;
+		font-weight: 300;
+		opacity: 0.8;
+	}
+
+	:global(.dark) .subtitle {
+		color: #94a3b8;
+	}
+
+	.search-section {
+		margin-bottom: 40px;
+		text-align: center;
+		position: relative;
+	}
+
+	.search-input {
+		width: 100%;
+		max-width: 5000px;
+		padding: 16px 50px 16px 20px;
+		font-size: 16px;
+		border: 2px solid #e2e8f0;
+		border-radius: 25px;
+		background: white;
+		color: #333;
+		transition: all 0.3s ease;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+		position: relative;
+	}
+
+	.search-input:focus {
+		outline: none;
+		border-color: #667eea;
+		box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1), 0 4px 20px rgba(102, 126, 234, 0.15);
+		transform: translateY(-1px);
+	}
+
+	:global(.dark) .search-input {
+		background: #1e293b;
+		border-color: #334155;
+		color: #f1f5f9;
+	}
+
+	:global(.dark) .search-input:focus {
+		border-color: #a78bfa;
+		box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1), 0 4px 20px rgba(167, 139, 250, 0.15);
+		transform: translateY(-1px);
+	}
+
+	.projects-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+		gap: 24px;
+	}
+
+	.project-card {
+		background: white;
+		border-radius: 16px;
+		padding: 24px;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+		transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+		cursor: pointer;
+		opacity: 0;
+		transform: translateY(20px);
+		animation: fadeInUp 0.6s ease forwards;
+	}
+
+	.project-card:hover {
+		transform: translateY(-4px) scale(1.02);
+		box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+	}
+
+	.project-card:nth-child(1) { animation-delay: 0.1s; }
+	.project-card:nth-child(2) { animation-delay: 0.2s; }
+	.project-card:nth-child(3) { animation-delay: 0.3s; }
+	.project-card:nth-child(4) { animation-delay: 0.4s; }
+	.project-card:nth-child(5) { animation-delay: 0.5s; }
+	.project-card:nth-child(6) { animation-delay: 0.6s; }
+
+	:global(.dark) .project-card {
+		background: #1e293b;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+	}
+
+	:global(.dark) .project-card:hover {
+		box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+	}
+
+	.project-content {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+
+	.project-name {
+		font-size: 24px;
+		font-weight: 600;
+		color: #333;
+		margin: 0 0 12px;
+	}
+
+	:global(.dark) .project-name {
+		color: #f1f5f9;
+	}
+
+
+	.project-brief {
+		font-size: 14px;
+		color: #888;
+		margin: 0 0 16px;
+		line-height: 1.6;
+		flex-grow: 1;
+	}
+
+	:global(.dark) .project-brief {
+		color: #94a3b8;
+	}
+
+	.project-technologies {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin-bottom: 16px;
+	}
+
+	.tech-tag {
+		background: #f1f5f9;
+		color: #475569;
+		padding: 4px 8px;
+		border-radius: 6px;
+		font-size: 12px;
+		font-weight: 500;
+	}
+
+	:global(.dark) .tech-tag {
+		background: #334155;
+		color: #cbd5e1;
+	}
+
+	.github-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		color: #667eea;
+		text-decoration: none;
+		font-weight: 500;
+		font-size: 14px;
+		transition: color 0.3s ease;
+		margin-top: auto;
+	}
+
+	.github-link:hover {
+		color: #5a67d8;
+	}
+
+	:global(.dark) .github-link {
+		color: #a78bfa;
+	}
+
+	:global(.dark) .github-link:hover {
+		color: #8b5cf6;
+	}
+
+	/* Modal Styles */
+	.modal-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background: rgba(0, 0, 0, 0.6);
+		backdrop-filter: blur(8px);
+		display: none;
+		justify-content: center;
+		align-items: center;
+		z-index: 10000;
+		padding: 20px;
+		box-sizing: border-box;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		pointer-events: none;
+	}
+
+	.modal-overlay.show {
+		pointer-events: auto;
+	}
+
+	.modal-overlay.show {
+		opacity: 1;
+	}
+
+	.modal-content {
+		background: white;
+		border-radius: 16px;
+		max-width: 600px;
+		width: 100%;
+		max-height: 80vh;
+		overflow-y: auto;
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+		transform: scale(0.8) translateY(20px);
+		opacity: 0;
+		transition: transform 0.3s ease, opacity 0.3s ease;
+	}
+
+	.modal-overlay.show .modal-content {
+		transform: scale(1) translateY(0);
+		opacity: 1;
+	}
+
+	:global(.dark) .modal-content {
+		background: #1e293b;
+	}
+
+	.modal-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 24px;
+		border-bottom: 1px solid #e2e8f0;
+	}
+
+	:global(.dark) .modal-header {
+		border-bottom-color: #334155;
+	}
+
+	.modal-header h2 {
+		margin: 0;
+		font-size: 28px;
+		font-weight: 600;
+		color: #333;
+	}
+
+	:global(.dark) .modal-header h2 {
+		color: #f1f5f9;
+	}
+
+	.modal-close-btn {
+		background: none;
+		border: none;
+		font-size: 32px;
+		color: #666;
+		cursor: pointer;
+		padding: 0;
+		width: 32px;
+		height: 32px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 6px;
+		transition: background-color 0.3s ease;
+	}
+
+	.modal-close-btn:hover {
+		background: #f1f5f9;
+	}
+
+	:global(.dark) .modal-close-btn {
+		color: #cbd5e1;
+	}
+
+	:global(.dark) .modal-close-btn:hover {
+		background: #334155;
+	}
+
+	.modal-body {
+		padding: 24px;
+	}
+
+	.modal-body p {
+		margin: 0 0 16px;
+		line-height: 1.6;
+		color: #666;
+	}
+
+	:global(.dark) .modal-body p {
+		color: #cbd5e1;
+	}
+
+	.modal-technologies {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin-bottom: 20px;
+	}
+
+	.modal-github-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		color: #667eea;
+		text-decoration: none;
+		font-weight: 500;
+		font-size: 16px;
+		transition: color 0.3s ease;
+	}
+
+	.modal-github-link:hover {
+		color: #5a67d8;
+	}
+
+	:global(.dark) .modal-github-link {
+		color: #a78bfa;
+	}
+
+	:global(.dark) .modal-github-link:hover {
+		color: #8b5cf6;
+	}
+
+	/* Animations */
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes slideInLeft {
+		from {
+			opacity: 0;
+			transform: translateX(-30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes slideInRight {
+		from {
+			opacity: 0;
+			transform: translateX(30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	.projects-header {
+		animation: slideInLeft 0.8s ease forwards;
+	}
+
+	.search-section {
+		animation: slideInRight 0.8s ease forwards;
+		animation-delay: 0.2s;
+		opacity: 0;
+		animation-fill-mode: forwards;
+	}
+
+	.search-container {
+		position: relative;
+		display: inline-block;
+	}
+
+	.search-icon {
+		position: absolute;
+		right: 16px;
+		top: 50%;
+		transform: translateY(-50%);
+		color: #94a3b8;
+		pointer-events: none;
+		transition: color 0.3s ease;
+	}
+
+	.search-input:focus + .search-icon {
+		color: #667eea;
+	}
+
+	:global(.dark) .search-input:focus + .search-icon {
+		color: #a78bfa;
+	}
+
+	@media screen and (max-width: 768px) {
+		#projects {
+			padding: 100px 20px 60px;
+		}
+
+		.projects-header h1 {
+			font-size: 36px;
+		}
+
+		.subtitle {
+			font-size: 16px;
+		}
+
+		.projects-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.project-card {
+			padding: 20px;
+		}
+
+		.modal-overlay {
+			padding: 10px;
+		}
+
+		.modal-content {
+			max-height: 90vh;
+		}
+
+		.modal-header {
+			padding: 20px;
+		}
+
+		.modal-body {
+			padding: 20px;
+		}
+	}
+</style>

@@ -129,5 +129,13 @@
       "title": "3년의 여정",
       "content": "첫날부터 1000일까지, 우리는 함께 잊을 수 없는 여정을 걸어왔습니다. 우리를 지원해 주신 모든 친구들에게 감사드리며, 함께 앞으로 나아갑시다!"
     }
+  },
+  "projects": {
+    "title": "프로젝트",
+    "subtitle": "혁신적인 프로젝트와 기여를 탐색하세요",
+    "page_title": "프로젝트 | Gudupao",
+    "search_placeholder": "프로젝트 검색...",
+    "view_on_github": "GitHub에서 보기",
+    "loading": "프로젝트를 불러오는 중..."
   }
 }
