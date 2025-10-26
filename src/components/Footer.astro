@@ -82,9 +82,9 @@ const t = getTranslator(lang);
       <p style="color: var(--footer-text-copyright);" class="text-sm text-center md:text-left">
         &copy; {currentYear} Gudupao Spark Inc. All rights reserved.
       </p>
-      <button id="language-toggle" class="flex items-center space-x-2 mt-4 md:mt-0 px-3 py-2 rounded-full glass hover:bg-gray-200/70 dark:hover:bg-gray-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
-        <span id="current-language-flag" class="text-sm"></span>
-        <span id="current-language-name" class="text-sm">{t('footer.language')}</span>
+      <button id="language-toggle" class="flex items-center space-x-3 sm:space-x-2 mt-4 md:mt-0 mx-auto md:mx-0 px-4 py-3 sm:px-3 sm:py-2 rounded-full glass hover:bg-gray-200/70 dark:hover:bg-gray-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
+        <span id="current-language-flag" class="text-base sm:text-sm"></span>
+        <span id="current-language-name" class="text-base sm:text-sm">{t('footer.language')}</span>
       </button>
     </div>
   </div>
@@ -148,12 +148,18 @@ const t = getTranslator(lang);
         className: 'twemoji-footer-flag'
       });
 
-      // Make footer twemoji smaller
+      // Make footer twemoji responsive
       const style = document.createElement('style');
       style.textContent = `
         .twemoji-footer-flag {
-          width: 1rem !important;
-          height: 1rem !important;
+          width: 1.25rem !important;
+          height: 1.25rem !important;
+        }
+        @media (max-width: 640px) {
+          .twemoji-footer-flag {
+            width: 1.5rem !important;
+            height: 1.5rem !important;
+          }
         }
       `;
       document.head.appendChild(style);
