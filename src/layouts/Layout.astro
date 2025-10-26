@@ -8,19 +8,20 @@ import { getTranslator } from '@gudupao/astro-i18n';
 import { ClientRouter } from 'astro:transitions';
 const lang = Astro.params.lang || 'en';
 const t = getTranslator(lang);
+const pageTitle = Astro.props.title || t('layout.title');
 ---
 
 <!doctype html>
 <html lang="en" class="transition-colors duration-300">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+	<meta name="viewport" content="width=device-width" />
 		<meta name="description" content={t('layout.description')} />
 		<link rel="icon" type="image/png" href="/icon/icon.png" sizes="32x32" />
 		<link rel="icon" type="image/png" href="/icon/icon.png" sizes="16x16" />
 		<link rel="apple-touch-icon" href="/icon/icon.png" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{t('layout.title')}</title>
+	<title>{pageTitle}</title>
 		<ClientRouter />
 		<!-- Apply theme immediately to prevent flash -->
 		<script is:inline>

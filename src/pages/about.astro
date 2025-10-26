@@ -1,9 +1,12 @@
 ---
 import AboutComponent from '../components/About.astro';
 import Layout from '../layouts/Layout.astro';
+import { getTranslator } from '@gudupao/astro-i18n';
+const lang = Astro.params.lang || 'en';
+const t = getTranslator(lang);
 ---
 
-<Layout>
+<Layout title={t('about.page_title') || `${t('header.about')} | Gudupao`}>
 	<AboutComponent />
 </Layout>
 

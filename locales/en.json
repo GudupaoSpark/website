@@ -49,9 +49,10 @@
     "title": "Gudupao | Light Up The Future",
     "description": "Gudupao Official Website"
   },
-  "about": {
+ "about": {
     "title": "About Us",
     "subtitle": "The Innovative Light That Illuminates the Future",
+    "page_title": "About | Gudupao",
     "story": {
       "title": "Our Story",
       "content": "Gudupao Spark Inc. was founded three years ago. We are a passionate team dedicated to illuminating the future through technological innovation. From our initial dreams to today's achievements, we have always maintained our original aspirations to create value for our users."
