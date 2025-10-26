@@ -86,17 +86,7 @@ const t = getTranslator(lang);
 </html>
 
 <script>
-	// Debug: Log when view transitions happen
-	document.addEventListener('astro:page-load', () => {
-		console.log('✅ Astro page loaded (SPA navigation)');
-	});
-
-	document.addEventListener('astro:before-preparation', () => {
-		console.log('🔄 Navigation starting...');
-	});
-
 	document.addEventListener('astro:after-swap', () => {
-		console.log('✨ Page content swapped');
 		// Scroll to top smoothly after navigation
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	});
@@ -110,11 +100,6 @@ const t = getTranslator(lang);
 			if (!link.hasAttribute('target') && !link.hasAttribute('download')) {
 				// Force client-side navigation by removing data-astro-reload if it exists
 				link.removeAttribute('data-astro-reload');
-
-				// Add click listener to verify SPA navigation
-				link.addEventListener('click', (e) => {
-					console.log('🔗 Link clicked:', link.getAttribute('href'));
-				});
 			}
 		});
 	});
