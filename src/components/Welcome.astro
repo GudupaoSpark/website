@@ -1,3 +1,9 @@
+---
+import { getTranslator } from '@gudupao/astro-i18n';
+const lang = Astro.params.lang || 'en';
+const t = getTranslator(lang);
+---
+
 <div id="container">
 	<video id="background-video" autoplay muted loop playsinline>
 		<source src="/home/hero_video.mp4" type="video/mp4" />
@@ -6,10 +12,10 @@
 	<main>
 		<section id="hero">
 			<h1 id="hero-text">
-				三年星星眨眼回望，当初我们依旧可爱
+				{t('welcome.heroText')}
 			</h1>
 			<section id="links">
-				<a class="button" href="#explore">Explore</a>
+				<a class="button" href="#explore">{t('welcome.explore')}</a>
 			</section>
 		</section>
 	</main>

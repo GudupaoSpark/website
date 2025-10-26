@@ -49,27 +49,27 @@ const t = getTranslator(lang);
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-12">
           <div class="text-center md:text-left">
-            <h4 class="text-lg font-semibold mb-4" style="color: var(--footer-text-primary);">Products</h4>
+            <h4 class="text-lg font-semibold mb-4" style="color: var(--footer-text-primary);">{t('footer.products')}</h4>
             <ul class="space-y-2">
-              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Features</a></li>
-              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Solutions</a></li>
-              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Pricing</a></li>
+              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">{t('footer.features')}</a></li>
+              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">{t('footer.solutions')}</a></li>
+              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">{t('footer.pricing')}</a></li>
             </ul>
           </div>
           <div class="text-center md:text-left">
-            <h4 class="text-lg font-semibold mb-4" style="color: var(--footer-text-primary);">Resources</h4>
+            <h4 class="text-lg font-semibold mb-4" style="color: var(--footer-text-primary);">{t('footer.resources')}</h4>
             <ul class="space-y-2">
-              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Documentation</a></li>
-              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Tutorials</a></li>
-              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Blog</a></li>
+              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">{t('footer.documentation')}</a></li>
+              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">{t('footer.tutorials')}</a></li>
+              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">{t('footer.blog')}</a></li>
             </ul>
           </div>
           <div class="text-center md:text-left">
-            <h4 class="text-lg font-semibold mb-4" style="color: var(--footer-text-primary);">Company</h4>
+            <h4 class="text-lg font-semibold mb-4" style="color: var(--footer-text-primary);">{t('footer.company')}</h4>
             <ul class="space-y-2">
-              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">About</a></li>
-              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Careers</a></li>
-              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Contact</a></li>
+              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">{t('footer.about')}</a></li>
+              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">{t('footer.careers')}</a></li>
+              <li><a href="#" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">{t('footer.contact')}</a></li>
             </ul>
           </div>
         </div>
@@ -80,7 +80,7 @@ const t = getTranslator(lang);
     </div>
     <div class="pt-6 flex flex-col md:flex-row md:justify-between md:items-center" style="border-top: 1px solid var(--footer-border);">
       <p style="color: var(--footer-text-copyright);" class="text-sm text-center md:text-left">
-        &copy; {currentYear} Gudupao Spark Inc. All rights reserved.
+        {t('footer.copyright', { year: currentYear })}
       </p>
       <button id="language-toggle" class="flex items-center space-x-3 sm:space-x-2 mt-4 md:mt-0 mx-auto md:mx-0 px-4 py-3 sm:px-3 sm:py-2 rounded-full glass hover:bg-gray-200/70 dark:hover:bg-gray-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
         <span id="current-language-flag" class="text-base sm:text-sm"></span>

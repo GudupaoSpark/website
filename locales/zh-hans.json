@@ -1,9 +1,26 @@
 {
   "footer": {
-    "language": "语言："
+    "language": "语言：",
+    "copyright": "© {year} Gudupao Spark Inc. 版权所有。",
+    "products": "产品",
+    "features": "功能",
+    "solutions": "解决方案",
+    "pricing": "定价",
+    "resources": "资源",
+    "documentation": "文档",
+    "tutorials": "教程",
+    "blog": "博客",
+    "company": "公司",
+    "about": "关于",
+    "careers": "职业",
+    "contact": "联系"
   },
   "modal": {
-    "chooseLanguage": "选择语言"
+    "chooseLanguage": "选择语言",
+    "chooseTheme": "选择主题",
+    "light": "浅色",
+    "system": "系统",
+    "dark": "深色"
   },
   "languages": {
     "en": "English",
@@ -13,5 +30,19 @@
     "kr": "한국어",
     "zh-hans": "简体中文",
     "zh-hant": "繁體中文"
+  },
+  "header": {
+    "about": "关于",
+    "projects": "项目",
+    "contact": "联系",
+    "explore": "探索"
+  },
+  "welcome": {
+    "heroText": "三年星星眨眼回望，当初我们依旧可爱",
+    "explore": "探索"
+  },
+  "layout": {
+    "title": "Gudupao | 照亮未来",
+    "description": "Gudupao 官方网站"
   }
 }
