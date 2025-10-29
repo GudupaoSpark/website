@@ -1,25 +1,114 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getTranslator } from '@gudupao/astro-i18n';
-const lang = Astro.params.lang || 'en';
-const t = getTranslator(lang);
 ---
 
-<Layout title={t('explore.page_title')}>
+<Layout title="探索 | Gudupao" showFooter={false}>
 	<section id="explore">
-		<div class="explore-container">
-			<div class="explore-content">
-				<div class="construction-icon">
-					<svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-					</svg>
+		<div id="start-screen" class="start-screen">
+			<!-- 背景装饰 -->
+			<div class="background-decoration">
+				<div class="floating-shapes">
+					<div class="shape shape-1">✨</div>
+					<div class="shape shape-2">🌟</div>
+					<div class="shape shape-3">💫</div>
+					<div class="shape shape-4">⭐</div>
+					<div class="shape shape-5">✨</div>
 				</div>
-				<h1 class="explore-title">{t('explore.title')}</h1>
-				<p class="explore-subtitle">{t('explore.subtitle')}</p>
-				<div class="coming-soon">
-					<p>{t('explore.coming_soon')}</p>
-					<p>{t('explore.stay_tuned')}</p>
+			</div>
+
+			<div class="start-container">
+				<div class="title-wrapper">
+					<h1 class="start-title">
+						<span class="title-text">回</span>
+						<span class="title-text">忆</span>
+						<span class="title-text">录</span>
+					</h1>
+					<div class="title-underline"></div>
 				</div>
+
+				<p class="start-subtitle">
+					<span class="subtitle-line">三年的时光，值得铭记</span>
+				</p>
+
+				<div class="button-wrapper">
+					<button id="start-button" class="start-button">
+						<span class="button-text">启动回忆程序</span>
+						<div class="button-glow"></div>
+						<div class="button-particles">
+							<span></span><span></span><span></span><span></span><span></span>
+						</div>
+					</button>
+				</div>
+
+				<div class="scroll-hint">
+					<div class="hint-text">点击按钮开始旅程</div>
+					<div class="hint-arrow">↓</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="black-screen" class="black-screen">
+			<div class="text-container">
+				<p id="initial-text" class="initial-text">经过了三年的时光，我们见证了新成员的到来也见证了老成员的离开，见证了树苗长成了参天大树，也见证了花儿的枯萎，如今我们仅用此页面回忆我们的三年时光</p>
+				<p id="scroll-prompt" class="scroll-prompt">请向下滑动</p>
+			</div>
+		</div>
+
+		<audio id="background-audio" loop>
+			<source src="/explore/music/background.mp3" type="audio/mpeg">
+		</audio>
+
+
+		<div id="photo-container" class="photo-container">
+			<div class="photo-slide" data-photo="1">
+				<img src="/explore/photo/1.jpg" alt="回忆照片 1" />
+				<p class="photo-scroll-prompt">请向下滑动</p>
+			</div>
+			<div class="photo-slide" data-photo="2">
+				<img src="/explore/photo/2.jpg" alt="回忆照片 2" />
+				<p class="photo-scroll-prompt">请向下滑动</p>
+			</div>
+			<div class="photo-slide" data-photo="3">
+				<img src="/explore/photo/3.jpg" alt="回忆照片 3" />
+				<p class="photo-scroll-prompt">请向下滑动</p>
+			</div>
+			<div class="photo-slide" data-photo="4">
+				<img src="/explore/photo/4.jpg" alt="回忆照片 4" />
+				<p class="photo-scroll-prompt">请向下滑动</p>
+			</div>
+			<div class="photo-slide" data-photo="5">
+				<img src="/explore/photo/5.jpg" alt="回忆照片 5" />
+				<p class="photo-scroll-prompt">请向下滑动</p>
+			</div>
+			<div class="photo-slide" data-photo="6">
+				<img src="/explore/photo/6.jpg" alt="回忆照片 6" />
+				<p class="photo-scroll-prompt">请向下滑动</p>
+			</div>
+			<div class="photo-slide" data-photo="7">
+				<img src="/explore/photo/7.jpg" alt="回忆照片 7" />
+				<p class="photo-scroll-prompt">请向下滑动</p>
+			</div>
+			<div class="photo-slide" data-photo="8">
+				<img src="/explore/photo/8.jpg" alt="回忆照片 8" />
+				<p class="photo-scroll-prompt">请向下滑动</p>
+			</div>
+			<div class="photo-slide" data-photo="9">
+				<img src="/explore/photo/9.jpg" alt="回忆照片 9" />
+				<p class="photo-scroll-prompt">请向下滑动</p>
+			</div>
+			<div class="photo-slide" data-photo="10">
+				<img src="/explore/photo/10.jpg" alt="回忆照片 10" />
+				<p class="photo-scroll-prompt">请向下滑动</p>
+			</div>
+			<div class="photo-slide final-slide" data-photo="11">
+				<img src="/explore/photo/11.jpg" alt="回忆照片 11" />
+				<div class="final-message">
+					<p>感谢大家陪我们走过了三年的时光，接下来我们会继续拾起属于我们的火炬点亮属于我们的未来！</p>
+					<p>从未忘记燃烧，也从未放弃努力，这就是生命的力量</p>
+					<p class="english-text">Never forget the burning passion, never give up the effort, this is the power of life</p>
+					<p class="slogan">古都炮2026新年口号</p>
+				</div>
+				<div class="new-year-message">新年快乐</div>
 			</div>
 		</div>
 	</section>
@@ -27,141 +116,896 @@ const t = getTranslator(lang);
 
 <script>
 	document.addEventListener('astro:page-load', () => {
-		// Page loaded
+		console.log(`
+	  (´･ω･\`)
+	 死亡不是终点，遗忘才是。
+	 不要因惧怕别离而拒绝相遇。
+	 即使我们终将远去，火炬也会在新手中燃起，永不熄灭
+	       `);
+
+		// 保存用户原始主题（但不立即切换）
+		const savedTheme = localStorage.getItem('explore-theme') || localStorage.getItem('theme') || 'system';
+		localStorage.setItem('explore-theme', savedTheme); // 保存用户原始主题
+
+		// SPA 导航监听 - 当用户离开页面时恢复主题
+		const handleRouteChange = () => {
+			try {
+				console.log('Route change detected, restoring theme...');
+				const originalTheme = localStorage.getItem('explore-theme');
+				if (originalTheme) {
+					localStorage.setItem('theme', originalTheme);
+					const html = document.documentElement;
+					if (html) {
+						if (originalTheme === 'dark') {
+							html.classList.add('dark');
+							console.log('Applied dark theme');
+						} else if (originalTheme === 'light') {
+							html.classList.remove('dark');
+							console.log('Applied light theme');
+						} else {
+							// system theme
+							const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+							if (prefersDark) {
+								html.classList.add('dark');
+								console.log('Applied system dark theme');
+							} else {
+								html.classList.remove('dark');
+								console.log('Applied system light theme');
+							}
+						}
+						console.log('Theme restored to:', originalTheme);
+					}
+				}
+			} catch (error) {
+				console.error('Error restoring theme:', error);
+			}
+		};
+
+		// 监听 Astro 的页面导航事件
+		document.addEventListener('astro:before-preparation', handleRouteChange);
+		document.addEventListener('astro:before-swap', handleRouteChange);
+
+		// 也监听页面卸载事件
+		window.addEventListener('pagehide', handleRouteChange);
+		window.addEventListener('beforeunload', handleRouteChange);
+
+		let currentPhotoIndex = 0;
+		let canScroll = false;
+		let started = false;
+		const audio = document.getElementById('background-audio') as HTMLAudioElement;
+
+		const startScreen = document.getElementById('start-screen');
+		const startButton = document.getElementById('start-button');
+		const blackScreen = document.getElementById('black-screen');
+		const initialText = document.getElementById('initial-text');
+		const scrollPrompt = document.getElementById('scroll-prompt');
+		const photoSlides = document.querySelectorAll('.photo-slide');
+
+		// 启动按钮点击事件
+		if (startButton) {
+			startButton.addEventListener('click', () => {
+				if (started) return;
+				started = true;
+
+				// 点击启动按钮时切换到深色模式
+				document.documentElement.classList.add('dark');
+
+				// 开始播放音乐
+				if (audio) {
+					audio.play().catch(e => console.log(`
+		 (´･ω･\`)
+		死亡不是终点，遗忘才是。
+		不要因惧怕别离而拒绝相遇。
+		即使我们终将远去，火炬也会在新手中燃起，永不熄灭
+		      `));
+				}
+
+				// 隐藏启动屏幕
+				if (startScreen) startScreen.classList.add('hidden');
+
+				// 显示黑屏
+				setTimeout(() => {
+					if (blackScreen) {
+						blackScreen.style.opacity = '1';
+						blackScreen.style.pointerEvents = 'auto';
+					}
+
+					// 黑屏文字缓慢出现
+					setTimeout(() => {
+						if (initialText) {
+							initialText.style.opacity = '1';
+						}
+					}, 500);
+
+					// 显示滑动提示
+					setTimeout(() => {
+						if (scrollPrompt) {
+							scrollPrompt.style.opacity = '1';
+						}
+						canScroll = true;
+					}, 3000);
+				}, 500);
+			});
+		}
+
+		// 滑动事件处理
+		let startY = 0;
+		let isScrolling = false;
+
+		document.addEventListener('touchstart', (e) => {
+			if (!canScroll) {
+				return;
+			}
+			startY = e.touches[0].clientY;
+		});
+
+		document.addEventListener('touchmove', (e) => {
+			if (!canScroll || isScrolling) return;
+			e.preventDefault();
+		}, { passive: false });
+
+		document.addEventListener('touchend', (e) => {
+			if (!canScroll || isScrolling) {
+				return;
+			}
+			const endY = e.changedTouches[0].clientY;
+			const diffY = startY - endY;
+
+			// 只有在没有到最后一张照片时才能滑动
+			if (diffY > 50 && currentPhotoIndex < photoSlides.length) {
+				showNextPhoto();
+			}
+		});
+
+		document.addEventListener('wheel', (e) => {
+			if (!canScroll || isScrolling) return;
+			e.preventDefault();
+
+			// 只有在没有到最后一张照片时才能滑动
+			if (e.deltaY > 0 && currentPhotoIndex < photoSlides.length) {
+				showNextPhoto();
+			}
+		}, { passive: false });
+
+		// 调试信息
+
+		// 测试滑动功能
+		document.addEventListener('click', () => {
+			if (canScroll && currentPhotoIndex < photoSlides.length) {
+				showNextPhoto();
+			}
+		});
+
+		function showNextPhoto() {
+			isScrolling = true;
+			currentPhotoIndex++;
+
+			// 隐藏黑屏
+			if (currentPhotoIndex === 1 && blackScreen) {
+				blackScreen.style.opacity = '0';
+				blackScreen.style.pointerEvents = 'none';
+			}
+
+			// 显示当前照片
+			photoSlides.forEach((slide, index) => {
+				if (index === currentPhotoIndex - 1) {
+					(slide as HTMLElement).style.opacity = '1';
+					// 如果是最后一张照片，先显示图片，然后消失，再显示文字，最后显示新年快乐
+					if (index === photoSlides.length - 1) {
+						const img = slide.querySelector('img') as HTMLElement;
+						const finalMessage = slide.querySelector('.final-message') as HTMLElement;
+						const newYearMessage = slide.querySelector('.new-year-message') as HTMLElement;
+						if (img && finalMessage && newYearMessage) {
+							// 先显示图片3秒，然后图片消失，文字出现
+							setTimeout(() => {
+								img.style.opacity = '0';
+								finalMessage.style.opacity = '1';
+								// 文字显示3秒后消失，新年快乐出现
+								setTimeout(() => {
+									finalMessage.style.opacity = '0';
+									newYearMessage.style.opacity = '1';
+								}, 3000);
+							}, 3000);
+						}
+					} else {
+						setTimeout(() => {
+							const prompt = slide.querySelector('.photo-scroll-prompt') as HTMLElement;
+							if (prompt) {
+								prompt.style.opacity = '1';
+							}
+						}, 1000); // 照片显示1秒后显示提示
+					}
+				} else {
+					(slide as HTMLElement).style.opacity = '0';
+					// 隐藏其他照片的提示和结束语
+					const prompt = slide.querySelector('.photo-scroll-prompt') as HTMLElement;
+					if (prompt) {
+						prompt.style.opacity = '0';
+					}
+					const finalMessage = slide.querySelector('.final-message') as HTMLElement;
+					if (finalMessage) {
+						finalMessage.style.opacity = '0';
+					}
+					const newYearMessage = slide.querySelector('.new-year-message') as HTMLElement;
+					if (newYearMessage) {
+						newYearMessage.style.opacity = '0';
+					}
+					// 确保图片也显示
+					const img = slide.querySelector('img') as HTMLElement;
+					if (img) {
+						img.style.opacity = '1';
+					}
+				}
+			});
+
+			// 音乐已经在启动时开始播放，这里不需要额外处理
+
+			setTimeout(() => {
+				isScrolling = false;
+			}, 1000);
+		}
+
+		// 页面卸载时停止音乐并恢复用户主题
+		window.addEventListener('beforeunload', () => {
+			try {
+				console.log('Page unloading, restoring theme...');
+				if (audio) {
+					audio.pause();
+					audio.currentTime = 0;
+				}
+				const originalTheme = localStorage.getItem('explore-theme');
+				if (originalTheme) {
+					localStorage.setItem('theme', originalTheme);
+					// 应用原始主题
+					const html = document.documentElement;
+					if (html) {
+						if (originalTheme === 'dark') {
+							html.classList.add('dark');
+							console.log('Beforeunload: Applied dark theme');
+						} else if (originalTheme === 'light') {
+							html.classList.remove('dark');
+							console.log('Beforeunload: Applied light theme');
+						} else {
+							if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+								html.classList.add('dark');
+								console.log('Beforeunload: Applied system dark theme');
+							} else {
+								html.classList.remove('dark');
+								console.log('Beforeunload: Applied system light theme');
+							}
+						}
+					}
+				}
+			} catch (error) {
+				console.error('Error in beforeunload:', error);
+			}
+		});
+
+		// 页面可见性变化时也恢复主题（防止用户切换页面后回来时主题错乱）
+		document.addEventListener('visibilitychange', () => {
+			try {
+				if (document.hidden) {
+					console.log('Page hidden, restoring theme...');
+					if (audio) audio.pause();
+					// 页面隐藏时恢复原始主题
+					const originalTheme = localStorage.getItem('explore-theme');
+					if (originalTheme) {
+						localStorage.setItem('theme', originalTheme);
+						const html = document.documentElement;
+						if (html) {
+							if (originalTheme === 'dark') {
+								html.classList.add('dark');
+								console.log('Visibility hidden: Applied dark theme');
+							} else if (originalTheme === 'light') {
+								html.classList.remove('dark');
+								console.log('Visibility hidden: Applied light theme');
+							} else {
+								if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+									html.classList.add('dark');
+									console.log('Visibility hidden: Applied system dark theme');
+								} else {
+									html.classList.remove('dark');
+									console.log('Visibility hidden: Applied system light theme');
+								}
+							}
+						}
+					}
+				} else {
+					// 回到页面时恢复播放（如果音乐已经开始）
+					if (started && audio && audio.paused) {
+						audio.play().catch(e => console.log(`
+		 (´･ω･\`)
+		死亡不是终点，遗忘才是。
+		不要因惧怕别离而拒绝相遇。
+		即使我们终将远去，火炬也会在新手中燃起，永不熄灭
+		      `));
+					}
+				}
+			} catch (error) {
+				console.error('Error in visibilitychange:', error);
+			}
+		});
+
 	});
 </script>
 
 <style>
-
 	#explore {
 		min-height: 100vh;
+		position: relative;
+		overflow: hidden;
+		background: #000;
+	}
+
+	.start-screen {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+		background-attachment: fixed;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		padding: 20px;
+		z-index: 1000;
+		transition: opacity 1s ease;
+		overflow: hidden;
 	}
 
-	:global(.dark) #explore {
-		background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-	}
-
-	.explore-container {
-		max-width: 800px;
+	.background-decoration {
+		position: absolute;
+		top: 0;
+		left: 0;
 		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
+
+	.floating-shapes {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+
+	.shape {
+		position: absolute;
+		font-size: 2rem;
+		opacity: 0.6;
+		animation: float 6s ease-in-out infinite;
+	}
+
+	.shape-1 {
+		top: 10%;
+		left: 10%;
+		animation-delay: 0s;
+	}
+
+	.shape-2 {
+		top: 20%;
+		right: 15%;
+		animation-delay: 1s;
+		font-size: 1.5rem;
+	}
+
+	.shape-3 {
+		bottom: 25%;
+		left: 20%;
+		animation-delay: 2s;
+	}
+
+	.shape-4 {
+		bottom: 15%;
+		right: 10%;
+		animation-delay: 3s;
+		font-size: 1.8rem;
+	}
+
+	.shape-5 {
+		top: 60%;
+		left: 70%;
+		animation-delay: 4s;
+		font-size: 1.3rem;
+	}
+
+	@keyframes float {
+		0%, 100% {
+			transform: translateY(0px) rotate(0deg);
+		}
+		50% {
+			transform: translateY(-20px) rotate(180deg);
+		}
+	}
+
+	.start-screen.hidden {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.start-container {
 		text-align: center;
+		color: #fff;
+		max-width: 700px;
+		padding: 40px;
+		position: relative;
+		z-index: 10;
 	}
 
-	.explore-content {
-		background: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(10px);
-		border-radius: 24px;
-		padding: 60px 40px;
-		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-		animation: fadeInUp 0.8s ease forwards;
+	.title-wrapper {
+		margin-bottom: 40px;
 	}
 
-	:global(.dark) .explore-content {
-		background: rgba(30, 41, 59, 0.95);
-		color: #f1f5f9;
+	.start-title {
+		font-size: 72px;
+		font-weight: 900;
+		margin-bottom: 20px;
+		color: #ffffff;
+		text-shadow:
+			0 0 20px rgba(167, 139, 250, 0.8),
+			0 0 40px rgba(192, 132, 252, 0.6),
+			0 0 60px rgba(244, 114, 182, 0.4),
+			2px 2px 4px rgba(0, 0, 0, 0.8);
+		letter-spacing: 8px;
+		line-height: 1;
+		display: flex;
+		justify-content: center;
+		gap: 10px;
+		position: relative;
 	}
 
-	.construction-icon {
-		color: #667eea;
-		margin-bottom: 30px;
-		animation: bounce 2s infinite;
+	.start-title::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(135deg, #a78bfa 0%, #c084fc 50%, #f472b6 100%);
+		opacity: 0.1;
+		border-radius: 20px;
+		filter: blur(20px);
+		z-index: -1;
 	}
 
-	:global(.dark) .construction-icon {
-		color: #a78bfa;
+	.title-text {
+		display: inline-block;
+		animation: titleGlow 2s ease-in-out infinite alternate;
+		position: relative;
 	}
 
-	.explore-title {
-		font-size: 48px;
-		font-weight: bold;
-		color: #333;
-		margin: 0 0 20px;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+	.title-text::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(135deg, #a78bfa 0%, #c084fc 50%, #f472b6 100%);
+		opacity: 0;
+		animation: textShine 3s ease-in-out infinite;
+		border-radius: 10px;
 	}
 
-	:global(.dark) .explore-title {
-		background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+	.title-text:nth-child(1) { animation-delay: 0s; }
+	.title-text:nth-child(2) { animation-delay: 0.3s; }
+	.title-text:nth-child(3) { animation-delay: 0.6s; }
+
+	@keyframes titleGlow {
+		from {
+			text-shadow: 0 0 20px rgba(167, 139, 250, 0.8);
+			transform: scale(1);
+		}
+		to {
+			text-shadow: 0 0 30px rgba(167, 139, 250, 1), 0 0 40px rgba(192, 132, 252, 0.5);
+			transform: scale(1.05);
+		}
 	}
 
-	.explore-subtitle {
-		font-size: 24px;
-		color: #666;
-		margin: 0 0 40px;
+	@keyframes textShine {
+		0%, 100% { opacity: 0; }
+		50% { opacity: 0.3; }
+	}
+
+	.title-underline {
+		width: 200px;
+		height: 4px;
+		background: linear-gradient(90deg, transparent, #a78bfa, #c084fc, #f472b6, transparent);
+		margin: 0 auto;
+		border-radius: 2px;
+		box-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+	}
+
+	.start-subtitle {
+		font-size: 28px;
+		margin-bottom: 80px;
+		opacity: 0.9;
 		font-weight: 300;
+		letter-spacing: 2px;
 	}
 
-	:global(.dark) .explore-subtitle {
-		color: #94a3b8;
+	.subtitle-line {
+		display: inline-block;
+		background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		animation: subtitleFade 3s ease-in-out infinite alternate;
 	}
 
-	.coming-soon {
-		font-size: 18px;
-		color: #888;
-		line-height: 1.6;
+	@keyframes subtitleFade {
+		from { opacity: 0.7; }
+		to { opacity: 1; }
 	}
 
-	:global(.dark) .coming-soon {
+	.button-wrapper {
+		margin-bottom: 60px;
+		position: relative;
+	}
+
+	.start-button {
+		background: linear-gradient(135deg, #a78bfa 0%, #c084fc 50%, #f472b6 100%);
+		border: none;
+		color: white;
+		padding: 25px 50px;
+		font-size: 20px;
+		font-weight: 700;
+		border-radius: 60px;
+		cursor: pointer;
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		box-shadow:
+			0 15px 35px rgba(167, 139, 250, 0.4),
+			0 5px 15px rgba(0, 0, 0, 0.2),
+			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		position: relative;
+		overflow: hidden;
+		min-width: 280px;
+	}
+
+	.start-button::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+		transition: left 0.5s;
+	}
+
+	.start-button:hover::before {
+		left: 100%;
+	}
+
+	.start-button:hover {
+		transform: translateY(-5px) scale(1.05);
+		box-shadow:
+			0 25px 50px rgba(167, 139, 250, 0.6),
+			0 10px 25px rgba(0, 0, 0, 0.3),
+			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+	}
+
+	.start-button:active {
+		transform: translateY(-2px) scale(1.02);
+		transition-duration: 0.1s;
+	}
+
+	.button-text {
+		position: relative;
+		z-index: 2;
+	}
+
+	.button-glow {
+		position: absolute;
+		top: -2px;
+		left: -2px;
+		right: -2px;
+		bottom: -2px;
+		background: linear-gradient(135deg, #a78bfa, #c084fc, #f472b6);
+		border-radius: 62px;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		z-index: -1;
+		filter: blur(8px);
+	}
+
+	.start-button:hover .button-glow {
+		opacity: 0.8;
+	}
+
+	.button-particles {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
+
+	.button-particles span {
+		position: absolute;
+		width: 4px;
+		height: 4px;
+		background: #fff;
+		border-radius: 50%;
+		opacity: 0;
+		animation: particleFloat 3s ease-in-out infinite;
+	}
+
+	.button-particles span:nth-child(1) {
+		top: 20%;
+		left: 20%;
+		animation-delay: 0s;
+	}
+
+	.button-particles span:nth-child(2) {
+		top: 30%;
+		right: 25%;
+		animation-delay: 0.5s;
+	}
+
+	.button-particles span:nth-child(3) {
+		bottom: 25%;
+		left: 25%;
+		animation-delay: 1s;
+	}
+
+	.button-particles span:nth-child(4) {
+		bottom: 20%;
+		right: 20%;
+		animation-delay: 1.5s;
+	}
+
+	.button-particles span:nth-child(5) {
+		top: 50%;
+		left: 50%;
+		animation-delay: 2s;
+	}
+
+	@keyframes particleFloat {
+		0%, 100% {
+			opacity: 0;
+			transform: translateY(0) scale(0);
+		}
+		50% {
+			opacity: 1;
+			transform: translateY(-20px) scale(1);
+		}
+	}
+
+	.scroll-hint {
+		opacity: 0.7;
+		font-size: 14px;
+		letter-spacing: 1px;
+		animation: hintPulse 2s ease-in-out infinite;
+	}
+
+	.hint-text {
+		margin-bottom: 10px;
 		color: #cbd5e1;
 	}
 
-	.coming-soon p {
-		margin: 10px 0;
+	.hint-arrow {
+		font-size: 20px;
+		color: #a78bfa;
+		animation: arrowBounce 1.5s ease-in-out infinite;
 	}
 
-	@keyframes fadeInUp {
-		from {
-			opacity: 0;
-			transform: translateY(30px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+	@keyframes hintPulse {
+		0%, 100% { opacity: 0.5; }
+		50% { opacity: 1; }
 	}
 
-	@keyframes bounce {
-		0%, 20%, 50%, 80%, 100% {
-			transform: translateY(0);
-		}
-		40% {
-			transform: translateY(-10px);
-		}
-		60% {
-			transform: translateY(-5px);
-		}
+	@keyframes arrowBounce {
+		0%, 100% { transform: translateY(0); }
+		50% { transform: translateY(5px); }
 	}
+
+	.black-screen {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: #000;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 1000;
+		transition: opacity 1s ease;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.black-screen.hidden {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.text-container {
+		text-align: center;
+		color: #fff;
+		max-width: 600px;
+		padding: 20px;
+	}
+
+	.initial-text {
+		font-size: 24px;
+		line-height: 1.6;
+		margin-bottom: 40px;
+		opacity: 0;
+		transition: opacity 2s ease;
+	}
+
+	.initial-text.show {
+		opacity: 1;
+	}
+
+	.scroll-prompt {
+		font-size: 18px;
+		opacity: 0;
+		transition: opacity 1s ease;
+	}
+
+	.scroll-prompt.show {
+		opacity: 1;
+	}
+
+
+	.photo-container {
+		position: relative;
+		width: 100%;
+		height: 100vh;
+	}
+
+	.photo-slide {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		transition: opacity 1s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #000;
+		pointer-events: none;
+	}
+
+	.photo-slide.active {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.photo-slide img {
+		max-width: 80%;
+		max-height: 80%;
+		object-fit: contain;
+		border-radius: 10px;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+	}
+
+	.photo-scroll-prompt {
+		position: absolute;
+		bottom: 30px;
+		left: 50%;
+		transform: translateX(-50%);
+		color: rgba(255, 255, 255, 0.8);
+		font-size: 16px;
+		opacity: 0;
+		transition: opacity 1s ease;
+		pointer-events: none;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+		background: rgba(0, 0, 0, 0.3);
+		padding: 8px 16px;
+		border-radius: 20px;
+	}
+
+	.photo-scroll-prompt.show {
+		opacity: 1;
+	}
+
+	.final-message {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		text-align: center;
+		color: #fff;
+		font-size: 24px;
+		line-height: 1.6;
+		max-width: 600px;
+		padding: 20px;
+		opacity: 0;
+		transition: opacity 2s ease;
+	}
+
+	.final-message p {
+		margin: 0 0 15px 0;
+		font-weight: 300;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+	}
+
+	.final-message .english-text {
+		font-size: 18px;
+		font-style: italic;
+		opacity: 0.9;
+		margin-bottom: 20px !important;
+	}
+
+	.final-message .slogan {
+		font-size: 16px;
+		font-weight: 500;
+		margin-bottom: 0 !important;
+		opacity: 0.8;
+	}
+
+	.new-year-message {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		text-align: center;
+		color: #fff;
+		font-size: 48px;
+		font-weight: bold;
+		opacity: 0;
+		transition: opacity 2s ease;
+		text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+	}
+
 
 	@media screen and (max-width: 768px) {
-		#explore {
+		.start-container {
+			padding: 20px;
+			max-width: 90%;
+		}
+
+		.start-title {
+			font-size: 48px;
+			letter-spacing: 4px;
+		}
+
+		.title-underline {
+			width: 150px;
+		}
+
+		.start-subtitle {
+			font-size: 20px;
+			margin-bottom: 50px;
+		}
+
+		.start-button {
+			padding: 20px 40px;
+			font-size: 16px;
+			min-width: 240px;
+		}
+
+		.shape {
+			font-size: 1.5rem;
+		}
+
+		.scroll-hint {
+			font-size: 12px;
+		}
+
+		.initial-text {
+			font-size: 18px;
 			padding: 20px;
 		}
 
-		.explore-content {
-			padding: 40px 20px;
+		.scroll-prompt {
+			font-size: 16px;
 		}
 
-		.explore-title {
+
+		.photo-slide img {
+			max-width: 95%;
+			max-height: 95%;
+		}
+
+		.new-year-message {
 			font-size: 36px;
-		}
-
-		.explore-subtitle {
-			font-size: 20px;
-		}
-
-		.construction-icon svg {
-			width: 80px;
-			height: 80px;
 		}
 	}
 </style>

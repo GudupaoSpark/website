@@ -9,6 +9,7 @@ import { ClientRouter } from 'astro:transitions';
 const lang = Astro.params.lang || 'en';
 const t = getTranslator(lang);
 const pageTitle = Astro.props.title || t('layout.title');
+const showFooter = Astro.props.showFooter !== false;
 ---
 
 <!doctype html>
@@ -75,14 +76,14 @@ const pageTitle = Astro.props.title || t('layout.title');
 			});
 		</script>
 	</head>
-	<body class="bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+	<body class="bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 flex flex-col min-h-screen">
 		<Header />
 		<main>
 			<slot />
 		</main>
 		<ThemeModal />
 		<LanguageModal />
-	<Footer />
+		{showFooter && <Footer />}
 	</body>
 </html>
 
