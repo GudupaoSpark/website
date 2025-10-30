@@ -1,0 +1,138 @@
+---
+// Resource Optimizer - Optimize static assets loading and caching
+---
+
+<script>
+  // Resource optimization and caching strategies
+  class ResourceOptimizer {
+    private imageObserver: IntersectionObserver | null = null;
+    private fontLoadTimeout: number = 3000; // 3 seconds
+
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      // Optimize font loading
+      this.optimizeFonts();
+
+      // Setup lazy loading for images
+      this.setupLazyLoading();
+
+      // Prefetch critical DNS
+      this.prefetchDNS();
+
+      // Setup service worker for caching (if supported)
+      this.setupServiceWorker();
+    }
+
+    // Optimize font loading with font-display and preload
+    optimizeFonts() {
+      // Check if fonts are already loaded
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+          document.documentElement.classList.add('fonts-loaded');
+        });
+      }
+
+      // Add timeout fallback
+      setTimeout(() => {
+        document.documentElement.classList.add('fonts-loaded');
+      }, this.fontLoadTimeout);
+    }
+
+    // Setup lazy loading for images not in viewport
+    setupLazyLoading() {
+      // Use native lazy loading if supported
+      if ('loading' in HTMLImageElement.prototype) {
+        const images = document.querySelectorAll('img:not([loading])');
+        images.forEach(img => {
+          img.setAttribute('loading', 'lazy');
+        });
+      } else {
+        // Fallback to Intersection Observer
+        this.imageObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const img = entry.target as HTMLImageElement;
+                if (img.dataset.src) {
+                  img.src = img.dataset.src;
+                  img.removeAttribute('data-src');
+                }
+                this.imageObserver?.unobserve(img);
+              }
+            });
+          },
+          { rootMargin: '50px' }
+        );
+
+        const images = document.querySelectorAll('img[data-src]');
+        images.forEach(img => this.imageObserver?.observe(img));
+      }
+
+      // Re-setup after page transitions
+      document.addEventListener('astro:after-swap', () => {
+        this.setupLazyLoading();
+      });
+    }
+
+    // Prefetch critical DNS
+    prefetchDNS() {
+      const criticalDomains = [
+        'https://unpkg.com', // For twemoji
+      ];
+
+      criticalDomains.forEach(domain => {
+        const link = document.createElement('link');
+        link.rel = 'dns-prefetch';
+        link.href = domain;
+        document.head.appendChild(link);
+      });
+    }
+
+    // Setup service worker for advanced caching
+    setupServiceWorker() {
+      if ('serviceWorker' in navigator) {
+        // Only register in production
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+          navigator.serviceWorker.register('/sw.js').catch(() => {
+            // Service worker not available, silently fail
+          });
+        }
+      }
+    }
+  }
+
+  // Image format optimization
+  function optimizeImages() {
+    // Check for WebP support
+    const supportsWebP = document.createElement('canvas')
+      .toDataURL('image/webp')
+      .indexOf('data:image/webp') === 0;
+
+    if (supportsWebP) {
+      document.documentElement.classList.add('webp');
+    }
+
+    // Check for AVIF support
+    const img = new Image();
+    img.onload = function() {
+      document.documentElement.classList.add('avif');
+    };
+    img.src = 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgANogQEAwgMg8f8D///8WfhwB8+ErK42A=';
+  }
+
+  // Initialize resource optimizer
+  function initResourceOptimizer() {
+    new ResourceOptimizer();
+    optimizeImages();
+  }
+
+  // Run on initial page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initResourceOptimizer);
+  } else {
+    initResourceOptimizer();
+  }
+</script>

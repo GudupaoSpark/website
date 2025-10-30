@@ -1,0 +1,196 @@
+---
+// Smart Prefetch Component - Optimized route preloading
+---
+
+<script>
+  // Smart prefetch strategy for client router optimization
+  class SmartPrefetch {
+    private prefetchedUrls: Set<string> = new Set();
+    private observer: IntersectionObserver | null = null;
+    private idleCallbackId: number | null = null;
+    private connectionSpeed: string = 'unknown';
+
+    constructor() {
+      this.detectConnectionSpeed();
+      this.init();
+    }
+
+    // Detect user's connection speed
+    detectConnectionSpeed() {
+      if ('connection' in navigator) {
+        const conn = (navigator as any).connection;
+        this.connectionSpeed = conn.effectiveType || 'unknown';
+      }
+    }
+
+    // Initialize prefetch logic
+    init() {
+      // Only prefetch on fast connections
+      if (this.connectionSpeed === 'slow-2g' || this.connectionSpeed === '2g') {
+        return;
+      }
+
+      // Wait for page to be idle before setting up prefetch
+      if ('requestIdleCallback' in window) {
+        this.idleCallbackId = window.requestIdleCallback(() => {
+          this.setupPrefetch();
+        }, { timeout: 2000 });
+      } else {
+        setTimeout(() => this.setupPrefetch(), 1000);
+      }
+    }
+
+    setupPrefetch() {
+      // Setup Intersection Observer for viewport-based prefetch
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const link = entry.target as HTMLAnchorElement;
+              const url = link.getAttribute('href');
+              if (url && this.shouldPrefetch(url)) {
+                this.prefetchUrl(url);
+              }
+            }
+          });
+        },
+        {
+          rootMargin: '50px', // Start prefetching when link is 50px from viewport
+        }
+      );
+
+      // Observe all internal links
+      this.observeLinks();
+
+      // Setup hover-based prefetch for fast connections
+      if (this.connectionSpeed === '4g') {
+        this.setupHoverPrefetch();
+      }
+
+      // Re-observe links after page transitions
+      document.addEventListener('astro:after-swap', () => {
+        this.observeLinks();
+      });
+    }
+
+    observeLinks() {
+      const links = document.querySelectorAll('a[href^="/"]') as NodeListOf<HTMLAnchorElement>;
+      links.forEach((link) => {
+        if (!link.hasAttribute('data-noprefetch')) {
+          this.observer?.observe(link);
+        }
+      });
+    }
+
+    setupHoverPrefetch() {
+      let hoverTimeout: ReturnType<typeof setTimeout>;
+
+      document.addEventListener('mouseover', (e) => {
+        const link = (e.target as HTMLElement).closest('a[href^="/"]') as HTMLAnchorElement;
+        if (!link || link.hasAttribute('data-noprefetch')) return;
+
+        const url = link.getAttribute('href');
+        if (!url || !this.shouldPrefetch(url)) return;
+
+        // Debounce hover to avoid unnecessary prefetches
+        clearTimeout(hoverTimeout);
+        hoverTimeout = setTimeout(() => {
+          this.prefetchUrl(url);
+        }, 100);
+      }, { passive: true });
+    }
+
+    shouldPrefetch(url: string): boolean {
+      // Don't prefetch if already prefetched
+      if (this.prefetchedUrls.has(url)) return false;
+
+      // Don't prefetch current page
+      if (url === window.location.pathname) return false;
+
+      // Don't prefetch external links
+      if (url.startsWith('http') || url.startsWith('//')) return false;
+
+      // Don't prefetch anchors
+      if (url.startsWith('#')) return false;
+
+      // Limit total prefetched URLs to avoid memory issues
+      if (this.prefetchedUrls.size >= 10) return false;
+
+      return true;
+    }
+
+    prefetchUrl(url: string) {
+      // Mark as prefetched
+      this.prefetchedUrls.add(url);
+
+      // Use native prefetch via link rel
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = url;
+      link.as = 'document';
+
+      // Priority hint for important routes
+      if (this.isHighPriorityRoute(url)) {
+        link.setAttribute('importance', 'high');
+      }
+
+      document.head.appendChild(link);
+
+      // Optional: prefetch critical resources for the page
+      this.prefetchCriticalResources(url);
+    }
+
+    isHighPriorityRoute(url: string): boolean {
+      const highPriorityRoutes = ['/about', '/projects', '/contact'];
+      return highPriorityRoutes.some(route => url.includes(route));
+    }
+
+    prefetchCriticalResources(url: string) {
+      // Prefetch known critical resources based on route patterns
+      const criticalAssets: Record<string, string[]> = {
+        '/about': [],
+        '/projects': [],
+        '/explore': ['/explore/music/background.mp3']
+      };
+
+      Object.entries(criticalAssets).forEach(([route, assets]) => {
+        if (url.includes(route)) {
+          assets.forEach(asset => {
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = asset;
+            document.head.appendChild(link);
+          });
+        }
+      });
+    }
+
+    cleanup() {
+      this.observer?.disconnect();
+      if (this.idleCallbackId !== null) {
+        window.cancelIdleCallback(this.idleCallbackId);
+      }
+    }
+  }
+
+  // Initialize smart prefetch
+  function initSmartPrefetch() {
+    // Cleanup existing instance if any
+    if ((window as any).smartPrefetchInstance) {
+      (window as any).smartPrefetchInstance.cleanup();
+    }
+
+    // Create new instance
+    (window as any).smartPrefetchInstance = new SmartPrefetch();
+  }
+
+  // Run on initial page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSmartPrefetch);
+  } else {
+    initSmartPrefetch();
+  }
+
+  // Re-initialize after page transitions
+  document.addEventListener('astro:after-swap', initSmartPrefetch);
+</script>

@@ -4,6 +4,9 @@ import Header from '../components/Header.astro';
 import ThemeModal from '../components/ThemeModal.astro';
 import LanguageModal from '../components/LanguageModal.astro';
 import Footer from '../components/Footer.astro';
+import SmartPrefetch from '../components/SmartPrefetch.astro';
+import ResourceOptimizer from '../components/ResourceOptimizer.astro';
+import PerformanceMonitor from '../components/PerformanceMonitor.astro';
 import { getTranslator } from '@gudupao/astro-i18n';
 import { ClientRouter } from 'astro:transitions';
 const lang = Astro.params.lang || 'en';
@@ -88,6 +91,9 @@ const showFooter = Astro.props.showFooter !== false;
 		<ThemeModal />
 		<LanguageModal />
 		{showFooter && <Footer lang={lang} />}
+		<SmartPrefetch />
+		<ResourceOptimizer />
+		<PerformanceMonitor />
 	</body>
 </html>
 
@@ -251,35 +257,41 @@ const showFooter = Astro.props.showFooter !== false;
 		position: relative;
 	}
 
-	/* View Transitions Animations */
+	/* View Transitions Animations - Optimized */
 	@view-transition {
 		navigation: auto;
 	}
 
-	/* Prevent default fade, use custom slide animation */
+	/* Use will-change for better performance */
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		will-change: transform, opacity;
+	}
+
+	/* Faster, more efficient slide animation - reduced to 0.25s */
 	::view-transition-old(root) {
-		animation: slide-out-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		animation: slide-out-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	::view-transition-new(root) {
-		animation: slide-in-right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		animation: slide-in-right 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	/* Slide animations */
+	/* Optimized slide animations with reduced distance */
 	@keyframes slide-out-left {
 		from {
 			transform: translateX(0);
 			opacity: 1;
 		}
 		to {
-			transform: translateX(-20px);
+			transform: translateX(-10px);
 			opacity: 0;
 		}
 	}
 
 	@keyframes slide-in-right {
 		from {
-			transform: translateX(20px);
+			transform: translateX(10px);
 			opacity: 0;
 		}
 		to {
@@ -288,12 +300,21 @@ const showFooter = Astro.props.showFooter !== false;
 		}
 	}
 
-	/* Keep header and footer in place during transitions */
+	/* Keep header and footer in place during transitions - optimized */
 	::view-transition-old(header-bar),
 	::view-transition-new(header-bar),
 	::view-transition-old(footer-bar),
 	::view-transition-new(footer-bar) {
 		animation: none;
 		mix-blend-mode: normal;
+		transform: none;
+	}
+
+	/* Reduce motion for users with motion sensitivity */
+	@media (prefers-reduced-motion: reduce) {
+		::view-transition-old(root),
+		::view-transition-new(root) {
+			animation-duration: 0.1s;
+		}
 	}
 </style>

@@ -63,13 +63,14 @@ const t = getTranslator(lang);
 </div>
 
 <script>
-  // Language modal functionality
+  // Language modal functionality - Optimized
   class LanguageModal {
     modal: HTMLElement | null;
     overlay: HTMLElement | null;
     content: HTMLElement | null;
     toggleBtn: HTMLElement | null;
     currentLang: string;
+    private isAnimating: boolean = false;
 
     constructor() {
       this.modal = document.getElementById('language-modal');
@@ -88,33 +89,47 @@ const t = getTranslator(lang);
     }
 
     init() {
-      // Show modal
-      this.toggleBtn?.addEventListener('click', () => this.show());
+      // Use event delegation instead of multiple listeners
+      this.toggleBtn?.addEventListener('click', () => this.show(), { passive: true });
+      this.overlay?.addEventListener('click', () => this.hide(), { passive: true });
 
-      // Hide modal on overlay click
-      this.overlay?.addEventListener('click', () => this.hide());
-
-      // Language selection
-      const languages = ['en', 'es', 'fr', 'ja', 'kr', 'zh-hans', 'zh-hant', 'th'];
-      languages.forEach(lang => {
-        document.getElementById(`lang-${lang}`)?.addEventListener('click', () => this.setLanguage(lang));
-      });
+      // Single delegated event listener for all language buttons
+      const languageButtons = this.modal?.querySelector('.grid');
+      languageButtons?.addEventListener('click', (e) => {
+        const button = (e.target as HTMLElement).closest('.language-btn');
+        if (button) {
+          const lang = button.id.replace('lang-', '');
+          this.setLanguage(lang);
+        }
+      }, { passive: true });
 
       // Update active button on load
       this.updateActiveButton(this.currentLang);
     }
 
     show() {
+      if (this.isAnimating) return;
+      this.isAnimating = true;
+
       this.modal?.classList.remove('hidden');
-      setTimeout(() => {
+
+      // Use requestAnimationFrame for smooth animation
+      requestAnimationFrame(() => {
         this.content?.classList.remove('translate-y-full');
-      }, 10);
+        setTimeout(() => {
+          this.isAnimating = false;
+        }, 300);
+      });
     }
 
     hide() {
+      if (this.isAnimating) return;
+      this.isAnimating = true;
+
       this.content?.classList.add('translate-y-full');
       setTimeout(() => {
         this.modal?.classList.add('hidden');
+        this.isAnimating = false;
       }, 300);
     }
 
@@ -133,68 +148,77 @@ const t = getTranslator(lang);
     }
 
     updateActiveButton(lang: string) {
-      // Remove active state from all buttons
-      document.querySelectorAll('.language-btn').forEach(btn => {
-        btn.classList.remove('border-blue-500', 'dark:border-blue-400', 'bg-blue-50', 'dark:bg-blue-900/20');
-        btn.classList.add('border-gray-200', 'dark:border-gray-600');
-      });
-
-      // Add active state to current language button
+      // Use single batch DOM update
+      const buttons = this.modal?.querySelectorAll('.language-btn');
       const activeBtn = document.getElementById(`lang-${lang}`);
-      if (activeBtn) {
-        activeBtn.classList.remove('border-gray-200', 'dark:border-gray-600');
-        activeBtn.classList.add('border-blue-500', 'dark:border-blue-400', 'bg-blue-50', 'dark:bg-blue-900/20');
-      }
+
+      buttons?.forEach(btn => {
+        if (btn === activeBtn) {
+          btn.classList.remove('border-gray-200', 'dark:border-gray-600');
+          btn.classList.add('border-blue-500', 'dark:border-blue-400', 'bg-blue-50', 'dark:bg-blue-900/20');
+        } else {
+          btn.classList.remove('border-blue-500', 'dark:border-blue-400', 'bg-blue-50', 'dark:bg-blue-900/20');
+          btn.classList.add('border-gray-200', 'dark:border-gray-600');
+        }
+      });
     }
   }
 
-  // Function to apply modal twemoji styles
-  function applyModalTwemojiStyles() {
-    // Remove existing modal twemoji styles
-    const existingStyle = document.getElementById('twemoji-modal-styles');
-    if (existingStyle) {
-      existingStyle.remove();
+  // Optimize twemoji loading
+  let twemojiLoadPromise: Promise<void> | null = null;
+
+  function loadTwemoji(): Promise<void> {
+    if (twemojiLoadPromise) return twemojiLoadPromise;
+
+    if ((window as any).twemojiLoaded) {
+      return Promise.resolve();
     }
 
-    // Add new modal twemoji styles
+    twemojiLoadPromise = new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/twemoji@14.0.2/dist/twemoji.min.js';
+      script.async = true;
+      script.onload = () => {
+        (window as any).twemojiLoaded = true;
+        resolve();
+      };
+      document.head.appendChild(script);
+    });
+
+    return twemojiLoadPromise;
+  }
+
+  // Function to apply modal twemoji styles - optimized
+  function applyModalTwemojiStyles() {
+    if (document.getElementById('twemoji-modal-styles')) return;
+
     const style = document.createElement('style');
     style.id = 'twemoji-modal-styles';
-    style.textContent = `
-      .twemoji-flag {
-        width: 1.25rem !important;
-        height: 1.25rem !important;
-      }
-    `;
+    style.textContent = `.twemoji-flag{width:1.25rem!important;height:1.25rem!important}`;
     document.head.appendChild(style);
   }
 
-  // Function to parse modal twemoji
-  function parseModalTwemoji() {
+  // Function to parse modal twemoji - optimized
+  async function parseModalTwemoji() {
+    await loadTwemoji();
+
     if (typeof (window as any).twemoji !== 'undefined') {
-      (window as any).twemoji.parse(document.getElementById('language-modal'), {
-        className: 'twemoji-flag'
-      });
-      applyModalTwemojiStyles();
+      const modal = document.getElementById('language-modal');
+      if (modal) {
+        (window as any).twemoji.parse(modal, { className: 'twemoji-flag' });
+        applyModalTwemojiStyles();
+      }
     }
   }
 
-  // Initialize language modal
+  // Initialize language modal - optimized
   function initLanguageModal() {
-    const modal = new LanguageModal();
+    new LanguageModal();
 
-    // Load Twemoji script and parse emojis (only once)
-    if (!(window as any).twemojiLoaded) {
-      const script = document.createElement('script');
-      script.src = 'https://unpkg.com/twemoji@14.0.2/dist/twemoji.min.js';
-      script.onload = () => {
-        (window as any).twemojiLoaded = true;
-        parseModalTwemoji();
-      };
-      document.head.appendChild(script);
-    } else {
-      // Re-parse if already loaded
+    // Lazy load twemoji only when needed
+    requestIdleCallback(() => {
       parseModalTwemoji();
-    }
+    }, { timeout: 2000 });
   }
 
   // Run on initial page load
