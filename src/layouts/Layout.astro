@@ -16,7 +16,7 @@ const showFooter = Astro.props.showFooter !== false;
 <html lang="en" class="transition-colors duration-300">
 	<head>
 		<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width" />
 		<meta name="description" content={t('layout.description')} />
 		<link rel="icon" type="image/png" href="/icon/icon.png" sizes="32x32" />
 		<link rel="icon" type="image/png" href="/icon/icon.png" sizes="16x16" />
@@ -27,7 +27,11 @@ const showFooter = Astro.props.showFooter !== false;
 		<!-- Apply theme immediately to prevent flash -->
 		<script is:inline>
 			(function() {
-				const theme = localStorage.getItem('theme') || 'system';
+				// Get device-appropriate theme
+				const isMobile = window.innerWidth < 768;
+				const theme = isMobile ?
+					localStorage.getItem('theme-mobile') || 'light' :
+					localStorage.getItem('theme') || 'system';
 				const html = document.documentElement;
 
 				if (theme === 'dark') {
@@ -88,6 +92,30 @@ const showFooter = Astro.props.showFooter !== false;
 </html>
 
 <script>
+	// Global theme re-initialization function
+	function reinitializeTheme() {
+		// Re-apply theme based on device type
+		const isMobile = window.innerWidth < 768;
+		const theme = isMobile ? 
+			localStorage.getItem('theme-mobile') || 'light' : 
+			localStorage.getItem('theme') || 'system';
+		const html = document.documentElement;
+
+		if (theme === 'dark') {
+			html.classList.add('dark');
+		} else if (theme === 'light') {
+			html.classList.remove('dark');
+		} else {
+			// System theme
+			if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+				html.classList.add('dark');
+			} else {
+				html.classList.remove('dark');
+			}
+		}
+		console.log('Theme reinitialized:', theme, 'Mobile:', isMobile);
+	}
+
 	document.addEventListener('astro:after-swap', () => {
 		// Scroll to top smoothly after navigation
 		window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -196,6 +224,18 @@ const showFooter = Astro.props.showFooter !== false;
 	// 页面导航后重新启用滚动限制
 	document.addEventListener('astro:after-swap', () => {
 		setTimeout(preventScrollBeyondBottom, 100);
+	});
+
+	// Listen for theme changes
+	window.addEventListener('storage', (e) => {
+		if (e.key === 'theme' || e.key === 'theme-mobile') {
+			setTimeout(reinitializeTheme, 100);
+		}
+	});
+
+	// Re-initialize theme after page transitions
+	document.addEventListener('astro:after-swap', () => {
+		setTimeout(reinitializeTheme, 100);
 	});
 </script>
 

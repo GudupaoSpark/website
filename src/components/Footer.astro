@@ -119,7 +119,8 @@ const t = getTranslator(lang);
         'ja': '🇯🇵',
         'kr': '🇰🇷',
         'zh-hans': '🇨🇳',
-        'zh-hant': '🇭🇰'
+        'zh-hant': '🇭🇰',
+        'th': '🇹🇭'
       };
       flagElement.textContent = flags[currentLang as keyof typeof flags] || '🌐';
 
@@ -131,7 +132,8 @@ const t = getTranslator(lang);
         'ja': '日本語',
         'kr': '한국어',
         'zh-hans': '简体中文',
-        'zh-hant': '繁體中文'
+        'zh-hant': '繁體中文',
+        'th': 'ไทย'
       };
       nameElement.textContent = languageNames[currentLang as keyof typeof languageNames] || 'Language';
     }

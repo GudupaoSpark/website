@@ -184,19 +184,27 @@ const t = getTranslator(lang);
       // Mobile: use mobile theme
       const savedTheme = localStorage.getItem('theme-mobile') || 'light';
       applyTheme(savedTheme);
+      console.log('Mobile theme applied:', savedTheme);
     }
     // Desktop theme applied by ThemeModal
 
     // Theme Toggle
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
-      themeToggle.addEventListener('click', () => {
+      // Remove existing event listeners to prevent duplicates
+      const newThemeToggle = themeToggle.cloneNode(true) as HTMLElement;
+      if (themeToggle.parentNode) {
+        themeToggle.parentNode.replaceChild(newThemeToggle, themeToggle);
+      }
+      
+      newThemeToggle.addEventListener('click', () => {
         if (window.innerWidth < 768) {
           // Mobile: simple toggle between light and dark
           const currentTheme = localStorage.getItem('theme-mobile') || 'light';
           const newTheme = currentTheme === 'light' ? 'dark' : 'light';
           localStorage.setItem('theme-mobile', newTheme);
           applyTheme(newTheme);
+          console.log('Theme toggled to:', newTheme);
         }
         // Desktop: handled by modal
       });
