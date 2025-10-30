@@ -23,7 +23,7 @@ const showFooter = Astro.props.showFooter !== false;
 		<link rel="apple-touch-icon" href="/icon/icon.png" />
 		<meta name="generator" content={Astro.generator} />
 	<title>{pageTitle}</title>
-		<ClientRouter transition:persist />
+		<ClientRouter transition:persist transition:animate="none" />
 		<!-- Apply theme immediately to prevent flash -->
 		<script is:inline>
 			(function() {
@@ -118,7 +118,7 @@ const showFooter = Astro.props.showFooter !== false;
 
 	document.addEventListener('astro:after-swap', () => {
 		// Scroll to top instantly after navigation for faster perceived performance
-		window.scrollTo({ top: 0 });
+		window.scrollTo({ top: 0, behavior: 'instant' });
 	});
 
 	// Ensure all internal links use client-side navigation
@@ -223,19 +223,19 @@ const showFooter = Astro.props.showFooter !== false;
 
 	// 页面导航后重新启用滚动限制
 	document.addEventListener('astro:after-swap', () => {
-		setTimeout(preventScrollBeyondBottom, 0);
+		preventScrollBeyondBottom();
 	});
 
 	// Listen for theme changes
 	window.addEventListener('storage', (e) => {
 		if (e.key === 'theme' || e.key === 'theme-mobile') {
-			setTimeout(reinitializeTheme, 0);
+			reinitializeTheme();
 		}
 	});
 
 	// Re-initialize theme after page transitions
 	document.addEventListener('astro:after-swap', () => {
-		setTimeout(reinitializeTheme, 0);
+		reinitializeTheme();
 	});
 </script>
 

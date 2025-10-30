@@ -19,5 +19,6 @@ export default defineConfig({
   prefetch: false,
   experimental: {
     clientPrerender: true
-  }
+  },
+  output: 'static'
 });
