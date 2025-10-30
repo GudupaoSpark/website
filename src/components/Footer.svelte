@@ -1,0 +1,205 @@
+<script>
+  import { getTranslator } from '@gudupao/astro-i18n';
+  import { onMount } from 'svelte';
+
+  export let lang = 'en';
+
+  const currentYear = new Date().getFullYear();
+  const t = getTranslator(lang);
+
+  onMount(() => {
+    updateFooterLogo();
+    updateCurrentLanguageDisplay();
+
+    // Re-apply twemoji after page transitions
+    document.addEventListener('astro:after-swap', () => {
+      setTimeout(parseTwemoji, 100); // Small delay to ensure DOM is ready
+    });
+
+    // 监听系统主题变化
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateFooterLogo);
+
+    // 监听DOM class变化
+    const observer = new MutationObserver(updateFooterLogo);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  function updateFooterLogo() {
+    if (typeof document === 'undefined') return;
+    const logo = document.querySelector('footer img[alt="Gudupao Logo"]');
+    if (logo) {
+      if (document.documentElement.classList.contains('dark')) {
+        logo.src = '/home/logo-dark.png';
+      } else {
+        logo.src = '/home/logo.png';
+      }
+    }
+  }
+
+  // Update current language display
+  function updateCurrentLanguageDisplay() {
+    if (typeof window === 'undefined') return;
+    const currentLang = window.location.pathname.split('/')[1] || 'en';
+    const flagElement = document.getElementById('current-language-flag');
+    const nameElement = document.getElementById('current-language-name');
+
+    if (flagElement && nameElement) {
+      // Set flag emoji
+      const flags = {
+        'en': '🇺🇸',
+        'es': '🇪🇸',
+        'fr': '🇫🇷',
+        'ja': '🇯🇵',
+        'kr': '🇰🇷',
+        'zh-hans': '🇨🇳',
+        'zh-hant': '🇭🇰',
+        'th': '🇹🇭'
+      };
+      flagElement.textContent = flags[currentLang] || '🌐';
+
+      // Set language name
+      const languageNames = {
+        'en': 'English',
+        'es': 'Español',
+        'fr': 'Français',
+        'ja': '日本語',
+        'kr': '한국어',
+        'zh-hans': '简体中文',
+        'zh-hant': '繁體中文',
+        'th': 'ไทย'
+      };
+      nameElement.textContent = languageNames[currentLang] || 'Language';
+    }
+  }
+
+  // Function to parse twemoji
+  function parseTwemoji() {
+    if (typeof (window).twemoji !== 'undefined') {
+      (window).twemoji.parse(document.getElementById('language-toggle'), {
+        className: 'twemoji-footer-flag'
+      });
+      applyTwemojiStyles();
+    }
+  }
+
+  // Function to apply twemoji styles
+  function applyTwemojiStyles() {
+    // Remove existing twemoji styles
+    const existingStyle = document.getElementById('twemoji-footer-styles');
+    if (existingStyle) {
+      existingStyle.remove();
+    }
+
+    // Add new twemoji styles
+    const style = document.createElement('style');
+    style.id = 'twemoji-footer-styles';
+    style.textContent = `
+      .twemoji-footer-flag {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+      }
+      @media (max-width: 640px) {
+        .twemoji-footer-flag {
+          width: 1.5rem !important;
+          height: 1.5rem !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Load Twemoji for footer flag
+  if (typeof document !== 'undefined') {
+    const twemojiScript = document.createElement('script');
+    twemojiScript.src = 'https://unpkg.com/twemoji@14.0.2/dist/twemoji.min.js';
+    twemojiScript.onload = parseTwemoji;
+    document.head.appendChild(twemojiScript);
+  }
+</script>
+
+<footer class="py-8 relative" style="background-color: var(--footer-bg); border-top: 1px solid var(--footer-border);" transition:persist={'footer-bar'}>
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-8">
+      <div class="flex flex-col">
+        <div class="flex items-center justify-center md:justify-start space-x-4 md:space-x-6 mb-6">
+          <a href="https://status.gudupao.top" aria-label="System Status" style="color: var(--footer-text-link);" class="hover:opacity-80 transition-opacity duration-200">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 1024 1024" aria-hidden="true">
+              <path d="M959.825022 191.939717C959.825022 121.2479 902.517291 63.940169 831.825474 63.940169H191.939717C121.2479 63.940169 63.940169 121.2479 63.940169 191.939717v639.885757C63.940169 902.517291 121.2479 959.825022 191.939717 959.825022h639.885757c70.691817 0 127.999548-57.307731 127.999548-127.999548V191.939717zM146.715595 146.66502a63.839021 63.839021 0 0 1 45.372232-18.784682h639.824346A64.037705 64.037705 0 0 1 895.884854 192.001129V480.093133s0.0289 0 0 0h-50.527184l-54.764574-54.710387a31.970084 31.970084 0 0 0-52.933067 12.506263L698.078535 556.676838l-93.482694-186.965389a31.970084 31.970084 0 0 0-58.279477 2.423947l-93.269561 233.168483-102.307883-358.086621a31.970084 31.970084 0 0 0-59.330697-5.519807l-119.264671 238.269247L127.880338 480.093133V192.001129A63.777609 63.777609 0 0 1 146.715595 146.66502z m730.43515 730.536299a63.456102 63.456102 0 0 1-45.253022 18.67631H192.087827c-17.112123 0-33.270563-6.574639-45.372232-18.67631S127.880338 849.110994 127.880338 831.998871V544.033302l64.135241-0.180622a32.024271 32.024271 0 0 0 28.538267-17.668439l91.261045-182.395653L417.236696 712.781162a31.977309 31.977309 0 0 0 29.112645 23.144896q0.823636 0.043349 1.64366 0.043349a31.973697 31.973697 0 0 0 29.676186-20.095998l101.560108-253.900269 96.163124 192.322635a31.970084 31.970084 0 0 0 58.926104-4.186816l47.651681-142.951433 27.552072 27.523172a31.970084 31.970084 0 0 0 22.60303 9.352604H895.884854c0.0289 0 0 0 0 0v287.965569a63.398303 63.398303 0 0 1-18.719659 45.209673z" />
+            </svg>
+          </a>
+          <span style="color: var(--footer-text-secondary);" class="text-2xl font-bold">|</span>
+          <a href="https://x.com/GudupaoSpark" aria-label="Twitter" style="color: var(--footer-text-link);" class="hover:opacity-80 transition-opacity duration-200">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 1024 1024" aria-hidden="true">
+              <path d="M390.097455 157.370182l170.181818 228.119273 195.525818-228.119273h110.824727L611.851636 454.609455l299.112728 400.942545h-232.727273l-190.836364-255.767273-219.205818 255.767273h-110.824727l278.481454-324.898909-278.481454-373.294546h232.727273z m177.396363 348.974545l-35.723636 41.693091L711.586909 789.061818h66.804364L567.505455 506.356364zM356.736 223.872h-66.816l190.277818 255.045818 35.723637-41.669818-159.185455-213.376z" />
+            </svg>
+          </a>
+          <a href="https://github.com/GudupaoSpark" aria-label="GitHub" style="color: var(--footer-text-link);" class="hover:opacity-80 transition-opacity duration-200">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 1024 1024" aria-hidden="true">
+              <path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" />
+            </svg>
+          </a>
+          <a href="https://www.youtube.com/@GudupaoSpark" aria-label="YouTube" style="color: var(--footer-text-link);" class="hover:opacity-80 transition-opacity duration-200">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </a>
+          <a href="https://space.bilibili.com/1016857888" aria-label="Custom" style="color: var(--footer-text-link);" class="hover:opacity-80 transition-opacity duration-200">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 1024 1024" aria-hidden="true">
+              <path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" />
+            </svg>
+          </a>
+          <a href="https://qm.qq.com/q/B3vKejsGBi" aria-label="Custom2" style="color: var(--footer-text-link);" class="hover:opacity-80 transition-opacity duration-200">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 1024 1024" aria-hidden="true">
+              <path d="M824.8 613.2c-16-51.4-34.4-94.6-62.7-165.3C766.5 262.2 689.3 112 511.5 112 331.7 112 256.2 265.2 261 447.9c-28.4 70.8-46.7 113.7-62.7 165.3-34 109.5-23 154.8-14.6 155.8 18 2.2 70.1-82.4 70.1-82.4 0 49 25.2 112.9 79.8 159-26.4 8.1-85.7 29.9-71.6 53.8 11.4 19.3 196.2 12.3 249.5 6.3 53.3 6 238.1 13 249.5-6.3 14.1-23.8-45.3-45.7-71.6-53.8 54.6-46.2 79.8-110.1 79.8-159 0 0 52.1 84.6 70.1 82.4 8.5-1.1 19.5-46.4-14.5-155.8z" />
+            </svg>
+          </a>
+          <a href="https://discord.gg/SC78fv3ZRF" aria-label="Discord" style="color: var(--footer-text-link);" class="hover:opacity-80 transition-opacity duration-200">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0189 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1568 2.4189Z"/>
+            </svg>
+          </a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-12">
+          <div class="text-center md:text-left">
+            <h4 class="text-lg font-semibold mb-4" style="color: var(--footer-text-primary);">{t('footer.company')}</h4>
+            <ul class="space-y-2">
+              <li><a href="/about" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">{t('footer.about')}</a></li>
+              <li><a href="/projects" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">{t('header.projects')}</a></li>
+              <li><a href="/contact" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">{t('footer.contact')}</a></li>
+            </ul>
+          </div>
+          <div class="text-center md:text-left">
+            <h4 class="text-lg font-semibold mb-4" style="color: var(--footer-text-primary);">{t('footer.followUs')}</h4>
+            <ul class="space-y-2">
+              <li><a href="https://x.com/GudupaoSpark" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Twitter</a></li>
+              <li><a href="https://github.com/GudupaoSpark" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">GitHub</a></li>
+              <li><a href="https://www.youtube.com/@GudupaoSpark" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">YouTube</a></li>
+              <li><a href="https://space.bilibili.com/1016857888" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Bilibili</a></li>
+              <li><a href="https://qm.qq.com/q/B3vKejsGBi" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">QQ</a></li>
+              <li><a href="https://discord.gg/SC78fv3ZRF" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">Discord</a></li>
+            </ul>
+          </div>
+          <div class="text-center md:text-left">
+            <h4 class="text-lg font-semibold mb-4" style="color: var(--footer-text-primary);">{t('footer.contactInfo')}</h4>
+            <ul class="space-y-2">
+              <li><a href="mailto:official@gudupao.top" style="color: var(--footer-text-secondary);" class="hover:opacity-80 transition-opacity duration-200 text-base">official@gudupao.top</a></li>
+              <li style="color: var(--footer-text-secondary);" class="text-base">{t('footer.address')}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="mt-8 md:mt-0 flex justify-center md:justify-end">
+        <img src="/home/logo.png" alt="Gudupao Logo" class="h-16 md:h-20 w-auto">
+      </div>
+    </div>
+    <div class="pt-6 flex flex-col md:flex-row md:justify-between md:items-center" style="border-top: 1px solid var(--footer-border);">
+      <p style="color: var(--footer-text-copyright);" class="text-sm text-center md:text-left">
+        © {currentYear} Gudupao Spark Inc. All rights reserved.
+      </p>
+      <button id="language-toggle" class="flex items-center space-x-3 sm:space-x-2 mt-4 md:mt-0 mx-auto md:mx-0 px-4 py-3 sm:px-3 sm:py-2 rounded-full glass hover:bg-gray-200/70 dark:hover:bg-gray-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
+        <span id="current-language-flag" class="text-base sm:text-sm"></span>
+        <span id="current-language-name" class="text-base sm:text-sm">{t('footer.language')}</span>
+      </button>
+    </div>
+  </div>
+</footer>
