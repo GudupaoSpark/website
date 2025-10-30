@@ -134,6 +134,69 @@ const showFooter = Astro.props.showFooter !== false;
 	if ('scrollRestoration' in history) {
 		history.scrollRestoration = 'manual';
 	}
+
+	// 滑动到底部后禁止继续往下滑动
+	function preventScrollBeyondBottom() {
+		// 防止页面滚动到底部后继续往下滑动
+		function checkScrollPosition() {
+			const scrollPosition = window.scrollY;
+			const maxScrollPosition = document.documentElement.scrollHeight - window.innerHeight;
+			const tolerance = 5; // 容忍误差范围
+
+			// 如果滚动位置超过最大滚动位置，则强制设置到最大位置
+			if (scrollPosition > maxScrollPosition + tolerance) {
+				window.scrollTo({
+					top: maxScrollPosition,
+					behavior: 'smooth'
+				});
+				return false; // 阻止默认滚动行为
+			}
+			return true; // 允许正常滚动
+		}
+
+		// 监听滚动事件
+		window.addEventListener('scroll', checkScrollPosition, { passive: false });
+
+		// 监听触摸滚动事件（移动设备）
+		let startY = 0;
+		window.addEventListener('touchstart', (e) => {
+			startY = e.touches[0].clientY;
+		}, { passive: true });
+
+		window.addEventListener('touchmove', (e) => {
+			const currentY = e.touches[0].clientY;
+			const scrollPosition = window.scrollY;
+			const maxScrollPosition = document.documentElement.scrollHeight - window.innerHeight;
+
+			// 如果试图向下滚动且已经到底部，则阻止滚动
+			if (currentY > startY && scrollPosition >= maxScrollPosition) {
+				e.preventDefault();
+			}
+		}, { passive: false });
+
+		// 监听滚轮事件
+		window.addEventListener('wheel', (e) => {
+			const scrollPosition = window.scrollY;
+			const maxScrollPosition = document.documentElement.scrollHeight - window.innerHeight;
+			
+			// 如果试图向下滚动且已经到底部，则阻止滚动
+			if (e.deltaY > 0 && scrollPosition >= maxScrollPosition) {
+				e.preventDefault();
+			}
+		}, { passive: false });
+	}
+
+	// 页面加载完成后启用滚动限制
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', preventScrollBeyondBottom);
+	} else {
+		preventScrollBeyondBottom();
+	}
+
+	// 页面导航后重新启用滚动限制
+	document.addEventListener('astro:after-swap', () => {
+		setTimeout(preventScrollBeyondBottom, 100);
+	});
 </script>
 
 <style>
