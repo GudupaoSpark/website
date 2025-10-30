@@ -23,7 +23,7 @@ const showFooter = Astro.props.showFooter !== false;
 		<link rel="apple-touch-icon" href="/icon/icon.png" />
 		<meta name="generator" content={Astro.generator} />
 	<title>{pageTitle}</title>
-		<ClientRouter />
+		<ClientRouter transition:persist />
 		<!-- Apply theme immediately to prevent flash -->
 		<script is:inline>
 			(function() {
@@ -117,8 +117,8 @@ const showFooter = Astro.props.showFooter !== false;
 	}
 
 	document.addEventListener('astro:after-swap', () => {
-		// Scroll to top smoothly after navigation
-		window.scrollTo({ top: 0, behavior: 'smooth' });
+		// Scroll to top instantly after navigation for faster perceived performance
+		window.scrollTo({ top: 0 });
 	});
 
 	// Ensure all internal links use client-side navigation
@@ -223,19 +223,19 @@ const showFooter = Astro.props.showFooter !== false;
 
 	// 页面导航后重新启用滚动限制
 	document.addEventListener('astro:after-swap', () => {
-		setTimeout(preventScrollBeyondBottom, 100);
+		setTimeout(preventScrollBeyondBottom, 0);
 	});
 
 	// Listen for theme changes
 	window.addEventListener('storage', (e) => {
 		if (e.key === 'theme' || e.key === 'theme-mobile') {
-			setTimeout(reinitializeTheme, 100);
+			setTimeout(reinitializeTheme, 0);
 		}
 	});
 
 	// Re-initialize theme after page transitions
 	document.addEventListener('astro:after-swap', () => {
-		setTimeout(reinitializeTheme, 100);
+		setTimeout(reinitializeTheme, 0);
 	});
 </script>
 
@@ -249,51 +249,5 @@ const showFooter = Astro.props.showFooter !== false;
 
 	main {
 		position: relative;
-	}
-
-	/* View Transitions Animations */
-	@view-transition {
-		navigation: auto;
-	}
-
-	/* Prevent default fade, use custom slide animation */
-	::view-transition-old(root) {
-		animation: slide-out-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-
-	::view-transition-new(root) {
-		animation: slide-in-right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-
-	/* Slide animations */
-	@keyframes slide-out-left {
-		from {
-			transform: translateX(0);
-			opacity: 1;
-		}
-		to {
-			transform: translateX(-20px);
-			opacity: 0;
-		}
-	}
-
-	@keyframes slide-in-right {
-		from {
-			transform: translateX(20px);
-			opacity: 0;
-		}
-		to {
-			transform: translateX(0);
-			opacity: 1;
-		}
-	}
-
-	/* Keep header and footer in place during transitions */
-	::view-transition-old(header-bar),
-	::view-transition-new(header-bar),
-	::view-transition-old(footer-bar),
-	::view-transition-new(footer-bar) {
-		animation: none;
-		mix-blend-mode: normal;
 	}
 </style>
