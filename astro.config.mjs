@@ -16,9 +16,11 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-  prefetch: false,
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover'
+  },
   experimental: {
     clientPrerender: true
-  },
-  output: 'static'
+  }
 });
