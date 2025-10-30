@@ -2,14 +2,9 @@
 import { defineConfig } from 'astro/config';
 import { astroI18nPlugin } from '@gudupao/astro-i18n';
 import tailwindcss from '@tailwindcss/vite';
-import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'server',
-  adapter: node({
-    mode: 'standalone'
-  }),
   integrations: [
     astroI18nPlugin({
       localesDir: './locales',
