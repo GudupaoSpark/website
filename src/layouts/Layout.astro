@@ -81,13 +81,13 @@ const showFooter = Astro.props.showFooter !== false;
 		</script>
 	</head>
 	<body class="bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 flex flex-col min-h-screen">
-		<Header />
+		<Header lang={lang} />
 		<main>
 			<slot />
 		</main>
 		<ThemeModal />
 		<LanguageModal />
-		{showFooter && <Footer />}
+		{showFooter && <Footer lang={lang} />}
 	</body>
 </html>
 
