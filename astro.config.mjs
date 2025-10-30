@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
+  output: 'server',
   integrations: [
     astroI18nPlugin({
       localesDir: './locales',
@@ -22,5 +23,8 @@ export default defineConfig({
   },
   experimental: {
     clientPrerender: true
+  },
+  build: {
+    inlineStylesheets: 'auto'
   }
 });
