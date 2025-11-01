@@ -19,44 +19,67 @@ const t = getTranslator(lang);
 
     <!-- Language Options -->
     <div class="grid grid-cols-2 gap-4 mb-6">
+      <style>
+        @font-face {
+          font-family: 'Custom Flags';
+          src: url('/flags.woff2') format('woff2');
+          font-display: swap;
+        }
+        
+        .custom-flag {
+          font-family: 'Custom Flags', 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Android Emoji', sans-serif;
+          font-size: 1.5rem;
+          display: inline-block;
+          width: 1.5rem;
+          height: 1.5rem;
+          line-height: 1.5rem;
+          text-align: center;
+          filter: brightness(1);
+          transition: filter 0.2s ease;
+        }
+        
+        .dark .custom-flag {
+          filter: brightness(1.2);
+        }
+      </style>
       <button id="lang-en" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
-        <span class="text-xl flag-emoji">🇺🇸</span>
-        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.en')}</span>
+        <span class="custom-flag">🇺🇸</span>
+        <span class="font-roboto font-medium transition-colors duration-300">English</span>
       </button>
 
       <button id="lang-es" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
-        <span class="text-xl flag-emoji">🇪🇸</span>
-        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.es')}</span>
+        <span class="custom-flag">🇪🇸</span>
+        <span class="font-roboto font-medium transition-colors duration-300">Español</span>
       </button>
 
       <button id="lang-fr" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
-        <span class="text-xl flag-emoji">🇫🇷</span>
-        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.fr')}</span>
+        <span class="custom-flag">🇫🇷</span>
+        <span class="font-roboto font-medium transition-colors duration-300">Français</span>
       </button>
 
       <button id="lang-ja" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
-        <span class="text-xl flag-emoji">🇯🇵</span>
-        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.ja')}</span>
+        <span class="custom-flag">🇯🇵</span>
+        <span class="font-roboto font-medium transition-colors duration-300">日本語</span>
       </button>
 
       <button id="lang-kr" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
-        <span class="text-xl flag-emoji">🇰🇷</span>
-        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.kr')}</span>
+        <span class="custom-flag">🇰🇷</span>
+        <span class="font-roboto font-medium transition-colors duration-300">한국어</span>
       </button>
 
       <button id="lang-zh-hans" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
-        <span class="text-xl flag-emoji">🇨🇳</span>
-        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.zh-hans')}</span>
+        <span class="custom-flag">🇨🇳</span>
+        <span class="font-roboto font-medium transition-colors duration-300">简体中文</span>
       </button>
 
       <button id="lang-zh-hant" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
-        <span class="text-xl flag-emoji">🇭🇰</span>
-        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.zh-hant')}</span>
+        <span class="custom-flag">🇭🇰</span>
+        <span class="font-roboto font-medium transition-colors duration-300">繁體中文</span>
       </button>
 
       <button id="lang-th" class="language-btn flex items-center space-x-3 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20" style="color: var(--modal-text);" onmouseover="this.style.color='black'" onmouseout="this.style.color='var(--modal-text)'">
-        <span class="text-xl flag-emoji">🇹🇭</span>
-        <span class="font-roboto font-medium transition-colors duration-300">{t('languages.th')}</span>
+        <span class="custom-flag">🇹🇭</span>
+        <span class="font-roboto font-medium transition-colors duration-300">ไทย</span>
       </button>
     </div>
   </div>
@@ -164,61 +187,9 @@ const t = getTranslator(lang);
     }
   }
 
-  // Optimize twemoji loading
-  let twemojiLoadPromise: Promise<void> | null = null;
-
-  function loadTwemoji(): Promise<void> {
-    if (twemojiLoadPromise) return twemojiLoadPromise;
-
-    if ((window as any).twemojiLoaded) {
-      return Promise.resolve();
-    }
-
-    twemojiLoadPromise = new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = 'https://unpkg.com/twemoji@14.0.2/dist/twemoji.min.js';
-      script.async = true;
-      script.onload = () => {
-        (window as any).twemojiLoaded = true;
-        resolve();
-      };
-      document.head.appendChild(script);
-    });
-
-    return twemojiLoadPromise;
-  }
-
-  // Function to apply modal twemoji styles - optimized
-  function applyModalTwemojiStyles() {
-    if (document.getElementById('twemoji-modal-styles')) return;
-
-    const style = document.createElement('style');
-    style.id = 'twemoji-modal-styles';
-    style.textContent = `.twemoji-flag{width:1.25rem!important;height:1.25rem!important}`;
-    document.head.appendChild(style);
-  }
-
-  // Function to parse modal twemoji - optimized
-  async function parseModalTwemoji() {
-    await loadTwemoji();
-
-    if (typeof (window as any).twemoji !== 'undefined') {
-      const modal = document.getElementById('language-modal');
-      if (modal) {
-        (window as any).twemoji.parse(modal, { className: 'twemoji-flag' });
-        applyModalTwemojiStyles();
-      }
-    }
-  }
-
   // Initialize language modal - optimized
   function initLanguageModal() {
     new LanguageModal();
-
-    // Lazy load twemoji only when needed
-    requestIdleCallback(() => {
-      parseModalTwemoji();
-    }, { timeout: 2000 });
   }
 
   // Run on initial page load

@@ -26,16 +26,6 @@
     "system": "システム",
     "dark": "ダーク"
   },
-  "languages": {
-    "en": "English",
-    "es": "Español",
-    "fr": "Français",
-    "ja": "日本語",
-    "kr": "한국어",
-    "zh-hans": "简体中文",
-    "zh-hant": "繁體中文",
-    "th": "ไทย"
-  },
   "header": {
     "about": "会社概要",
     "projects": "プロジェクト",

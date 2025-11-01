@@ -26,16 +26,6 @@
     "system": "系统",
     "dark": "深色"
   },
-  "languages": {
-    "en": "English",
-    "es": "Español",
-    "fr": "Français",
-    "ja": "日本語",
-    "kr": "한국어",
-    "zh-hans": "简体中文",
-    "zh-hant": "繁體中文",
-    "th": "ไทย"
-  },
   "header": {
     "about": "关于",
     "projects": "项目",

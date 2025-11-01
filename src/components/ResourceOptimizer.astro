@@ -79,9 +79,7 @@
 
     // Prefetch critical DNS
     prefetchDNS() {
-      const criticalDomains = [
-        'https://unpkg.com', // For twemoji
-      ];
+      const criticalDomains: string[] = [];
 
       criticalDomains.forEach(domain => {
         const link = document.createElement('link');
