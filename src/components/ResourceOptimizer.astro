@@ -122,12 +122,17 @@
   }
 
   // Initialize resource optimizer
+  let resourceOptimizerInitialized = false;
+
   function initResourceOptimizer() {
+    if (resourceOptimizerInitialized) return;
+    resourceOptimizerInitialized = true;
+
     new ResourceOptimizer();
     optimizeImages();
   }
 
-  // Run on initial page load
+  // Run on initial page load only
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initResourceOptimizer);
   } else {

@@ -192,5 +192,8 @@
   }
 
   // Re-initialize after page transitions
-  document.addEventListener('astro:after-swap', initSmartPrefetch);
+  document.addEventListener('astro:after-swap', () => {
+    // Small delay to ensure DOM is ready
+    setTimeout(initSmartPrefetch, 50);
+  });
 </script>

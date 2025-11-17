@@ -169,8 +169,18 @@ const showFooter = Astro.props.showFooter !== false;
 		history.scrollRestoration = 'manual';
 	}
 
-	// 滑动到底部后禁止继续往下滑动
+	// 滑动到底部后禁止继续往下滑动 - 优化版本
+	let scrollHandlerAttached = false;
+	let touchStartHandlerAttached = false;
+	let touchMoveHandlerAttached = false;
+	let wheelHandlerAttached = false;
+
 	function preventScrollBeyondBottom() {
+		// 如果已经添加了监听器，则不再重复添加
+		if (scrollHandlerAttached && touchStartHandlerAttached && touchMoveHandlerAttached && wheelHandlerAttached) {
+			return;
+		}
+
 		// 防止页面滚动到底部后继续往下滑动
 		function checkScrollPosition() {
 			const scrollPosition = window.scrollY;
@@ -188,36 +198,59 @@ const showFooter = Astro.props.showFooter !== false;
 			return true; // 允许正常滚动
 		}
 
-		// 监听滚动事件
-		window.addEventListener('scroll', checkScrollPosition, { passive: false });
+		// 使用节流优化滚动事件处理
+		let scrollTimeout: number | null = null;
+		function throttledScrollHandler() {
+			if (!scrollTimeout) {
+				scrollTimeout = window.setTimeout(() => {
+					checkScrollPosition();
+					scrollTimeout = null;
+				}, 16); // ~60fps
+			}
+		}
+
+		// 监听滚动事件 - 只添加一次
+		if (!scrollHandlerAttached) {
+			window.addEventListener('scroll', throttledScrollHandler, { passive: true });
+			scrollHandlerAttached = true;
+		}
 
 		// 监听触摸滚动事件（移动设备）
 		let startY = 0;
-		window.addEventListener('touchstart', (e) => {
-			startY = e.touches[0].clientY;
-		}, { passive: true });
+		if (!touchStartHandlerAttached) {
+			window.addEventListener('touchstart', (e) => {
+				startY = e.touches[0].clientY;
+			}, { passive: true });
+			touchStartHandlerAttached = true;
+		}
 
-		window.addEventListener('touchmove', (e) => {
-			const currentY = e.touches[0].clientY;
-			const scrollPosition = window.scrollY;
-			const maxScrollPosition = document.documentElement.scrollHeight - window.innerHeight;
+		if (!touchMoveHandlerAttached) {
+			window.addEventListener('touchmove', (e) => {
+				const currentY = e.touches[0].clientY;
+				const scrollPosition = window.scrollY;
+				const maxScrollPosition = document.documentElement.scrollHeight - window.innerHeight;
 
-			// 如果试图向下滚动且已经到底部，则阻止滚动
-			if (currentY > startY && scrollPosition >= maxScrollPosition) {
-				e.preventDefault();
-			}
-		}, { passive: false });
+				// 如果试图向下滚动且已经到底部，则阻止滚动
+				if (currentY < startY && scrollPosition >= maxScrollPosition) {
+					e.preventDefault();
+				}
+			}, { passive: false });
+			touchMoveHandlerAttached = true;
+		}
 
-		// 监听滚轮事件
-		window.addEventListener('wheel', (e) => {
-			const scrollPosition = window.scrollY;
-			const maxScrollPosition = document.documentElement.scrollHeight - window.innerHeight;
-			
-			// 如果试图向下滚动且已经到底部，则阻止滚动
-			if (e.deltaY > 0 && scrollPosition >= maxScrollPosition) {
-				e.preventDefault();
-			}
-		}, { passive: false });
+		// 监听滚轮事件 - 只添加一次
+		if (!wheelHandlerAttached) {
+			window.addEventListener('wheel', (e) => {
+				const scrollPosition = window.scrollY;
+				const maxScrollPosition = document.documentElement.scrollHeight - window.innerHeight;
+
+				// 如果试图向下滚动且已经到底部，则阻止滚动
+				if (e.deltaY > 0 && scrollPosition >= maxScrollPosition) {
+					e.preventDefault();
+				}
+			}, { passive: false });
+			wheelHandlerAttached = true;
+		}
 	}
 
 	// 页面加载完成后启用滚动限制
