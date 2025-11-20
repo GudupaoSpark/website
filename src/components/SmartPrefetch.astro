@@ -146,23 +146,8 @@
     }
 
     prefetchCriticalResources(url: string) {
-      // Prefetch known critical resources based on route patterns
-      const criticalAssets: Record<string, string[]> = {
-        '/about': [],
-        '/projects': [],
-        '/explore': ['/explore/music/background.mp3']
-      };
-
-      Object.entries(criticalAssets).forEach(([route, assets]) => {
-        if (url.includes(route)) {
-          assets.forEach(asset => {
-            const link = document.createElement('link');
-            link.rel = 'prefetch';
-            link.href = asset;
-            document.head.appendChild(link);
-          });
-        }
-      });
+      // Only prefetch page HTML, not media resources to prevent duplicate loading
+      // Removed media asset prefetching to optimize resource loading
     }
 
     cleanup() {

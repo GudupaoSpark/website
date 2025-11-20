@@ -21,9 +21,6 @@
 
       // Prefetch critical DNS
       this.prefetchDNS();
-
-      // Setup service worker for caching (if supported)
-      this.setupServiceWorker();
     }
 
     // Optimize font loading with font-display and preload
@@ -87,18 +84,6 @@
         link.href = domain;
         document.head.appendChild(link);
       });
-    }
-
-    // Setup service worker for advanced caching
-    setupServiceWorker() {
-      if ('serviceWorker' in navigator) {
-        // Only register in production
-        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-          navigator.serviceWorker.register('/sw.js').catch(() => {
-            // Service worker not available, silently fail
-          });
-        }
-      }
     }
   }
 
