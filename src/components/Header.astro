@@ -275,13 +275,64 @@ const t = getTranslator(lang);
     // Run on initial page load
     setupHeader();
 
-    // Update theme after page transitions (but don't re-initialize everything)
+    // Update theme and ensure mobile menu works after page transitions
     document.addEventListener('astro:after-swap', () => {
-      // Only update theme if needed, don't re-run full setup
+      // Update theme if needed
       if (window.innerWidth < 768) {
         const savedTheme = localStorage.getItem('theme-mobile') || 'light';
         applyTheme(savedTheme);
       }
+  
+      // Ensure mobile menu event listeners are attached after page transition
+      setTimeout(() => {
+        const hamburgerMenu = document.getElementById('hamburger-menu') as HTMLButtonElement;
+        const mobileMenu = document.getElementById('mobile-menu') as HTMLDivElement;
+        const closeMenu = document.getElementById('close-menu') as HTMLButtonElement;
+  
+        if (hamburgerMenu && mobileMenu && !hamburgerMenu.hasAttribute('data-events-bound')) {
+          hamburgerMenu.setAttribute('data-events-bound', 'true');
+  
+          hamburgerMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('show');
+            mobileMenu.classList.toggle('hidden');
+  
+            // Prevent body scroll when mobile menu is open
+            if (mobileMenu.classList.contains('show')) {
+              document.body.style.overflow = 'hidden';
+            } else {
+              document.body.style.overflow = '';
+            }
+          });
+  
+          // Close menu when clicking close button
+          if (closeMenu) {
+            closeMenu.addEventListener('click', () => {
+              mobileMenu.classList.remove('show');
+              mobileMenu.classList.add('hidden');
+              document.body.style.overflow = '';
+            });
+          }
+  
+          // Close menu when clicking outside (but not on links)
+          mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+              mobileMenu.classList.remove('show');
+              mobileMenu.classList.add('hidden');
+              document.body.style.overflow = '';
+            }
+          });
+  
+          // Close mobile menu when clicking on navigation links
+          const mobileLinks = mobileMenu.querySelectorAll('a');
+          mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+              mobileMenu.classList.remove('show');
+              mobileMenu.classList.add('hidden');
+              document.body.style.overflow = '';
+            });
+          });
+        }
+      }, 100); // Small delay to ensure DOM is ready
     });
   })();
 </script>
