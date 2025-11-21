@@ -163,129 +163,125 @@ const t = getTranslator(lang);
 
 <script>
   // Prevent duplicate initialization
-  declare global {
-    interface Window {
-      headerInitialized?: boolean;
+  (function() {
+    if ((window as any).headerInitialized) {
+      return;
     }
-  }
+    (window as any).headerInitialized = true;
 
-  if (window.headerInitialized) {
-    return;
-  }
-  window.headerInitialized = true;
-
-  function applyTheme(theme: string) {
-    const html = document.documentElement;
-    if (theme === 'dark') {
-      html.classList.add('dark');
-    } else if (theme === 'light') {
-      html.classList.remove('dark');
-    } else {
-      // System theme
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    function applyTheme(theme: string) {
+      const html = document.documentElement;
+      if (theme === 'dark') {
         html.classList.add('dark');
-      } else {
+      } else if (theme === 'light') {
         html.classList.remove('dark');
-      }
-    }
-  }
-
-  function setupHeader() {
-    // Apply saved theme based on device
-    if (window.innerWidth < 768) {
-      // Mobile: use mobile theme
-      const savedTheme = localStorage.getItem('theme-mobile') || 'light';
-      applyTheme(savedTheme);
-      console.log('Mobile theme applied:', savedTheme);
-    }
-    // Desktop theme applied by ThemeModal
-
-    // Theme Toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
-      themeToggle.addEventListener('click', () => {
-        if (window.innerWidth < 768) {
-          // Mobile: simple toggle between light and dark
-          const currentTheme = localStorage.getItem('theme-mobile') || 'light';
-          const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-          localStorage.setItem('theme-mobile', newTheme);
-          applyTheme(newTheme);
-          console.log('Theme toggled to:', newTheme);
-        }
-        // Desktop: handled by modal
-      });
-    }
-
-    // Mobile menu toggle
-    const hamburgerMenu = document.getElementById('hamburger-menu') as HTMLButtonElement;
-    const mobileMenu = document.getElementById('mobile-menu') as HTMLDivElement;
-    const closeMenu = document.getElementById('close-menu') as HTMLButtonElement;
-    const header = document.querySelector('header') as HTMLElement;
-
-    if (hamburgerMenu && mobileMenu) {
-      hamburgerMenu.addEventListener('click', () => {
-        mobileMenu.classList.toggle('show');
-        mobileMenu.classList.toggle('hidden');
-
-        // Prevent body scroll when mobile menu is open
-        if (mobileMenu.classList.contains('show')) {
-          document.body.style.overflow = 'hidden';
-        } else {
-          document.body.style.overflow = '';
-        }
-      });
-
-      // Close menu when clicking close button
-      if (closeMenu) {
-        closeMenu.addEventListener('click', () => {
-          mobileMenu.classList.remove('show');
-          mobileMenu.classList.add('hidden');
-          document.body.style.overflow = '';
-        });
-      }
-
-      // Close menu when clicking outside (but not on links)
-      mobileMenu.addEventListener('click', (e) => {
-        if (e.target === mobileMenu) {
-          mobileMenu.classList.remove('show');
-          mobileMenu.classList.add('hidden');
-          document.body.style.overflow = '';
-        }
-      });
-
-      // Close mobile menu when clicking on navigation links
-      const mobileLinks = mobileMenu.querySelectorAll('a');
-      mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          mobileMenu.classList.remove('show');
-          mobileMenu.classList.add('hidden');
-          document.body.style.overflow = '';
-        });
-      });
-    }
-
-    // Header background on scroll
-    function handleScroll() {
-      if (window.scrollY > 50) {
-        header?.classList.add('scrolled');
       } else {
-        header?.classList.remove('scrolled');
+        // System theme
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          html.classList.add('dark');
+        } else {
+          html.classList.remove('dark');
+        }
       }
     }
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check initial state
-  }
+    function setupHeader() {
+      // Apply saved theme based on device
+      if (window.innerWidth < 768) {
+        // Mobile: use mobile theme
+        const savedTheme = localStorage.getItem('theme-mobile') || 'light';
+        applyTheme(savedTheme);
+        console.log('Mobile theme applied:', savedTheme);
+      }
+      // Desktop theme applied by ThemeModal
 
-  // Run on initial page load
-  setupHeader();
+      // Theme Toggle
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          if (window.innerWidth < 768) {
+            // Mobile: simple toggle between light and dark
+            const currentTheme = localStorage.getItem('theme-mobile') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme-mobile', newTheme);
+            applyTheme(newTheme);
+            console.log('Theme toggled to:', newTheme);
+          }
+          // Desktop: handled by modal
+        });
+      }
 
-  // Update theme after page transitions (but don't re-initialize everything)
-  document.addEventListener('astro:after-swap', () => {
-    // Only update theme if needed, don't re-run full setup
-    if (window.innerWidth < 768) {
-      const savedTheme = localStorage.getItem('theme-mobile') || 'light';
-      applyTheme(savedTheme);
+      // Mobile menu toggle
+      const hamburgerMenu = document.getElementById('hamburger-menu') as HTMLButtonElement;
+      const mobileMenu = document.getElementById('mobile-menu') as HTMLDivElement;
+      const closeMenu = document.getElementById('close-menu') as HTMLButtonElement;
+      const header = document.querySelector('header') as HTMLElement;
+
+      if (hamburgerMenu && mobileMenu) {
+        hamburgerMenu.addEventListener('click', () => {
+          mobileMenu.classList.toggle('show');
+          mobileMenu.classList.toggle('hidden');
+
+          // Prevent body scroll when mobile menu is open
+          if (mobileMenu.classList.contains('show')) {
+            document.body.style.overflow = 'hidden';
+          } else {
+            document.body.style.overflow = '';
+          }
+        });
+
+        // Close menu when clicking close button
+        if (closeMenu) {
+          closeMenu.addEventListener('click', () => {
+            mobileMenu.classList.remove('show');
+            mobileMenu.classList.add('hidden');
+            document.body.style.overflow = '';
+          });
+        }
+
+        // Close menu when clicking outside (but not on links)
+        mobileMenu.addEventListener('click', (e) => {
+          if (e.target === mobileMenu) {
+            mobileMenu.classList.remove('show');
+            mobileMenu.classList.add('hidden');
+            document.body.style.overflow = '';
+          }
+        });
+
+        // Close mobile menu when clicking on navigation links
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            mobileMenu.classList.remove('show');
+            mobileMenu.classList.add('hidden');
+            document.body.style.overflow = '';
+          });
+        });
+      }
+
+      // Header background on scroll
+      function handleScroll() {
+        if (window.scrollY > 50) {
+          header?.classList.add('scrolled');
+        } else {
+          header?.classList.remove('scrolled');
+        }
+      }
+
+      window.addEventListener('scroll', handleScroll);
+      handleScroll(); // Check initial state
     }
-  });
+
+    // Run on initial page load
+    setupHeader();
+
+    // Update theme after page transitions (but don't re-initialize everything)
+    document.addEventListener('astro:after-swap', () => {
+      // Only update theme if needed, don't re-run full setup
+      if (window.innerWidth < 768) {
+        const savedTheme = localStorage.getItem('theme-mobile') || 'light';
+        applyTheme(savedTheme);
+      }
+    });
+  })();
 </script>
