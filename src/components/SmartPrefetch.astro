@@ -120,6 +120,7 @@
     }
 
     prefetchUrl(url: string) {
+      const start = performance.now();
       // Mark as prefetched
       this.prefetchedUrls.add(url);
 
@@ -138,6 +139,9 @@
 
       // Optional: prefetch critical resources for the page
       this.prefetchCriticalResources(url);
+
+      const duration = performance.now() - start;
+      console.log(`Prefetch ${url}: ${duration.toFixed(2)}ms`);
     }
 
     isHighPriorityRoute(url: string): boolean {

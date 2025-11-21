@@ -155,12 +155,16 @@ const showFooter = Astro.props.showFooter !== false;
 	}
 
 	document.addEventListener('astro:after-swap', () => {
+		const start = performance.now();
 		// Scroll to top smoothly after navigation
 		window.scrollTo({ top: 0, behavior: 'smooth' });
+		const duration = performance.now() - start;
+		console.log(`View transition scroll: ${duration.toFixed(2)}ms`);
 	});
 
 	// Ensure all internal links use client-side navigation
 	document.addEventListener('astro:page-load', () => {
+		console.log('Page load completed');
 		// Get all links on the page
 		const links = document.querySelectorAll('a[href^="/"]');
 		links.forEach(link => {
@@ -170,6 +174,10 @@ const showFooter = Astro.props.showFooter !== false;
 				link.removeAttribute('data-astro-reload');
 			}
 		});
+	});
+
+	document.addEventListener('astro:before-preparation', () => {
+		console.log('Navigation started');
 	});
 
 	// Handle language-prefixed links for SPA navigation

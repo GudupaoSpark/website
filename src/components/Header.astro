@@ -55,7 +55,7 @@ const t = getTranslator(lang);
 </header>
 
 <!-- Mobile Navigation Menu -->
-<div id="mobile-menu" class="md:hidden fixed top-0 left-0 w-full h-full bg-black/50 backdrop-blur-sm z-50 hidden">
+<div id="mobile-menu" class="md:hidden fixed top-0 left-0 w-full h-full bg-black/50 z-50 hidden">
   <div class="flex flex-col items-center justify-center h-full space-y-8 relative">
     <button id="close-menu" class="absolute top-8 right-8 w-10 h-10 flex items-center justify-center rounded-lg glass hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark close-menu-icon">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,8 +72,6 @@ const t = getTranslator(lang);
   /* Glassmorphism effect */
   .glass {
     background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     box-shadow: 0 8px 32px 0 var(--glass-shadow);
   }
@@ -129,8 +127,6 @@ const t = getTranslator(lang);
    /* Scrolled header styles */
    header.scrolled {
      background: var(--glass-bg);
-     backdrop-filter: blur(10px);
-     -webkit-backdrop-filter: blur(10px);
      border-bottom: 1px solid var(--glass-border);
      box-shadow: 0 8px 32px 0 var(--glass-shadow);
    }
@@ -261,10 +257,15 @@ const t = getTranslator(lang);
 
       // Header background on scroll
       function handleScroll() {
+        const start = performance.now();
         if (window.scrollY > 50) {
           header?.classList.add('scrolled');
         } else {
           header?.classList.remove('scrolled');
+        }
+        const duration = performance.now() - start;
+        if (duration > 1) { // Log if takes more than 1ms
+          console.log(`Header scroll handler: ${duration.toFixed(2)}ms`);
         }
       }
 
