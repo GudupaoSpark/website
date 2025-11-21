@@ -30,7 +30,33 @@ const showFooter = Astro.props.showFooter !== false;
 		<!-- Preload critical fonts -->
 		<link rel="preload" href="/fonts/ZiKuJiangHuGuFengTi-2.ttf" as="font" type="font/ttf" crossorigin>
 		<link rel="preload" href="/fonts/Roboto-Bold.woff2" as="font" type="font/woff2" crossorigin>
+		<link rel="preload" href="/flags.woff2" as="font" type="font/woff2" crossorigin>
 		<meta name="generator" content={Astro.generator} />
+
+		<!-- Pre-declare fonts to avoid FOUT -->
+		<style>
+			@font-face {
+				font-family: 'Custom Flags';
+				src: url('/flags.woff2') format('woff2');
+				font-display: swap;
+			}
+
+			.custom-flag {
+				font-family: 'Custom Flags', 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Android Emoji', sans-serif;
+				font-size: 1.25rem;
+				display: inline-block;
+				width: 1.25rem;
+				height: 1.25rem;
+				line-height: 1.25rem;
+				text-align: center;
+				filter: brightness(1);
+				transition: filter 0.2s ease;
+			}
+
+			.dark .custom-flag {
+				filter: brightness(1.2);
+			}
+		</style>
 	<title>{pageTitle}</title>
 		<ClientRouter />
 		<!-- Apply theme immediately to prevent flash -->
