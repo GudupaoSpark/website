@@ -162,6 +162,18 @@ const t = getTranslator(lang);
  </style>
 
 <script>
+  // Prevent duplicate initialization
+  declare global {
+    interface Window {
+      headerInitialized?: boolean;
+    }
+  }
+
+  if (window.headerInitialized) {
+    return;
+  }
+  window.headerInitialized = true;
+
   function applyTheme(theme: string) {
     const html = document.documentElement;
     if (theme === 'dark') {
@@ -191,13 +203,7 @@ const t = getTranslator(lang);
     // Theme Toggle
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
-      // Remove existing event listeners to prevent duplicates
-      const newThemeToggle = themeToggle.cloneNode(true) as HTMLElement;
-      if (themeToggle.parentNode) {
-        themeToggle.parentNode.replaceChild(newThemeToggle, themeToggle);
-      }
-      
-      newThemeToggle.addEventListener('click', () => {
+      themeToggle.addEventListener('click', () => {
         if (window.innerWidth < 768) {
           // Mobile: simple toggle between light and dark
           const currentTheme = localStorage.getItem('theme-mobile') || 'light';
@@ -220,7 +226,7 @@ const t = getTranslator(lang);
       hamburgerMenu.addEventListener('click', () => {
         mobileMenu.classList.toggle('show');
         mobileMenu.classList.toggle('hidden');
-        
+
         // Prevent body scroll when mobile menu is open
         if (mobileMenu.classList.contains('show')) {
           document.body.style.overflow = 'hidden';
@@ -274,6 +280,12 @@ const t = getTranslator(lang);
   // Run on initial page load
   setupHeader();
 
-  // Re-run after page transitions
-  document.addEventListener('astro:after-swap', setupHeader);
+  // Update theme after page transitions (but don't re-initialize everything)
+  document.addEventListener('astro:after-swap', () => {
+    // Only update theme if needed, don't re-run full setup
+    if (window.innerWidth < 768) {
+      const savedTheme = localStorage.getItem('theme-mobile') || 'light';
+      applyTheme(savedTheme);
+    }
+  });
 </script>

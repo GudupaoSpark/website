@@ -93,6 +93,18 @@ const t = getTranslator(lang);
 </footer>
 
 <script>
+  // Prevent duplicate initialization
+  declare global {
+    interface Window {
+      footerInitialized?: boolean;
+    }
+  }
+
+  if (window.footerInitialized) {
+    return;
+  }
+  window.footerInitialized = true;
+
   function updateFooterLogo() {
     const logo = document.querySelector('footer img[alt="Gudupao Logo"]') as HTMLImageElement;
     if (logo) {
@@ -177,4 +189,7 @@ const t = getTranslator(lang);
     }
   `;
   document.head.appendChild(style);
+
+  // Update language display after page transitions
+  document.addEventListener('astro:after-swap', updateCurrentLanguageDisplay);
 </script>

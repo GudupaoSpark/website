@@ -194,12 +194,14 @@
     }
   }
 
-  // Run on initial page load
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPerformanceMonitor);
-  } else {
-    initPerformanceMonitor();
-  }
+  // Delay initialization to avoid blocking initial render
+  setTimeout(() => {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPerformanceMonitor);
+    } else {
+      initPerformanceMonitor();
+    }
+  }, 100); // Small delay to prioritize initial render
 </script>
 
 <style>
