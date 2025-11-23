@@ -10,6 +10,10 @@ import PerformanceMonitor from '../components/PerformanceMonitor.astro';
 import { getTranslator } from '@gudupao/astro-i18n';
 import { ClientRouter } from 'astro:transitions';
 const lang = Astro.params.lang || 'en';
+import icon from '../assets/icon/icon.png';
+import ZiKuJiangHuGuFengTi from '../assets/fonts/ZiKuJiangHuGuFengTi-2.ttf';
+import roboto from '../assets/fonts/Roboto-Bold.woff2';
+import flags from '../assets/flags.woff2';
 const t = getTranslator(lang);
 const pageTitle = Astro.props.title || t('layout.title');
 const showFooter = Astro.props.showFooter !== false;
@@ -25,20 +29,20 @@ const showFooter = Astro.props.showFooter !== false;
 		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 		<meta http-equiv="Pragma" content="no-cache" />
 		<meta http-equiv="Expires" content="0" />
-		<link rel="icon" type="image/png" href="/icon/icon.png" sizes="32x32" />
-		<link rel="icon" type="image/png" href="/icon/icon.png" sizes="16x16" />
-		<link rel="apple-touch-icon" href="/icon/icon.png" />
+		<link rel="icon" type="image/png" href={icon.src} sizes="32x32" />
+		<link rel="icon" type="image/png" href={icon.src} sizes="16x16" />
+		<link rel="apple-touch-icon" href={icon.src} />
 		<!-- Preload critical fonts -->
-		<link rel="preload" href="/fonts/ZiKuJiangHuGuFengTi-2.ttf" as="font" type="font/ttf" crossorigin>
-		<link rel="preload" href="/fonts/Roboto-Bold.woff2" as="font" type="font/woff2" crossorigin>
-		<link rel="preload" href="/flags.woff2" as="font" type="font/woff2" crossorigin>
+		<link rel="preload" href={ZiKuJiangHuGuFengTi} as="font" type="font/ttf" crossorigin>
+		<link rel="preload" href={roboto} as="font" type="font/woff2" crossorigin>
+		<link rel="preload" href={flags} as="font" type="font/woff2" crossorigin>
 		<meta name="generator" content={Astro.generator} />
 
 		<!-- Pre-declare fonts to avoid FOUT -->
 		<style>
 			@font-face {
 				font-family: 'Custom Flags';
-				src: url('/flags.woff2') format('woff2');
+				src: url('../assets/flags.woff2') format('woff2');
 				font-display: swap;
 			}
 

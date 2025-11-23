@@ -1,6 +1,10 @@
 ---
 // Header component for the top navigation bar
 import { getTranslator } from '@gudupao/astro-i18n';
+import logo from '../assets/home/logo.png';
+import logoDark from '../assets/home/logo-dark.png';
+import logoMobile from '../assets/home/logo-mobile.png';
+import logoMobileDark from '../assets/home/logo-mobile-dark.png';
 const { lang } = Astro.props;
 const t = getTranslator(lang);
 ---
@@ -16,8 +20,8 @@ const t = getTranslator(lang);
     </button>
     <!-- Desktop Logo -->
     <a href={`/${lang || 'en'}`} class="hidden md:flex items-center justify-center">
-      <img src="/home/logo.png" alt="Logo" class="w-40 h-24 object-contain logo-light" draggable="false" oncontextmenu="return false;" />
-      <img src="/home/logo-dark.png" alt="Logo" class="w-40 h-24 object-contain logo-dark" draggable="false" oncontextmenu="return false;" />
+      <img src={logo.src} alt="Logo" class="w-40 h-24 object-contain logo-light" draggable="false" oncontextmenu="return false;" />
+      <img src={logoDark.src} alt="Logo" class="w-40 h-24 object-contain logo-dark" draggable="false" oncontextmenu="return false;" />
     </a>
   </div>
 
@@ -25,8 +29,8 @@ const t = getTranslator(lang);
   <div class="flex-1 flex justify-center">
     <!-- Mobile Logo -->
     <a href={`/${lang || 'en'}`} class="md:hidden flex items-center justify-center">
-      <img src="/home/logo-mobile.png" alt="Logo" class="w-32 h-16 object-contain logo-light" draggable="false" oncontextmenu="return false;" />
-      <img src="/home/logo-mobile-dark.png" alt="Logo" class="w-32 h-16 object-contain logo-dark" draggable="false" oncontextmenu="return false;" />
+      <img src={logoMobile.src} alt="Logo" class="w-32 h-16 object-contain logo-light" draggable="false" oncontextmenu="return false;" />
+      <img src={logoMobileDark.src} alt="Logo" class="w-32 h-16 object-contain logo-dark" draggable="false" oncontextmenu="return false;" />
     </a>
     <!-- Desktop Navigation -->
     <nav class="hidden md:flex items-center justify-center px-12 py-3 rounded-full glass">

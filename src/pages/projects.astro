@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { getTranslator } from '@gudupao/astro-i18n';
-import projectsData from '../../public/projects.json';
+import projectsData from '../../src/assets/projects.json';
 const lang = Astro.params.lang || 'en';
 const t = getTranslator(lang);
 
@@ -193,13 +193,6 @@ const projects = projectsData;
 </script>
 
 <style>
-	@font-face {
-		font-family: 'ZiKuJiangHuGuFengTi';
-		src: url('/fonts/ZiKuJiangHuGuFengTi-2.ttf') format('truetype');
-		font-weight: normal;
-		font-style: normal;
-	}
-
 	#projects {
 		min-height: 100vh;
 		padding: 120px 20px 80px;

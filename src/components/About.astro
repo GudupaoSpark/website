@@ -7,6 +7,14 @@ const t = getTranslator(lang);
 const translations = await import(`../../locales/${lang}.json`);
 const owners = translations.default?.about?.members?.owners || [];
 const members = translations.default?.about?.members?.members || [];
+
+// Import avatars
+const avatarModules = import.meta.glob('../assets/about/**/*.jpg', { eager: true });
+const avatars: Record<string, string> = {};
+for (const path in avatarModules) {
+  const key = path.replace('../assets', '/assets');
+  avatars[key] = (avatarModules[path] as { default: { src: string } }).default.src;
+}
 ---
 
 <section id="about">
@@ -63,7 +71,7 @@ const members = translations.default?.about?.members?.members || [];
 					{owners.map((member: any) => (
 						<div class="member-card">
 							<div class="member-avatar">
-								<img src={member.avatar} alt={member.name} />
+								<img src={avatars[member.avatar]} alt={member.name} />
 							</div>
 							<h4>{member.name}</h4>
 							<p class="member-role">{member.role}</p>
@@ -79,7 +87,7 @@ const members = translations.default?.about?.members?.members || [];
 					{members.map((member: any) => (
 						<div class="member-card">
 							<div class="member-avatar">
-								<img src={member.avatar} alt={member.name} />
+								<img src={avatars[member.avatar]} alt={member.name} />
 							</div>
 							<h4>{member.name}</h4>
 							<p class="member-role">{member.role}</p>
@@ -105,13 +113,6 @@ const members = translations.default?.about?.members?.members || [];
 </section>
 
 <style>
-	@font-face {
-		font-family: 'ZiKuJiangHuGuFengTi';
-		src: url('/fonts/ZiKuJiangHuGuFengTi-2.ttf') format('truetype');
-		font-weight: normal;
-		font-style: normal;
-	}
-
 	#about {
 		min-height: 100vh;
 		padding: 120px 20px 80px;

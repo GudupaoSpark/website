@@ -74,19 +74,19 @@
           "name": "ldx",
           "role": "Chairman & CEO",
           "bio": "Leading the team with vision and passion",
-          "avatar": "/about/owners/owner-1.jpg"
+          "avatar": "/assets/about/owners/owner-1.jpg"
         },
         {
           "name": "Cherry",
           "role": "Co-Founder & CTO",
           "bio": "Driving technical innovation",
-          "avatar": "/about/owners/owner-2.jpg"
+          "avatar": "/assets/about/owners/owner-2.jpg"
         },
         {
           "name": "Youzi",
           "role": "Co-Founder & COO",
           "bio": "Managing operations and growth",
-          "avatar": "/about/owners/owner-3.jpg"
+          "avatar": "/assets/about/owners/owner-3.jpg"
         }
       ],
       "members": [
@@ -94,25 +94,25 @@
           "name": "RimeRin",
           "role": "Developer",
           "bio": "Software Department Member",
-          "avatar": "/about/members/member-1.jpg"
+          "avatar": "/assets/about/members/member-1.jpg"
         },
         {
           "name": "Hank Zhu",
           "role": "Developer",
           "bio": "Software Department Member",
-          "avatar": "/about/members/member-2.jpg"
+          "avatar": "/assets/about/members/member-2.jpg"
         },
         {
           "name": "RinWinter",
           "role": "Developer",
           "bio": "Software Department Member",
-          "avatar": "/about/members/member-3.jpg"
+          "avatar": "/assets/about/members/member-3.jpg"
         },
         {
           "name": "LittleKan",
           "role": "Developer",
           "bio": "Software Department Member",
-          "avatar": "/about/members/member-4.jpg"
+          "avatar": "/assets/about/members/member-4.jpg"
         }
       ]
     },

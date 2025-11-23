@@ -1,5 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import photo1 from '../assets/explore/photo/1.jpg';
+import photo2 from '../assets/explore/photo/2.jpg';
+import photo3 from '../assets/explore/photo/3.jpg';
+import photo4 from '../assets/explore/photo/4.jpg';
+import photo5 from '../assets/explore/photo/5.jpg';
+import photo6 from '../assets/explore/photo/6.jpg';
+import photo7 from '../assets/explore/photo/7.jpg';
+import photo8 from '../assets/explore/photo/8.jpg';
+import photo9 from '../assets/explore/photo/9.jpg';
+import photo10 from '../assets/explore/photo/10.jpg';
+import photo11 from '../assets/explore/photo/11.jpg';
+import music from '../assets/explore/music/background.mp3';
 ---
 
 <Layout title="探索 | Gudupao" showFooter={false}>
@@ -55,53 +67,53 @@ import Layout from '../layouts/Layout.astro';
 		</div>
 
 		<audio id="background-audio" loop>
-			<source src="/explore/music/background.mp3" type="audio/mpeg">
+			<source src={music} type="audio/mpeg">
 		</audio>
 
 
 		<div id="photo-container" class="photo-container">
 			<div class="photo-slide" data-photo="1">
-				<img src="/explore/photo/1.jpg" alt="回忆照片 1" />
+				<img src={photo1.src} alt="回忆照片 1" />
 				<p class="photo-scroll-prompt">请向下滑动</p>
 			</div>
 			<div class="photo-slide" data-photo="2">
-				<img src="/explore/photo/2.jpg" alt="回忆照片 2" />
+				<img src={photo2.src} alt="回忆照片 2" />
 				<p class="photo-scroll-prompt">请向下滑动</p>
 			</div>
 			<div class="photo-slide" data-photo="3">
-				<img src="/explore/photo/3.jpg" alt="回忆照片 3" />
+				<img src={photo3.src} alt="回忆照片 3" />
 				<p class="photo-scroll-prompt">请向下滑动</p>
 			</div>
 			<div class="photo-slide" data-photo="4">
-				<img src="/explore/photo/4.jpg" alt="回忆照片 4" />
+				<img src={photo4.src} alt="回忆照片 4" />
 				<p class="photo-scroll-prompt">请向下滑动</p>
 			</div>
 			<div class="photo-slide" data-photo="5">
-				<img src="/explore/photo/5.jpg" alt="回忆照片 5" />
+				<img src={photo5.src} alt="回忆照片 5" />
 				<p class="photo-scroll-prompt">请向下滑动</p>
 			</div>
 			<div class="photo-slide" data-photo="6">
-				<img src="/explore/photo/6.jpg" alt="回忆照片 6" />
+				<img src={photo6.src} alt="回忆照片 6" />
 				<p class="photo-scroll-prompt">请向下滑动</p>
 			</div>
 			<div class="photo-slide" data-photo="7">
-				<img src="/explore/photo/7.jpg" alt="回忆照片 7" />
+				<img src={photo7.src} alt="回忆照片 7" />
 				<p class="photo-scroll-prompt">请向下滑动</p>
 			</div>
 			<div class="photo-slide" data-photo="8">
-				<img src="/explore/photo/8.jpg" alt="回忆照片 8" />
+				<img src={photo8.src} alt="回忆照片 8" />
 				<p class="photo-scroll-prompt">请向下滑动</p>
 			</div>
 			<div class="photo-slide" data-photo="9">
-				<img src="/explore/photo/9.jpg" alt="回忆照片 9" />
+				<img src={photo9.src} alt="回忆照片 9" />
 				<p class="photo-scroll-prompt">请向下滑动</p>
 			</div>
 			<div class="photo-slide" data-photo="10">
-				<img src="/explore/photo/10.jpg" alt="回忆照片 10" />
+				<img src={photo10.src} alt="回忆照片 10" />
 				<p class="photo-scroll-prompt">请向下滑动</p>
 			</div>
 			<div class="photo-slide final-slide" data-photo="11">
-				<img src="/explore/photo/11.jpg" alt="回忆照片 11" />
+				<img src={photo11.src} alt="回忆照片 11" />
 				<div class="final-message">
 					<p>感谢大家陪我们走过了三年的时光，接下来我们会继续拾起属于我们的火炬点亮属于我们的未来！</p>
 					<p>从未忘记燃烧，也从未放弃努力，这就是生命的力量</p>

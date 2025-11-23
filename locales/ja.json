@@ -74,19 +74,19 @@
           "name": "ldx",
           "role": "会長兼CEO",
           "bio": "ビジョンと情熱でチームをリード",
-          "avatar": "/about/owners/owner-1.jpg"
+          "avatar": "/assets/about/owners/owner-1.jpg"
         },
         {
           "name": "冬瓜",
           "role": "共同創業者兼CTO",
           "bio": "技術革新を推進",
-          "avatar": "/about/owners/owner-2.jpg"
+          "avatar": "/assets/about/owners/owner-2.jpg"
         },
         {
           "name": "柚子",
           "role": "共同創業者兼COO",
           "bio": "運営と成長を管理",
-          "avatar": "/about/owners/owner-3.jpg"
+          "avatar": "/assets/about/owners/owner-3.jpg"
         }
       ],
       "members": [
@@ -94,25 +94,25 @@
           "name": "RimeRin",
           "role": "開発者",
           "bio": "ソフトウェア部門メンバー",
-          "avatar": "/about/members/member-1.jpg"
+          "avatar": "/assets/about/members/member-1.jpg"
         },
         {
           "name": "Hank Zhu",
           "role": "開発者",
           "bio": "ソフトウェア部門メンバー",
-          "avatar": "/about/members/member-2.jpg"
+          "avatar": "/assets/about/members/member-2.jpg"
         },
         {
           "name": "RinWinter",
           "role": "開発者",
           "bio": "ソフトウェア部門メンバー",
-          "avatar": "/about/members/member-3.jpg"
+          "avatar": "/assets/about/members/member-3.jpg"
         },
         {
           "name": "LittleKan",
           "role": "開発者",
           "bio": "ソフトウェア部門メンバー",
-          "avatar": "/about/members/member-4.jpg"
+          "avatar": "/assets/about/members/member-4.jpg"
         }
       ]
     },

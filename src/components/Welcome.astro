@@ -1,13 +1,15 @@
 ---
 import { getTranslator } from '@gudupao/astro-i18n';
+import logo from '../assets/home/logo.png';
+import heroVideo from '../assets/home/hero_video.mp4';
 const lang = Astro.params.lang || 'en';
 const t = getTranslator(lang);
 ---
 
 <div id="welcome-wrapper">
 	<div id="container">
-		<video id="background-video" autoplay muted loop playsinline preload="metadata" poster="/home/logo.png">
-			<source src="/home/hero_video.mp4" type="video/mp4" />
+		<video id="background-video" autoplay muted loop playsinline preload="metadata" poster={logo.src}>
+			<source src={heroVideo} type="video/mp4" />
 			Your browser does not support the video tag.
 		</video>
 		<main>
@@ -24,14 +26,6 @@ const t = getTranslator(lang);
 </div>
 
 <style>
-	@font-face {
-		font-family: 'ZiKuJiangHuGuFengTi';
-		src: url('/fonts/ZiKuJiangHuGuFengTi-2.ttf') format('truetype');
-		font-weight: normal;
-		font-style: normal;
-		font-display: swap;
-	}
-
 	#welcome-wrapper {
 		position: relative;
 		height: 100vh;
