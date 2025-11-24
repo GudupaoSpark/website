@@ -8,6 +8,11 @@ const t = getTranslator(lang);
 <Layout title={`${t('contact.page_title') || 'Contact Us'}`}>
 	<section id="contact">
 		<div class="contact-container">
+			<div class="contact-header">
+				<h1>{t('header.contact') || 'Contact'}</h1>
+				<p class="subtitle">{t('contact.subtitle') || 'Get in touch with us'}</p>
+			</div>
+
 			<!-- Email Address Section -->
 			<div class="email-section">
 				<div class="email-card">
@@ -33,7 +38,7 @@ const t = getTranslator(lang);
 
 			<!-- Contact Links Grid -->
 			<div class="links-section">
-				<h3 class="links-title">{t('contact.links_title') || 'Connect With Us'}</h3>
+				<h2 class="links-title">{t('contact.links_title') || 'Connect With Us'}</h2>
 				<div class="links-grid">
 					<!-- Discord -->
 					<a href="https://discord.gg/SC78fv3ZRF" target="_blank" rel="noopener noreferrer" class="link-card discord-card">
@@ -158,16 +163,10 @@ const t = getTranslator(lang);
 	document.addEventListener('astro:page-load', () => {
 		const linkCards = document.querySelectorAll('.link-card');
 
-		linkCards.forEach((card, index) => {
+		linkCards.forEach((card) => {
 			const cardElement = card as HTMLElement;
 
-			// Add fade-in animation with delay
-			setTimeout(() => {
-				cardElement.style.opacity = '1';
-				cardElement.style.transform = 'translateY(0)';
-			}, index * 150);
-
-			// Add hover effect
+			// Add hover effect for arrows
 			cardElement.addEventListener('mouseenter', () => {
 				const arrow = cardElement.querySelector('.link-arrow') as HTMLElement;
 				if (arrow) {
@@ -182,15 +181,6 @@ const t = getTranslator(lang);
 				}
 			});
 		});
-
-		// Email card animation
-		const emailCard = document.querySelector('.email-card') as HTMLElement;
-		if (emailCard) {
-			setTimeout(() => {
-				emailCard.style.opacity = '1';
-				emailCard.style.transform = 'translateY(0)';
-			}, 200);
-		}
 	});
 </script>
 
@@ -205,55 +195,81 @@ const t = getTranslator(lang);
 	#contact {
 		min-height: 100vh;
 		padding: 120px 20px 80px;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		position: relative;
-		overflow: hidden;
+		background: #f8f9fa;
 	}
 
 	:global(.dark) #contact {
-		background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
-	}
-
-	#contact::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-		pointer-events: none;
+		background: #0f172a;
 	}
 
 	.contact-container {
 		max-width: 1200px;
 		margin: 0 auto;
-		position: relative;
-		z-index: 1;
+	}
+
+	.contact-header {
+		text-align: center;
+		margin-bottom: 60px;
+	}
+
+	.contact-header h1 {
+		font-family: 'ZiKuJiangHuGuFengTi', Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+		font-size: 56px;
+		color: #333;
+		margin: 0 0 20px;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	:global(.dark) .contact-header h1 {
+		background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.subtitle {
+		font-size: 20px;
+		color: #666;
+		margin: 0;
+		font-weight: 300;
+		opacity: 0.8;
+	}
+
+	:global(.dark) .subtitle {
+		color: #94a3b8;
 	}
 
 	/* Email Section */
 	.email-section {
-		margin-bottom: 80px;
+		margin-bottom: 60px;
 	}
 
 	.email-card {
-		background: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(20px);
-		border-radius: 24px;
+		background: white;
+		border-radius: 16px;
 		padding: 40px;
-		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		opacity: 0;
-		transform: translateY(30px);
-		transition: all 0.6s ease;
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.email-card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
 	}
 
 	:global(.dark) .email-card {
-		background: rgba(30, 41, 59, 0.95);
-		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+		background: #1e293b;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+	}
+
+	:global(.dark) .email-card:hover {
+		box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
 	}
 
 	.email-icon {
@@ -276,7 +292,7 @@ const t = getTranslator(lang);
 	}
 
 	.email-content h2 {
-		font-size: 32px;
+		font-size: 28px;
 		font-weight: 600;
 		color: #333;
 		margin: 0 0 10px;
@@ -287,7 +303,7 @@ const t = getTranslator(lang);
 	}
 
 	.email-address {
-		font-size: 24px;
+		font-size: 20px;
 		font-weight: 500;
 		color: #667eea;
 		margin: 0 0 20px;
@@ -305,11 +321,12 @@ const t = getTranslator(lang);
 		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 		color: white;
 		text-decoration: none;
-		padding: 14px 28px;
+		padding: 12px 24px;
 		border-radius: 25px;
 		font-weight: 500;
 		transition: all 0.3s ease;
 		box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+		font-size: 14px;
 	}
 
 	.email-link:hover {
@@ -323,12 +340,15 @@ const t = getTranslator(lang);
 	}
 
 	.links-title {
-		font-size: 28px;
+		font-size: 36px;
 		font-weight: 600;
-		color: white;
+		color: #333;
 		text-align: center;
-		margin-bottom: 50px;
-		text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+		margin: 0 0 40px;
+	}
+
+	:global(.dark) .links-title {
+		color: #f1f5f9;
 	}
 
 	.links-grid {
@@ -338,31 +358,28 @@ const t = getTranslator(lang);
 	}
 
 	.link-card {
-		background: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(20px);
+		background: white;
 		border-radius: 16px;
 		padding: 24px;
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-		transition: all 0.4s ease;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
 		text-decoration: none;
 		display: flex;
 		align-items: center;
-		opacity: 0;
-		transform: translateY(30px);
-	}
-
-	:global(.dark) .link-card {
-		background: rgba(30, 41, 59, 0.95);
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 	}
 
 	.link-card:hover {
 		transform: translateY(-4px);
-		box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+		box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+	}
+
+	:global(.dark) .link-card {
+		background: #1e293b;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 	}
 
 	:global(.dark) .link-card:hover {
-		box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+		box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
 	}
 
 	.link-icon {
@@ -430,6 +447,22 @@ const t = getTranslator(lang);
 			padding: 100px 20px 60px;
 		}
 
+		.contact-header {
+			margin-bottom: 40px;
+		}
+
+		.contact-header h1 {
+			font-size: 36px;
+		}
+
+		.subtitle {
+			font-size: 16px;
+		}
+
+		.email-section {
+			margin-bottom: 40px;
+		}
+
 		.email-card {
 			flex-direction: column;
 			text-align: center;
@@ -446,11 +479,11 @@ const t = getTranslator(lang);
 		}
 
 		.email-address {
-			font-size: 18px;
+			font-size: 16px;
 		}
 
 		.links-title {
-			font-size: 24px;
+			font-size: 28px;
 			margin-bottom: 30px;
 		}
 
