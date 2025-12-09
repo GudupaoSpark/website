@@ -9,7 +9,7 @@ const owners = translations.default?.about?.members?.owners || [];
 const members = translations.default?.about?.members?.members || [];
 
 // Import avatars
-const avatarModules = import.meta.glob('../assets/about/**/*.jpg', { eager: true });
+const avatarModules = import.meta.glob('../assets/about/**/*.{jpg,png}', { eager: true });
 const avatars: Record<string, string> = {};
 for (const path in avatarModules) {
   const key = path.replace('../assets', '/assets');
