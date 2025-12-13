@@ -8,14 +8,23 @@ const t = getTranslator(lang);
 
 <div id="welcome-wrapper">
 	<div id="container">
-		<video id="background-video" src={heroVideo} autoplay muted loop></video>
+		<video id="background-video" src={heroVideo} autoplay muted loop playsinline></video>
+		<!-- 鼠标光晕层 -->
+		<div id="mouse-glow"></div>
 		<main>
-			<section id="hero">
-				<h1 id="hero-text">
-					{t('welcome.heroText')}
-				</h1>
+			<section id="hero" class="tilt-card">
+				<div id="hero-text-wrapper">
+					<h1 id="hidden-text">Happy 3rd Anniversary,<br>Gudupao!</h1>
+					<h1 id="hero-text" class="glitch-effect">
+						{t('welcome.heroText')}
+					</h1>
+					<div id="lens-ring"></div>
+				</div>
 				<section id="links">
-					<a class="button" href={`/${lang || 'en'}/explore`}>{t('welcome.explore')}</a>
+					<a class="button glass-button" href={`/${lang || 'en'}/explore`}>
+						<span class="button-content">{t('welcome.explore')}</span>
+						<div class="button-glow"></div>
+					</a>
 				</section>
 			</section>
 		</main>
@@ -26,6 +35,8 @@ const t = getTranslator(lang);
 	#welcome-wrapper {
 		position: relative;
 		height: 100vh;
+		overflow: hidden;
+		background: #000; /* 防止视频加载前的闪烁 */
 	}
 
 	#background-video {
@@ -36,6 +47,8 @@ const t = getTranslator(lang);
 		height: 100vh;
 		object-fit: cover;
 		z-index: -1;
+		filter: brightness(0.8) contrast(1.1); /* 稍微压暗视频，突出文字 */
+		transition: filter 0.5s ease;
 	}
 
 	#container {
@@ -45,23 +58,26 @@ const t = getTranslator(lang);
 		top: 0;
 		left: 0;
 		width: 100%;
+		perspective: 1000px; /* 3D 透视 */
+		overflow: hidden;
 	}
 
-	#container::before {
-		content: '';
+	/* 鼠标光晕 */
+	#mouse-glow {
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background: rgba(0, 0, 0, 0);
-		z-index: 1;
 		pointer-events: none;
-		transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-
-	:global(.dark) #container::before {
-		background: rgba(0, 0, 0, 0);
+		z-index: 0;
+		background: radial-gradient(
+			800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+			rgba(255, 255, 255, 0.08),
+			transparent 40%
+		);
+		mix-blend-mode: overlay;
+		transition: opacity 0.5s ease;
 	}
 
 	main {
@@ -71,6 +87,7 @@ const t = getTranslator(lang);
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		transform-style: preserve-3d;
 	}
 
 	#hero {
@@ -78,45 +95,236 @@ const t = getTranslator(lang);
 		align-items: center;
 		flex-direction: column;
 		justify-content: center;
-		padding: 16px;
+		padding: 40px;
 		text-align: center;
 		z-index: 1;
-		gap: 24px;
+		gap: 32px;
+		/* 3D Tilt 基础样式 - 已移除 */
+		/* transform-style: preserve-3d; */
+		/* will-change: transform; */
+		/* 玻璃拟态背景，轻微可见 */
+		background: rgba(255, 255, 255, 0.03);
+		backdrop-filter: blur(2px);
+		border: 1px solid rgba(255, 255, 255, 0.05);
+		border-radius: 24px;
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+	}
+
+	#hero-text-wrapper {
+		position: relative;
+		/* transform-style: preserve-3d; */
+		/* transform: translateZ(40px); */ /* 移除 3D 悬浮 */
+		cursor: pointer; /* 提示可点击 */
+		/* 确保 wrapper 有明确的尺寸 */
+		display: inline-block;
+		user-select: none; /* 防止双击选中文本 */
+		z-index: 100; /* 确保层级最高，不被遮挡 */
+		pointer-events: auto; /* 强制响应鼠标事件 */
+		transition: transform 0.3s ease;
+	}
+
+	#hero-text-wrapper:hover {
+		transform: scale(1.05); /* 仅保留缩放，移除 translateZ */
+	}
+
+	#hidden-text {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: auto;
+		/* 移除高度限制，允许文字撑开，配合 mask 显示完整内容 */
+		height: auto;
+		min-width: 120%; /* 稍微宽一点以防万一 */
+		padding: 40px; /* 增加内边距，扩大 mask 的作用范围 */
+		margin: 0;
+		display: flex;
+		flex-direction: column; /* 确保多行垂直居中 */
+		align-items: center;
+		justify-content: center;
+		font-family: 'ZiKuJiangHuGuFengTi', Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+		font-size: 72px; /* 恢复/放大彩蛋文字 */
+		line-height: 1.2;
+		text-align: center;
+		color: #FFD700; /* 金色 */
+		background: linear-gradient(to bottom, #FFD700, #FDB931);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		filter: drop-shadow(0 0 10px rgba(253, 185, 49, 0.5));
+		z-index: 1;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		pointer-events: none;
+		/* 允许换行 */
+		white-space: normal;
 	}
 
 	#hero-text {
 		font-family: 'ZiKuJiangHuGuFengTi', Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
-		font-size: 64px;
+		font-size: 52px; /* 缩小主标题 */
 		margin: 0;
 		color: white;
-		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-		transition: color 0.3s ease;
-		line-height: 1.2;
+		line-height: 1.1;
 		text-align: center;
+		position: relative;
+		/* 文字光效 */
+		text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+		letter-spacing: -0.02em;
+		z-index: 2;
+		transition: -webkit-mask-image 0.1s, mask-image 0.1s;
+		/* 确保背景填充模式正确 */
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		/* 确保文字不会换行，与 hidden-text 保持一致 */
+		white-space: nowrap;
+	}
+
+	/* 激活状态 */
+	:global(.anniversary-active) #hidden-text {
+		opacity: 1;
+		/* 默认完全隐藏，JS会动态修改 mask-image */
+		-webkit-mask-image: radial-gradient(circle at 0 0, transparent 0, transparent 100%);
+		mask-image: radial-gradient(circle at 0 0, transparent 0, transparent 100%);
+		will-change: mask-image;
+	}
+	
+	:global(.anniversary-active) #hero-text {
+		/* 默认完全显示，JS会动态修改 mask-image */
+		will-change: mask-image;
+	}
+
+	/* 透视镜光圈 */
+	#lens-ring {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 150px;
+		height: 150px;
+		border-radius: 50%;
+		border: 2px solid rgba(255, 215, 0, 0.5);
+		box-shadow: 0 0 15px rgba(255, 215, 0, 0.3), inset 0 0 10px rgba(255, 215, 0, 0.2);
+		pointer-events: none;
+		z-index: 3;
+		opacity: 0;
+		transform: translate(-50%, -50%); /* 中心对齐鼠标 */
+		display: none; /* 默认不显示 */
+	}
+
+	:global(.anniversary-active) #lens-ring {
+		display: block;
+		opacity: 1;
+	}
+	
+	/* 惊艳的流光文字效果 */
+	#hero-text {
+		background: linear-gradient(
+			120deg, 
+			#ffffff 0%, 
+			#e2e2e2 20%, 
+			#ffffff 40%,
+			#b8b8b8 60%,
+			#ffffff 80%,
+			#e2e2e2 100%
+		);
+		background-size: 200% auto;
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		animation: shine 5s linear infinite;
+	}
+
+	@keyframes shine {
+		to {
+			background-position: 200% center;
+		}
 	}
 
 	#links {
 		display: flex;
 		gap: 16px;
 		justify-content: center;
+		transform: translateZ(60px); /* 按钮悬浮得更高 */
 	}
 
-	#links a.button {
-		color: var(--text-primary);
-		background: #fedd58;
-		border-radius: 10px;
-		padding: 14px 24px;
+	/* 高级按钮样式 */
+	.glass-button {
+		position: relative;
+		color: #1a1a1a;
+		background: rgba(254, 221, 88, 0.9);
+		border-radius: 12px;
+		padding: 16px 32px;
 		text-decoration: none;
 		font-size: 18px;
-		font-weight: 600;
-		transition: all 0.3s ease;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		font-weight: 700;
+		overflow: hidden;
+		transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		box-shadow: 
+			0 10px 20px rgba(0, 0, 0, 0.1),
+			0 6px 6px rgba(0, 0, 0, 0.1),
+			inset 0 -2px 5px rgba(0,0,0,0.1),
+			inset 0 2px 5px rgba(255,255,255,0.5);
 	}
 
-	#links a.button:hover {
-		background: #fedd58/80;
-		transform: translateY(-2px);
-		box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+	.button-content {
+		position: relative;
+		z-index: 2;
+	}
+
+	.button-glow {
+		position: absolute;
+		top: -50%;
+		left: -50%;
+		width: 200%;
+		height: 200%;
+		background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 60%);
+		opacity: 0;
+		transform: scale(0.5);
+		transition: transform 0.6s ease, opacity 0.6s ease;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.glass-button:hover {
+		transform: translateY(-4px) scale(1.02);
+		background: #fedd58;
+		box-shadow: 
+			0 20px 40px rgba(254, 221, 88, 0.3),
+			0 10px 10px rgba(0, 0, 0, 0.1);
+	}
+
+	.glass-button:hover .button-glow {
+		opacity: 0.3;
+		transform: scale(1);
+	}
+
+	.glass-button:active {
+		transform: translateY(-1px) scale(0.98);
+	}
+
+	/* 适配移动端 */
+	@media screen and (max-width: 768px) {
+		#hero {
+			padding: 20px;
+			gap: 20px;
+			background: none;
+			border: none;
+			box-shadow: none;
+		}
+
+		#hero-text {
+			font-size: 42px;
+			transform: none;
+		}
+		
+		#links {
+			transform: none;
+		}
+
+		.glass-button {
+			padding: 14px 28px;
+			font-size: 16px;
+		}
 	}
 
 	pre {
@@ -253,6 +461,151 @@ const t = getTranslator(lang);
 </style>
 
 <script>
+	// 3D Tilt & Mouse Glow Effect
+	let hero: HTMLElement | null = null;
+	let container: HTMLElement | null = null;
+	let mouseGlow: HTMLElement | null = null;
+	let heroTextWrapper: HTMLElement | null = null;
+	let heroText: HTMLElement | null = null;
+	let lensRing: HTMLElement | null = null;
+	let isAnniversaryActive = false;
+	let lastMouseX = 0;
+	let lastMouseY = 0;
+
+	let hiddenText: HTMLElement | null = null;
+
+	function initElements() {
+		hero = document.getElementById('hero');
+		container = document.getElementById('container');
+		mouseGlow = document.getElementById('mouse-glow');
+		heroTextWrapper = document.getElementById('hero-text-wrapper');
+		heroText = document.getElementById('hero-text');
+		hiddenText = document.getElementById('hidden-text');
+		lensRing = document.getElementById('lens-ring');
+	}
+
+	function toggleAnniversaryMode(e: MouseEvent) {
+		isAnniversaryActive = !isAnniversaryActive;
+		if (isAnniversaryActive) {
+			document.body.classList.add('anniversary-active');
+			// 立即触发一次透视效果
+			updateLensEffect(e.clientX, e.clientY);
+		} else {
+			document.body.classList.remove('anniversary-active');
+			// Reset mask
+			if (heroText) {
+				heroText.style.maskImage = 'none';
+				heroText.style.webkitMaskImage = 'none';
+			}
+			if (hiddenText) {
+				hiddenText.style.maskImage = 'none';
+				hiddenText.style.webkitMaskImage = 'none';
+			}
+		}
+	}
+
+	// 全局点击事件委托，确保一定能捕获点击
+	function handleGlobalClick(e: MouseEvent) {
+		// 优先尝试通过坐标判断，这比事件冒泡更可靠，特别是当有复杂的 3D 变换时
+		if (heroTextWrapper) {
+			const rect = heroTextWrapper.getBoundingClientRect();
+			// 增加一点点击容错范围 (padding)
+			const padding = 20;
+			if (
+				e.clientX >= rect.left - padding && 
+				e.clientX <= rect.right + padding &&
+				e.clientY >= rect.top - padding && 
+				e.clientY <= rect.bottom + padding
+			) {
+				initElements();
+				toggleAnniversaryMode(e);
+				return;
+			}
+		}
+
+		// 备用方案：传统的事件冒泡检测
+		const target = e.target as HTMLElement;
+		const wrapper = target.closest('#hero-text-wrapper');
+		if (wrapper) {
+			initElements(); 
+			toggleAnniversaryMode(e);
+		}
+	}
+
+	function updateLensEffect(x: number, y: number) {
+		if (!heroText || !heroTextWrapper || !lensRing || !hiddenText) return;
+
+		const rect = heroTextWrapper.getBoundingClientRect();
+		const localX = x - rect.left;
+		const localY = y - rect.top;
+		
+		// 1. 上层文字 (Hero Text): 挖洞 (中间透明，周围黑/可见)
+		const holeRadius = 75;
+		const fadeRadius = 100;
+		const heroMask = `radial-gradient(circle at ${localX}px ${localY}px, transparent ${holeRadius}px, black ${fadeRadius}px)`;
+		heroText.style.webkitMaskImage = heroMask;
+		heroText.style.maskImage = heroMask;
+
+		// 2. 下层文字 (Hidden Text): 只显示洞 (中间黑/可见，周围透明)
+		// 注意：hidden-text 是居中定位的，坐标系可能和 hero-text-wrapper 不完全一致
+		// 但因为它是绝对定位在 wrapper 里的，且 wrapper 是 relative，所以 localX/Y 应该是通用的
+		// 除非 hidden-text 的 transform 影响了 mask 的坐标系？
+		// CSS mask 是相对于元素自身的 bounding box 的。
+		// hidden-text 的宽度是 auto (可能比 wrapper 宽)，left 是 50%。
+		// 所以 hidden-text 的 (0,0) 点不在 wrapper 的 (0,0) 点。
+		// 我们需要计算鼠标相对于 hidden-text 左上角的坐标。
+		
+		const hiddenRect = hiddenText.getBoundingClientRect();
+		const hiddenX = x - hiddenRect.left;
+		const hiddenY = y - hiddenRect.top;
+
+		const hiddenMask = `radial-gradient(circle at ${hiddenX}px ${hiddenY}px, black ${holeRadius}px, transparent ${fadeRadius}px)`;
+		hiddenText.style.webkitMaskImage = hiddenMask;
+		hiddenText.style.maskImage = hiddenMask;
+
+		// Move lens ring
+		lensRing.style.left = `${localX}px`;
+		lensRing.style.top = `${localY}px`;
+	}
+
+	function handleMouseMove(e: MouseEvent) {
+		if (!hero || !container) initElements();
+		if (!hero || !container) return;
+
+		const { clientX, clientY } = e;
+		lastMouseX = clientX;
+		lastMouseY = clientY;
+		const { innerWidth, innerHeight } = window;
+
+		// 1. Mouse Glow Position
+		if (mouseGlow) {
+			mouseGlow.style.setProperty('--mouse-x', `${clientX}px`);
+			mouseGlow.style.setProperty('--mouse-y', `${clientY}px`);
+		}
+
+		// 2. Anniversary Lens Effect
+		if (isAnniversaryActive) {
+			updateLensEffect(clientX, clientY);
+		}
+
+		// 3. 3D Tilt Effect - 已取消
+		/*
+		// 移动端禁用 Tilt
+		if (innerWidth <= 768) return;
+
+		const x = (clientX / innerWidth - 0.5) * 2; // -1 to 1
+		const y = (clientY / innerHeight - 0.5) * 2; // -1 to 1
+
+		// 最大旋转角度
+		const maxRotate = 10;
+		
+		const rotateX = -y * maxRotate; // 鼠标在上方，元素向上仰（X轴负旋转）
+		const rotateY = x * maxRotate;  // 鼠标在右方，元素向右看（Y轴正旋转）
+
+		hero.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+		*/
+	}
+
 	// 视差滚动效果 - Welcome 组件逐渐变暗
 	function handleParallaxScroll() {
 		const container = document.getElementById('container');
@@ -307,12 +660,18 @@ const t = getTranslator(lang);
 	// 确保在DOM加载完成后执行
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', () => {
+			initElements();
 			window.addEventListener('scroll', handleParallaxScroll, { passive: true });
+			window.addEventListener('mousemove', handleMouseMove, { passive: true });
+			document.addEventListener('click', handleGlobalClick);
 			observeThemeChange();
 			handleParallaxScroll();
 		});
 	} else {
+		initElements();
 		window.addEventListener('scroll', handleParallaxScroll, { passive: true });
+		window.addEventListener('mousemove', handleMouseMove, { passive: true });
+		document.addEventListener('click', handleGlobalClick);
 		observeThemeChange();
 		handleParallaxScroll();
 	}

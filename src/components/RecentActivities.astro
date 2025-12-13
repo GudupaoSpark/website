@@ -1,109 +1,407 @@
 ---
 import { getTranslator } from '@gudupao/astro-i18n';
 import heroImage from '../assets/activity/hero.png';
+import heroImage2 from '../assets/activity/hero2.png';
 const lang = Astro.params.lang || 'en';
 const t = getTranslator(lang);
 ---
 
 <section id="recent-activities">
-	<h2>{t('recentActivities.title')}</h2>
-	<div class="activity-image">
-		<img src={heroImage.src} alt={t('recentActivities.title')} loading="eager" width="700" height="400" />
+	<div class="content-wrapper">
+		<h2 class="reveal-text">{t('recentActivities.title')}</h2>
+		<div class="activity-card reveal-card" id="activity-card-container">
+			<div class="card-glow"></div>
+			<div class="card-content">
+				<img id="activity-img-front" src={heroImage.src} alt={t('recentActivities.title')} loading="eager" width="700" height="400" />
+				<img id="activity-img-back" src={heroImage2.src} alt="Hidden Anniversary Image" aria-hidden="true" />
+				<div id="activity-lens-ring"></div>
+			</div>
+			<div class="instruction-tip">Click to reveal</div>
+		</div>
+		<p class="activity-info reveal-text">{t('recentActivities.description')}</p>
 	</div>
-	<p class="activity-info">{t('recentActivities.description')}</p>
 </section>
 
 <style>
 	#recent-activities {
-		padding: 80px 20px;
+		padding: 100px 20px;
 		text-align: center;
-		background: #f8f9fa;
+		background: linear-gradient(180deg, #f8f9fa 0%, #eef2f6 100%);
 		margin: 0;
-		min-height: 120vh;
+		min-height: 100vh;
 		position: relative;
-		box-shadow: 0 -10px 30px -15px rgba(0,0,0,0.3);
+		box-shadow: 0 -20px 50px -20px rgba(0,0,0,0.1);
 		z-index: 5;
-		transform: translateZ(0);
-		margin-top: calc(100vh - 100px);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		overflow: hidden;
+	}
+
+	/* 背景装饰圆 */
+	#recent-activities::before {
+		content: '';
+		position: absolute;
+		top: 20%;
+		right: -10%;
+		width: 600px;
+		height: 600px;
+		background: radial-gradient(circle, rgba(255, 215, 0, 0.03) 0%, transparent 70%);
+		border-radius: 50%;
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	#recent-activities::after {
+		content: '';
+		position: absolute;
+		bottom: 10%;
+		left: -5%;
+		width: 400px;
+		height: 400px;
+		background: radial-gradient(circle, rgba(64, 150, 255, 0.03) 0%, transparent 70%);
+		border-radius: 50%;
+		pointer-events: none;
+		z-index: 0;
 	}
 
 	:global(.dark) #recent-activities {
-		background: #0f172a;
+		background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+		box-shadow: 0 -20px 50px -20px rgba(0,0,0,0.5);
+	}
+
+	.content-wrapper {
+		position: relative;
+		z-index: 1;
+		max-width: 1200px;
+		width: 100%;
 	}
 
 	#recent-activities h2 {
-		color: #333;
-		font-size: 48px;
-		margin-bottom: 40px;
+		color: #1a1a1a;
+		font-size: 56px;
+		margin-bottom: 60px;
 		font-family: 'ZiKuJiangHuGuFengTi', Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+		/* 渐变文字 */
+		background: linear-gradient(135deg, #1a1a1a 30%, #555 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		letter-spacing: 0.05em;
+		position: relative;
+		display: inline-block;
 	}
 
 	:global(.dark) #recent-activities h2 {
-		color: #fff;
+		background: linear-gradient(135deg, #fff 30%, #aaa 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
 
-	.activity-image {
-		background: white;
-		border-radius: 16px;
-		padding: 20px;
+	/* 图片卡片容器 */
+	.activity-card {
+		position: relative;
 		display: inline-block;
-		box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		border-radius: 24px;
+		padding: 12px; /* 内边框宽度 */
+		background: rgba(255, 255, 255, 0.6);
+		backdrop-filter: blur(12px);
+		border: 1px solid rgba(255, 255, 255, 0.8);
+		box-shadow: 
+			0 20px 40px rgba(0, 0, 0, 0.08),
+			0 1px 3px rgba(0, 0, 0, 0.05),
+			inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+		transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+		cursor: pointer; /* 提示可点击 */
 	}
 
-	.activity-image:hover {
-		transform: translateY(-4px);
-		box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+	:global(.dark) .activity-card {
+		background: rgba(30, 41, 59, 0.6);
+		border-color: rgba(255, 255, 255, 0.1);
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+	}
+
+	.activity-card:hover {
+		transform: translateY(-8px) scale(1.01);
+		box-shadow: 
+			0 30px 60px rgba(0, 0, 0, 0.12),
+			0 4px 8px rgba(0, 0, 0, 0.06);
+	}
+
+	.card-content {
+		border-radius: 16px;
+		overflow: hidden;
+		position: relative;
+		z-index: 2;
+		/* 确保内容区域有固定宽高比，防止加载抖动 */
+		aspect-ratio: 700 / 400;
+	}
+
+	.activity-card img {
+		display: block;
+		width: 800px;
+		max-width: 90vw;
+		height: auto;
+		transition: transform 0.6s ease;
+		/* 默认填满容器 */
+		position: relative;
+		z-index: 1;
+	}
+
+	#activity-img-back {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: 2; /* 在 front 之上 */
+		opacity: 0; /* 默认隐藏 */
+		pointer-events: none;
+		/* 使用 mask 来实现透视效果 */
+		-webkit-mask-image: radial-gradient(circle at 0 0, transparent 0, transparent 100%);
+		mask-image: radial-gradient(circle at 0 0, transparent 0, transparent 100%);
+		transition: opacity 0.3s ease;
+	}
+
+	/* 激活状态下显示底层图片（通过mask控制显示区域） */
+	:global(.activity-lens-active) #activity-img-back {
+		opacity: 1;
+		/* 既然是全图显示，加一个炫酷的入场动画 */
+		animation: revealFull 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+	}
+
+	@keyframes revealFull {
+		from {
+			clip-path: circle(0% at 50% 50%);
+		}
+		to {
+			clip-path: circle(150% at 50% 50%);
+		}
+	}
+	
+	/* 透视镜光圈 */
+	#activity-lens-ring {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 200px; /* 透视镜大小 */
+		height: 200px;
+		border-radius: 50%;
+		border: 3px solid rgba(255, 255, 255, 0.8);
+		box-shadow: 
+			0 0 20px rgba(255, 255, 255, 0.5), 
+			inset 0 0 15px rgba(255, 255, 255, 0.3);
+		pointer-events: none;
+		z-index: 3;
+		opacity: 0;
+		transform: translate(-50%, -50%);
+		display: none;
+		mix-blend-mode: overlay;
+	}
+
+	:global(.activity-lens-active) #activity-lens-ring {
+		display: block;
+		opacity: 1;
+	}
+
+	.activity-card:hover img {
+		transform: scale(1.03);
+	}
+	
+	/* 提示文字 */
+	.instruction-tip {
+		position: absolute;
+		bottom: -40px;
+		left: 50%;
+		transform: translateX(-50%);
+		color: #888;
+		font-size: 14px;
+		opacity: 0;
+		transition: opacity 0.3s ease, transform 0.3s ease;
+		pointer-events: none;
+	}
+
+	.activity-card:hover .instruction-tip {
+		opacity: 1;
+		transform: translateX(-50%) translateY(-5px);
+	}
+
+	/* 卡片背后的光晕 */
+	.card-glow {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 90%;
+		height: 90%;
+		background: radial-gradient(circle, rgba(255, 215, 0, 0.15), transparent 70%);
+		filter: blur(40px);
+		z-index: -1;
+		opacity: 0;
+		transition: opacity 0.4s ease;
+	}
+
+	.activity-card:hover .card-glow {
+		opacity: 1;
 	}
 
 	.activity-info {
-		color: #666;
-		font-size: 18px;
+		color: #555;
+		font-size: 20px;
 		line-height: 1.8;
-		margin-top: 30px;
-		max-width: 800px;
+		margin-top: 50px;
+		max-width: 700px;
 		margin-left: auto;
 		margin-right: auto;
 		padding: 0 20px;
+		font-weight: 300;
 	}
 
 	:global(.dark) .activity-info {
-		color: #aaa;
+		color: #cbd5e1;
 	}
 
-	.activity-image img {
-		width: 700px;
-		max-width: 90vw;
-		height: auto;
-		border-radius: 8px;
+	/* 进场动画类 */
+	.reveal-text, .reveal-card {
+		opacity: 0;
+		transform: translateY(40px);
+		transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.reveal-card {
+		transition-delay: 0.1s; /* 卡片稍晚一点出现 */
+	}
+
+	.activity-info.reveal-text {
+		transition-delay: 0.2s; /* 文字最后出现 */
+	}
+
+	.is-visible {
+		opacity: 1;
+		transform: translateY(0);
 	}
 
 	@media screen and (max-width: 768px) {
 		#recent-activities {
 			padding: 60px 20px;
-			min-height: 100vh;
 		}
 
 		#recent-activities h2 {
-			font-size: 32px;
-			margin-bottom: 24px;
+			font-size: 36px;
+			margin-bottom: 32px;
 		}
 
 		.activity-info {
 			font-size: 16px;
-			margin-top: 20px;
+			margin-top: 32px;
 		}
-
-		.activity-image img {
-			width: 100%;
-			max-width: 450px;
-	}
+		
+		.activity-card {
+			padding: 8px;
+		}
 	}
 </style>
 
 <script>
+	// 简单的滚动进场动画
+	const observerOptions = {
+		root: null,
+		rootMargin: '0px',
+		threshold: 0.1
+	};
+
+	const observer = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				entry.target.classList.add('is-visible');
+				observer.unobserve(entry.target); // 只触发一次
+			}
+		});
+	}, observerOptions);
+
+	// 等待 DOM 加载
+	function initAnimations() {
+		const elements = document.querySelectorAll('.reveal-text, .reveal-card');
+		elements.forEach(el => observer.observe(el));
+	}
+
+	// 确保在 Astro 页面切换或加载时运行
+	initAnimations();
+	document.addEventListener('astro:page-load', initAnimations);
+
+	// 透视镜效果逻辑
+	let isActivityLensActive = false;
+	let activityCard: HTMLElement | null = null;
+	let activityImgBack: HTMLElement | null = null;
+	let activityLensRing: HTMLElement | null = null;
+
+	function initActivityLens() {
+		activityCard = document.getElementById('activity-card-container');
+		activityImgBack = document.getElementById('activity-img-back');
+		activityLensRing = document.getElementById('activity-lens-ring');
+
+		if (activityCard) {
+			activityCard.addEventListener('click', toggleActivityLens);
+			activityCard.addEventListener('mousemove', updateActivityLens);
+			// 鼠标离开时关闭透视镜，提升体验
+			activityCard.addEventListener('mouseleave', () => {
+				if (isActivityLensActive) {
+					isActivityLensActive = false;
+					document.body.classList.remove('activity-lens-active');
+				}
+			});
+		}
+	}
+
+	function toggleActivityLens(e: MouseEvent) {
+		isActivityLensActive = !isActivityLensActive;
+		if (isActivityLensActive) {
+			document.body.classList.add('activity-lens-active');
+			updateActivityLens(e);
+		} else {
+			document.body.classList.remove('activity-lens-active');
+		}
+	}
+
+	function updateActivityLens(e: MouseEvent) {
+		if (!isActivityLensActive || !activityCard || !activityImgBack || !activityLensRing) return;
+
+		const rect = activityCard.getBoundingClientRect();
+		// 计算相对于卡片内容的坐标（减去padding）
+		// activity-card padding is 12px
+		const padding = 12;
+		const x = e.clientX - rect.left - padding;
+		const y = e.clientY - rect.top - padding;
+
+		// 限制透视镜在图片范围内
+		// 图片宽高 (近似)
+		const imgWidth = rect.width - padding * 2;
+		const imgHeight = rect.height - padding * 2;
+
+		// 简单的边界检查，其实 CSS mask 超出也没关系，主要是 lens ring 位置
+		
+		// 用户要求：跟图片一样大的透视镜
+		// 意味着点击后，整个区域都应该是透视的，能看到完整的底层图片
+		const holeRadius = 2000; // 足够大，覆盖整张图
+		const fadeRadius = 2000; 
+
+		// 修改 mask-image 来显示底层图片
+		// 使用 center 居中，或者跟随鼠标但半径极大
+		// 为了体验更好，直接全开，不再随鼠标位置变化 mask 大小（因为已经全覆盖了）
+		const mask = `radial-gradient(circle at center, black 100%, transparent 100%)`;
+		
+		activityImgBack.style.webkitMaskImage = mask;
+		activityImgBack.style.maskImage = mask;
+
+		// 既然透视镜和图片一样大，原来的圆形光圈就不合适了
+		// 我们把光圈改成跟随鼠标的一个高亮“反光点”，或者直接隐藏原来的圆环
+		if (activityLensRing) {
+			activityLensRing.style.display = 'none'; // 隐藏小圆圈
+		}
+	}
+
+	// 初始化透视镜
+	initActivityLens();
+	document.addEventListener('astro:page-load', initActivityLens);
 </script>

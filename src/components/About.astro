@@ -68,16 +68,23 @@ for (const path in avatarModules) {
 			<div class="member-category">
 				<h3>Owners</h3>
 				<div class="member-grid">
-					{owners.map((member: any) => (
+					{owners.map((member: any) => {
+						// 通过头像路径或名字来判断是否是 Cherry (适配多语言)
+						const isCherry = member.avatar.includes('christmas-owner-2') || member.name === 'Cherry' || member.name === '冬瓜';
+						return (
 						<div class="member-card">
-							<div class="member-avatar">
+							<div 
+								class={`member-avatar ${isCherry ? 'cherry-egg' : ''}`}
+								title={isCherry ? "有彩蛋 / Click for surprise!" : undefined}
+								data-lang={lang}
+							>
 								<img src={avatars[member.avatar]} alt={member.name} />
 							</div>
 							<h4>{member.name}</h4>
 							<p class="member-role">{member.role}</p>
 							<p class="member-bio">{member.bio}</p>
 						</div>
-					))}
+					)})}
 				</div>
 			</div>
 
@@ -111,6 +118,38 @@ for (const path in avatarModules) {
 		</div>
 	</div>
 </section>
+
+<script>
+	function initCherryEgg() {
+		const cherryEggs = document.querySelectorAll('.cherry-egg');
+		cherryEggs.forEach(egg => {
+			// 移除旧的监听器以防重复绑定（虽然 cloneNode 可以，但这里简单处理）
+			// 由于 astro:page-load 可能多次触发，确保不会重复绑定最好是先移除或用 { once: true } 但我们需要多次点击
+			// 最好的方式是检查是否已经绑定，或者直接重新绑定覆盖
+			
+			// 简单起见，先移除再添加
+			const newEgg = egg.cloneNode(true);
+			if (egg.parentNode) {
+				egg.parentNode.replaceChild(newEgg, egg);
+			}
+			
+			newEgg.addEventListener('click', (e) => {
+				const target = e.currentTarget as HTMLElement;
+				const currentLang = target.dataset.lang;
+				if (currentLang === 'zh-hans') {
+					window.open('https://www.bilibili.com/video/BV1UT42167xb', '_blank');
+				} else {
+					window.open('https://youtu.be/dQw4w9WgXcQ?si=dnrdZLIN8C7aKMmE', '_blank');
+				}
+			});
+		});
+	}
+
+	// 初始加载
+	initCherryEgg();
+	// View Transitions 支持
+	document.addEventListener('astro:page-load', initCherryEgg);
+</script>
 
 <style>
 	#about {
@@ -378,6 +417,18 @@ for (const path in avatarModules) {
 		border-radius: 16px;
 		overflow: hidden;
 		border: 4px solid #f1f5f9;
+		position: relative;
+	}
+
+	/* 彩蛋样式 */
+	.cherry-egg {
+		cursor: pointer;
+		transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+	}
+	
+	.cherry-egg:hover {
+		border-color: #FFD700; /* 金色边框提示 */
+		box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 	}
 
 	:global(.dark) .member-avatar {
