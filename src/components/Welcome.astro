@@ -517,6 +517,12 @@ const t = getTranslator(lang);
 				e.clientY >= rect.top - padding && 
 				e.clientY <= rect.bottom + padding
 			) {
+				// 确保点击的是当前组件的元素，而不是覆盖在上面的其他元素（如 RecentActivities）
+				const topElement = document.elementFromPoint(e.clientX, e.clientY);
+				if (topElement && !heroTextWrapper.contains(topElement) && topElement !== heroTextWrapper) {
+					return;
+				}
+
 				initElements();
 				toggleAnniversaryMode(e);
 				return;
