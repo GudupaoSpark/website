@@ -66,6 +66,7 @@ const t = getTranslator(lang);
     overlay: HTMLElement | null;
     content: HTMLElement | null;
     toggleBtn: HTMLElement | null;
+    toggleBtnScrolled: HTMLElement | null;
     currentTheme: string;
 
     constructor() {
@@ -73,14 +74,22 @@ const t = getTranslator(lang);
       this.overlay = document.getElementById('modal-overlay');
       this.content = document.getElementById('modal-content');
       this.toggleBtn = document.getElementById('theme-toggle');
+      this.toggleBtnScrolled = document.getElementById('theme-toggle-scrolled');
       this.currentTheme = 'system'; // default
 
       this.init();
     }
 
     init() {
-      // Show modal only on desktop
+      // Show modal only on desktop (for original button)
       this.toggleBtn?.addEventListener('click', () => {
+        if (window.innerWidth >= 768) {
+          this.show();
+        }
+      });
+
+      // Show modal only on desktop (for scrolled button)
+      this.toggleBtnScrolled?.addEventListener('click', () => {
         if (window.innerWidth >= 768) {
           this.show();
         }

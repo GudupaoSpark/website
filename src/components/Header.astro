@@ -11,7 +11,7 @@ const t = getTranslator(lang);
 
 <header class="flex items-center justify-between px-4 py-2 bg-transparent fixed top-0 left-0 right-0 z-50 transition-all duration-300" transition:persist="header-bar">
   <!-- Left section -->
-  <div class="flex-shrink-0 w-10 md:w-auto">
+  <div id="left-section" class="flex-shrink-0 w-10 md:w-auto transition-all duration-500">
     <!-- Hamburger Menu (Mobile) -->
     <button id="hamburger-menu" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg glass hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark hamburger-icon">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -19,29 +19,48 @@ const t = getTranslator(lang);
       </svg>
     </button>
     <!-- Desktop Logo -->
-    <a href={`/${lang || 'en'}`} class="hidden md:flex items-center justify-center">
-      <img src={logo.src} alt="Logo" class="w-40 h-24 object-contain logo-light" draggable="false" oncontextmenu="return false;" />
-      <img src={logoDark.src} alt="Logo" class="w-40 h-24 object-contain logo-dark" draggable="false" oncontextmenu="return false;" />
+    <a id="desktop-logo" href={`/${lang || 'en'}`} class="hidden md:flex items-center justify-center transition-all duration-500">
+      <img src={logo.src} alt="Logo" class="w-40 h-24 object-contain logo-light transition-all duration-500" draggable="false" oncontextmenu="return false;" />
+      <img src={logoDark.src} alt="Logo" class="w-40 h-24 object-contain logo-dark transition-all duration-500" draggable="false" oncontextmenu="return false;" />
     </a>
   </div>
 
   <!-- Center section -->
-  <div class="flex-1 flex justify-center">
+  <div id="center-section" class="flex-1 flex justify-center">
     <!-- Mobile Logo -->
     <a href={`/${lang || 'en'}`} class="md:hidden flex items-center justify-center">
       <img src={logoMobile.src} alt="Logo" class="w-32 h-16 object-contain logo-light" draggable="false" oncontextmenu="return false;" />
       <img src={logoMobileDark.src} alt="Logo" class="w-32 h-16 object-contain logo-dark" draggable="false" oncontextmenu="return false;" />
     </a>
     <!-- Desktop Navigation -->
-    <nav class="hidden md:flex items-center justify-center px-12 py-3 rounded-full glass">
-      <a href={`/${lang || 'en'}/about`} class="px-6 py-2 text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.about')}</a>
-      <a href={`/${lang || 'en'}/projects`} class="px-6 py-2 text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.projects')}</a>
-      <a href={`/${lang || 'en'}/contact`} class="px-6 py-2 text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.contact')}</a>
+    <nav id="desktop-nav" class="hidden md:flex items-center justify-center px-12 py-3 rounded-full glass transition-all duration-500">
+      <!-- Scrolled Logo (hidden by default) -->
+      <a id="scrolled-logo" href={`/${lang || 'en'}`} class="items-center justify-center opacity-0 pointer-events-none absolute transition-all duration-500">
+        <img src={logoMobile.src} alt="Logo" class="w-24 h-12 object-contain logo-light" draggable="false" oncontextmenu="return false;" />
+        <img src={logoMobileDark.src} alt="Logo" class="w-24 h-12 object-contain logo-dark" draggable="false" oncontextmenu="return false;" />
+      </a>
+      <div id="nav-links" class="flex items-center transition-opacity duration-500">
+        <a href={`/${lang || 'en'}/about`} class="px-6 py-2 text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.about')}</a>
+        <a href={`/${lang || 'en'}/projects`} class="px-6 py-2 text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.projects')}</a>
+        <a href={`/${lang || 'en'}/contact`} class="px-6 py-2 text-text-primary-light dark:text-text-primary-dark hover:text-yellow-400 dark:hover:text-yellow-300 transition-colors duration-200 font-roboto font-bold">{t('header.contact')}</a>
+      </div>
+      <!-- Right buttons in nav (hidden by default) -->
+      <div id="scrolled-buttons" class="items-center space-x-4 ml-8 opacity-0 pointer-events-none absolute right-4 transition-all duration-500">
+        <button id="theme-toggle-scrolled" class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
+          <svg class="w-6 h-6 theme-icon-scrolled" fill="currentColor" viewBox="0 0 24 24">
+            <path class="moon-path-scrolled" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            <path class="sun-path-scrolled" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+          </svg>
+        </button>
+        <a href={`/${lang || 'en'}/explore`} class="px-6 py-3 bg-[#fedd58] dark:bg-yellow-500 text-text-primary-light dark:text-text-primary-dark font-roboto font-bold rounded-lg shadow-lg hover:bg-[#fedd58]/80 dark:hover:bg-yellow-600 transition-all duration-300 hover:text-gray-900 dark:hover:text-gray-900 no-underline">
+          {t('header.explore')}
+        </a>
+      </div>
     </nav>
   </div>
 
   <!-- Right section -->
-  <div class="flex-shrink-0 w-10 md:w-auto flex justify-end">
+  <div id="right-section" class="flex-shrink-0 w-10 md:w-auto flex justify-end transition-all duration-500">
     <div class="flex items-center space-x-4 -mr-4 md:mr-0">
       <!-- Theme Toggle Button -->
       <button id="theme-toggle" class="w-10 h-10 md:w-12 md:h-12 rounded-lg glass flex items-center justify-center hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark">
@@ -51,7 +70,7 @@ const t = getTranslator(lang);
         </svg>
       </button>
       <!-- Explore Button (Desktop only) -->
-      <a href={`/${lang || 'en'}/explore`} class="hidden md:block px-6 py-3 bg-[#fedd58] dark:bg-yellow-500 text-text-primary-light dark:text-text-primary-dark font-roboto font-bold rounded-lg shadow-lg hover:bg-[#fedd58]/80 dark:hover:bg-yellow-600 transition-all duration-300 hover:text-gray-900 dark:hover:text-gray-900 no-underline">
+      <a id="explore-btn" href={`/${lang || 'en'}/explore`} class="hidden md:block px-6 py-3 bg-[#fedd58] dark:bg-yellow-500 text-text-primary-light dark:text-text-primary-dark font-roboto font-bold rounded-lg shadow-lg hover:bg-[#fedd58]/80 dark:hover:bg-yellow-600 transition-all duration-300 hover:text-gray-900 dark:hover:text-gray-900 no-underline">
         {t('header.explore')}
       </a>
     </div>
@@ -59,7 +78,7 @@ const t = getTranslator(lang);
 </header>
 
 <!-- Mobile Navigation Menu -->
-<div id="mobile-menu" class="md:hidden fixed top-0 left-0 w-full h-full bg-black/50 z-50 hidden">
+<div id="mobile-menu" class="md:hidden fixed top-0 left-0 w-full h-full backdrop-blur-md bg-white/10 dark:bg-black/20 z-50 hidden">
   <div class="flex flex-col items-center justify-center h-full space-y-8 relative">
     <button id="close-menu" class="absolute top-2 right-2 w-10 h-10 flex items-center justify-center rounded-lg glass hover:bg-white/30 dark:hover:bg-slate-700/50 transition-all duration-300 text-text-primary-light dark:text-text-primary-dark close-menu-icon">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,6 +157,21 @@ const t = getTranslator(lang);
     display: block;
   }
 
+  /* Scrolled theme icon styles */
+  .theme-icon-scrolled .moon-path-scrolled {
+    display: block;
+  }
+  .theme-icon-scrolled .sun-path-scrolled {
+    display: none;
+  }
+
+  html.dark .theme-icon-scrolled .moon-path-scrolled {
+    display: none;
+  }
+  html.dark .theme-icon-scrolled .sun-path-scrolled {
+    display: block;
+  }
+
   /* Logo styles */
   .logo-light {
     display: block;
@@ -153,6 +187,47 @@ const t = getTranslator(lang);
     display: block;
   }
 
+  /* Scroll animation states - Desktop only */
+  @media (min-width: 768px) {
+    header.scrolled #desktop-logo {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    header.scrolled #left-section {
+      width: 0;
+    }
+
+    header.scrolled #nav-links {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    header.scrolled #scrolled-logo {
+      opacity: 1;
+      pointer-events: auto;
+      position: relative;
+    }
+
+    header.scrolled #desktop-nav {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    header.scrolled #right-section {
+      opacity: 0;
+      width: 0;
+      pointer-events: none;
+    }
+
+    header.scrolled #scrolled-buttons {
+      opacity: 1;
+      pointer-events: auto;
+      position: relative;
+      display: flex;
+    }
+  }
+
   /* Mobile menu styles */
   #mobile-menu {
     opacity: 0;
@@ -165,16 +240,17 @@ const t = getTranslator(lang);
     transform: translateY(0);
   }
 
-   /* Scrolled header styles */
+   /* Scrolled header styles - Transparent background */
    header.scrolled {
-     background: var(--glass-bg);
-     backdrop-filter: blur(20px) saturate(180%);
-     -webkit-backdrop-filter: blur(20px) saturate(180%);
-     border-bottom: 1px solid var(--glass-border);
-     box-shadow:
-       0 8px 32px 0 var(--glass-shadow),
-       0 4px 16px 0 rgba(0, 0, 0, 0.08),
-       inset 0 -1px 0 0 rgba(255, 255, 255, 0.1);
+     background: transparent;
+     border: none;
+     box-shadow: none;
+   }
+
+   html.dark header.scrolled {
+     background: transparent;
+     border: none;
+     box-shadow: none;
    }
  
    @media (max-width: 768px) {
@@ -188,22 +264,37 @@ const t = getTranslator(lang);
     #mobile-menu .mobile-menu-link {
       color: white !important;
     }
-    
+
     html.dark #mobile-menu .mobile-menu-link {
       color: var(--color-text-primary) !important;
     }
-    
+
     /* Mobile close icon styles - ensure white in light mode */
     #mobile-menu .close-menu-icon {
       color: white !important;
     }
-    
+
     html.dark #mobile-menu .close-menu-icon {
       color: var(--color-text-primary) !important;
+    }
+
+    /* Mobile header glass effect */
+    @media (max-width: 768px) {
+      header {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      html.dark header {
+        background: rgba(0, 0, 0, 0.2);
+      }
     }
  </style>
 
 <script>
+  import { gsap } from 'gsap';
+
   // Prevent duplicate initialization
   (function() {
     if ((window as any).headerInitialized) {
@@ -239,8 +330,25 @@ const t = getTranslator(lang);
 
       // Theme Toggle
       const themeToggle = document.getElementById('theme-toggle');
+      const themeToggleScrolled = document.getElementById('theme-toggle-scrolled');
+
       if (themeToggle) {
         themeToggle.addEventListener('click', () => {
+          if (window.innerWidth < 768) {
+            // Mobile: simple toggle between light and dark
+            const currentTheme = localStorage.getItem('theme-mobile') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme-mobile', newTheme);
+            applyTheme(newTheme);
+            console.log('Theme toggled to:', newTheme);
+          }
+          // Desktop: handled by modal
+        });
+      }
+
+      // Theme toggle for scrolled button
+      if (themeToggleScrolled) {
+        themeToggleScrolled.addEventListener('click', () => {
           if (window.innerWidth < 768) {
             // Mobile: simple toggle between light and dark
             const currentTheme = localStorage.getItem('theme-mobile') || 'light';
@@ -301,21 +409,164 @@ const t = getTranslator(lang);
         });
       }
 
-      // Header background on scroll
+      // GSAP-powered scroll animation for desktop
+      let isScrolled = false;
+      let scrollTimeline: gsap.core.Timeline | null = null;
+
       function handleScroll() {
-        const start = performance.now();
-        if (window.scrollY > 50) {
-          header?.classList.add('scrolled');
-        } else {
-          header?.classList.remove('scrolled');
+        // Only run on desktop
+        if (window.innerWidth < 768) return;
+
+        const shouldBeScrolled = window.scrollY > 50;
+
+        // Only animate if state changed
+        if (shouldBeScrolled === isScrolled) return;
+
+        isScrolled = shouldBeScrolled;
+
+        // Kill any existing animation
+        if (scrollTimeline) {
+          scrollTimeline.kill();
         }
-        const duration = performance.now() - start;
-        if (duration > 1) { // Log if takes more than 1ms
-          console.log(`Header scroll handler: ${duration.toFixed(2)}ms`);
+
+        const desktopLogo = document.getElementById('desktop-logo');
+        const leftSection = document.getElementById('left-section');
+        const navLinks = document.getElementById('nav-links');
+        const scrolledLogo = document.getElementById('scrolled-logo');
+        const desktopNav = document.getElementById('desktop-nav');
+        const rightSection = document.getElementById('right-section');
+        const scrolledButtons = document.getElementById('scrolled-buttons');
+
+        // Create GSAP timeline with smooth easing
+        scrollTimeline = gsap.timeline({
+          defaults: { duration: 0.5, ease: 'power2.out' }
+        });
+
+        if (shouldBeScrolled) {
+          // Scrolling down animation
+          header?.classList.add('scrolled');
+
+          scrollTimeline
+            // Phase 1: Fade out desktop logo and nav links simultaneously
+            .to([desktopLogo, navLinks], {
+              opacity: 0,
+              duration: 0.3,
+              ease: 'power2.inOut'
+            }, 0)
+            .to([desktopLogo, navLinks], {
+              pointerEvents: 'none',
+              duration: 0
+            }, 0.3)
+            // Phase 2: Shrink left section width
+            .to(leftSection, {
+              width: 0,
+              duration: 0.4,
+              ease: 'power2.inOut'
+            }, 0.1)
+            // Phase 3: Fade out right section
+            .to(rightSection, {
+              opacity: 0,
+              width: 0,
+              pointerEvents: 'none',
+              duration: 0.4,
+              ease: 'power2.inOut'
+            }, 0.15)
+            // Phase 4: Adjust nav padding
+            .to(desktopNav, {
+              paddingLeft: '1rem',
+              paddingRight: '1rem',
+              duration: 0.4,
+              ease: 'power2.inOut'
+            }, 0.2)
+            // Phase 5: Fade in scrolled logo
+            .to(scrolledLogo, {
+              opacity: 1,
+              duration: 0.3,
+              ease: 'power2.out'
+            }, 0.3)
+            .set(scrolledLogo, {
+              pointerEvents: 'auto',
+              position: 'relative'
+            }, 0.3)
+            // Phase 6: Fade in scrolled buttons
+            .to(scrolledButtons, {
+              opacity: 1,
+              duration: 0.3,
+              ease: 'power2.out'
+            }, 0.35)
+            .set(scrolledButtons, {
+              pointerEvents: 'auto',
+              position: 'relative',
+              display: 'flex'
+            }, 0.35);
+
+        } else {
+          // Scrolling up animation (reverse)
+
+          scrollTimeline
+            // Phase 1: Fade out scrolled elements first
+            .to([scrolledLogo, scrolledButtons], {
+              opacity: 0,
+              duration: 0.25,
+              ease: 'power2.in'
+            }, 0)
+            .set([scrolledLogo, scrolledButtons], {
+              pointerEvents: 'none',
+              position: 'absolute'
+            }, 0.25)
+            .set(scrolledButtons, {
+              display: 'none'
+            }, 0.25)
+            // Phase 2: Start expanding sections
+            .to(leftSection, {
+              width: 'auto',
+              duration: 0.4,
+              ease: 'power2.out'
+            }, 0.2)
+            .to(rightSection, {
+              width: 'auto',
+              duration: 0.4,
+              ease: 'power2.out'
+            }, 0.2)
+            // Phase 3: Restore nav padding
+            .to(desktopNav, {
+              paddingLeft: '3rem',
+              paddingRight: '3rem',
+              duration: 0.4,
+              ease: 'power2.out'
+            }, 0.25)
+            // Phase 4: Fade in desktop logo and nav links
+            .set([desktopLogo, navLinks], {
+              pointerEvents: 'auto'
+            }, 0.4)
+            .to([desktopLogo, navLinks], {
+              opacity: 1,
+              duration: 0.35,
+              ease: 'power2.out'
+            }, 0.4)
+            // Phase 5: Fade in right section
+            .to(rightSection, {
+              opacity: 1,
+              duration: 0.35,
+              ease: 'power2.out'
+            }, 0.45)
+            .set(rightSection, {
+              pointerEvents: 'auto'
+            }, 0.45)
+            // Finally remove scrolled class
+            .call(() => {
+              header?.classList.remove('scrolled');
+            }, [], 0);
         }
       }
 
-      window.addEventListener('scroll', handleScroll);
+      // Use requestAnimationFrame for smooth scroll handling
+      let rafId: number | null = null;
+      window.addEventListener('scroll', () => {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(handleScroll);
+      });
+
       handleScroll(); // Check initial state
     }
 
@@ -329,20 +580,20 @@ const t = getTranslator(lang);
         const savedTheme = localStorage.getItem('theme-mobile') || 'light';
         applyTheme(savedTheme);
       }
-  
+
       // Ensure mobile menu event listeners are attached after page transition
       setTimeout(() => {
         const hamburgerMenu = document.getElementById('hamburger-menu') as HTMLButtonElement;
         const mobileMenu = document.getElementById('mobile-menu') as HTMLDivElement;
         const closeMenu = document.getElementById('close-menu') as HTMLButtonElement;
-  
+
         if (hamburgerMenu && mobileMenu && !hamburgerMenu.hasAttribute('data-events-bound')) {
           hamburgerMenu.setAttribute('data-events-bound', 'true');
-  
+
           hamburgerMenu.addEventListener('click', () => {
             mobileMenu.classList.toggle('show');
             mobileMenu.classList.toggle('hidden');
-  
+
             // Prevent body scroll when mobile menu is open
             if (mobileMenu.classList.contains('show')) {
               document.body.style.overflow = 'hidden';
@@ -350,7 +601,7 @@ const t = getTranslator(lang);
               document.body.style.overflow = '';
             }
           });
-  
+
           // Close menu when clicking close button
           if (closeMenu) {
             closeMenu.addEventListener('click', () => {
@@ -359,7 +610,7 @@ const t = getTranslator(lang);
               document.body.style.overflow = '';
             });
           }
-  
+
           // Close menu when clicking outside (but not on links)
           mobileMenu.addEventListener('click', (e) => {
             if (e.target === mobileMenu) {
@@ -368,7 +619,7 @@ const t = getTranslator(lang);
               document.body.style.overflow = '';
             }
           });
-  
+
           // Close mobile menu when clicking on navigation links
           const mobileLinks = mobileMenu.querySelectorAll('a');
           mobileLinks.forEach(link => {
