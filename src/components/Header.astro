@@ -260,21 +260,13 @@ const t = getTranslator(lang);
       }
     }
     
-    /* Mobile menu link styles - ensure white text in light mode */
+    /* Mobile menu link styles - ensure proper contrast */
     #mobile-menu .mobile-menu-link {
-      color: white !important;
-    }
-
-    html.dark #mobile-menu .mobile-menu-link {
       color: var(--color-text-primary) !important;
     }
 
-    /* Mobile close icon styles - ensure white in light mode */
+    /* Mobile close icon styles - ensure proper contrast */
     #mobile-menu .close-menu-icon {
-      color: white !important;
-    }
-
-    html.dark #mobile-menu .close-menu-icon {
       color: var(--color-text-primary) !important;
     }
 
