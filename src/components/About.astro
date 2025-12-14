@@ -20,41 +20,41 @@ for (const path in avatarModules) {
 <section id="about">
 	<div class="about-container">
 		<div class="about-header">
-			<h1>{t('about.title')}</h1>
-			<p class="subtitle">{t('about.subtitle')}</p>
+			<h1 class="animate-on-scroll">{t('about.title')}</h1>
+			<p class="subtitle animate-on-scroll delay-100">{t('about.subtitle')}</p>
 		</div>
 
 		<div class="content-section">
-			<div class="section-card story">
+			<div class="section-card story animate-on-scroll delay-200">
 				<h2>{t('about.story.title')}</h2>
 				<p>{t('about.story.content')}</p>
 			</div>
 
-			<div class="section-card mission">
+			<div class="section-card mission animate-on-scroll delay-300">
 				<h2>{t('about.mission.title')}</h2>
 				<p>{t('about.mission.content')}</p>
 			</div>
 		</div>
 
 		<div class="values-section">
-			<h2>{t('about.values.title')}</h2>
+			<h2 class="animate-on-scroll">{t('about.values.title')}</h2>
 			<div class="values-grid">
-				<div class="value-card">
+				<div class="value-card animate-on-scroll delay-100">
 					<div class="value-icon">💡</div>
 					<h3>{t('about.values.innovation')}</h3>
 					<p>{t('about.values.innovationDesc')}</p>
 				</div>
-				<div class="value-card">
+				<div class="value-card animate-on-scroll delay-200">
 					<div class="value-icon">🔥</div>
 					<h3>{t('about.values.passion')}</h3>
 					<p>{t('about.values.passionDesc')}</p>
 				</div>
-				<div class="value-card">
+				<div class="value-card animate-on-scroll delay-300">
 					<div class="value-icon">🤝</div>
 					<h3>{t('about.values.collaboration')}</h3>
 					<p>{t('about.values.collaborationDesc')}</p>
 				</div>
-				<div class="value-card">
+				<div class="value-card animate-on-scroll delay-400">
 					<div class="value-icon">⭐</div>
 					<h3>{t('about.values.integrity')}</h3>
 					<p>{t('about.values.integrityDesc')}</p>
@@ -63,16 +63,16 @@ for (const path in avatarModules) {
 		</div>
 
 		<div class="members-section">
-			<h2>{t('about.members.title')}</h2>
+			<h2 class="animate-on-scroll">{t('about.members.title')}</h2>
 
 			<div class="member-category">
-				<h3>Owners</h3>
+				<h3 class="animate-on-scroll">Owners</h3>
 				<div class="member-grid">
-					{owners.map((member: any) => {
+					{owners.map((member: any, index: number) => {
 						// 通过头像路径或名字来判断是否是 Cherry (适配多语言)
 						const isCherry = member.avatar.includes('christmas-owner-2') || member.name === 'Cherry' || member.name === '冬瓜';
 						return (
-						<div class="member-card">
+						<div class="member-card animate-on-scroll" style={`transition-delay: ${index * 100}ms`}>
 							<div 
 								class={`member-avatar ${isCherry ? 'cherry-egg' : ''}`}
 								title={isCherry ? "有彩蛋 / Click for surprise!" : undefined}
@@ -89,10 +89,10 @@ for (const path in avatarModules) {
 			</div>
 
 			<div class="member-category">
-				<h3>Members</h3>
+				<h3 class="animate-on-scroll">Members</h3>
 				<div class="member-grid">
-					{members.map((member: any) => (
-						<div class="member-card">
+					{members.map((member: any, index: number) => (
+						<div class="member-card animate-on-scroll" style={`transition-delay: ${index * 50}ms`}>
 							<div class="member-avatar">
 								<img src={avatars[member.avatar]} alt={member.name} />
 							</div>
@@ -106,12 +106,12 @@ for (const path in avatarModules) {
 		</div>
 
 		<div class="content-section">
-			<div class="section-card team">
+			<div class="section-card team animate-on-scroll delay-100">
 				<h2>{t('about.team.title')}</h2>
 				<p>{t('about.team.content')}</p>
 			</div>
 
-			<div class="section-card journey">
+			<div class="section-card journey animate-on-scroll delay-200">
 				<h2>{t('about.journey.title')}</h2>
 				<p>{t('about.journey.content')}</p>
 			</div>
@@ -145,13 +145,55 @@ for (const path in avatarModules) {
 		});
 	}
 
+	function initAnimations() {
+		const observerOptions = {
+			root: null,
+			rootMargin: '0px',
+			threshold: 0.1
+		};
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('visible');
+					observer.unobserve(entry.target);
+				}
+			});
+		}, observerOptions);
+
+		const elements = document.querySelectorAll('.animate-on-scroll');
+		elements.forEach(el => observer.observe(el));
+	}
+
 	// 初始加载
 	initCherryEgg();
+	initAnimations();
 	// View Transitions 支持
-	document.addEventListener('astro:page-load', initCherryEgg);
+	document.addEventListener('astro:page-load', () => {
+		initCherryEgg();
+		initAnimations();
+	});
 </script>
 
 <style>
+	/* Animation classes */
+	.animate-on-scroll {
+		opacity: 0;
+		transform: translateY(30px);
+		transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+		will-change: opacity, transform;
+	}
+
+	.animate-on-scroll.visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.delay-100 { transition-delay: 0.1s; }
+	.delay-200 { transition-delay: 0.2s; }
+	.delay-300 { transition-delay: 0.3s; }
+	.delay-400 { transition-delay: 0.4s; }
+
 	#about {
 		min-height: 100vh;
 		padding: 120px 20px 80px;
