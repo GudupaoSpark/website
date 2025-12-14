@@ -1,24 +1,25 @@
 ---
 import { getTranslator } from '@gudupao/astro-i18n';
 import logo from '../assets/home/logo.png';
-import heroVideo from '../assets/home/hero_video.mp4';
+import background from '../assets/home/background.png';
+import heroImage from '../assets/home/hero.png';
 const lang = Astro.params.lang || 'en';
 const t = getTranslator(lang);
 ---
 
 <div id="welcome-wrapper">
 	<div id="container">
-		<video id="background-video" src={heroVideo} autoplay muted loop playsinline></video>
+		<img id="background-image" src={background.src} alt="" draggable="false" />
 		<!-- 鼠标光晕层 -->
 		<div id="mouse-glow"></div>
 		<main>
-			<section id="hero" class="tilt-card">
-				<div id="hero-text-wrapper">
-					<h1 id="hidden-text">Happy 3rd Anniversary,<br>Gudupao!</h1>
-					<h1 id="hero-text" class="glitch-effect">
-						{t('welcome.heroText')}
-					</h1>
-					<div id="lens-ring"></div>
+			<section id="hero">
+				<div id="hero-image-wrapper">
+					<svg id="hero-border-svg" width="100%" height="100%">
+						<rect id="hero-border-rect" x="0" y="0" width="100%" height="100%" rx="24" ry="24"></rect>
+					</svg>
+					<canvas id="nano-canvas"></canvas>
+					<img id="hero-img-element" src={heroImage.src} alt="Hero" draggable="false" crossorigin="anonymous" />
 				</div>
 				<section id="links">
 					<a class="button glass-button" href={`/${lang || 'en'}/explore`}>
@@ -36,10 +37,10 @@ const t = getTranslator(lang);
 		position: relative;
 		height: 100vh;
 		overflow: hidden;
-		background: #000; /* 防止视频加载前的闪烁 */
+		background: #000;
 	}
 
-	#background-video {
+	#background-image {
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -47,8 +48,8 @@ const t = getTranslator(lang);
 		height: 100vh;
 		object-fit: cover;
 		z-index: -1;
-		filter: brightness(0.8) contrast(1.1); /* 稍微压暗视频，突出文字 */
-		transition: filter 0.5s ease;
+		user-select: none;
+		pointer-events: none;
 	}
 
 	#container {
@@ -96,148 +97,80 @@ const t = getTranslator(lang);
 		flex-direction: column;
 		justify-content: center;
 		padding: 40px;
+		padding-top: 120px; /* Avoid top bar */
+		min-height: 100vh; 
+		box-sizing: border-box;
 		text-align: center;
 		z-index: 1;
-		gap: 32px;
-		/* 3D Tilt 基础样式 - 已移除 */
-		/* transform-style: preserve-3d; */
-		/* will-change: transform; */
-		/* 玻璃拟态背景，轻微可见 */
-		background: rgba(255, 255, 255, 0.03);
-		backdrop-filter: blur(2px);
-		border: 1px solid rgba(255, 255, 255, 0.05);
+		gap: 48px;
+		width: 100%;
+	}
+
+	#hero-image-wrapper {
+		position: relative;
 		border-radius: 24px;
-		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-	}
-
-	#hero-text-wrapper {
-		position: relative;
-		/* transform-style: preserve-3d; */
-		/* transform: translateZ(40px); */ /* 移除 3D 悬浮 */
-		cursor: pointer; /* 提示可点击 */
-		/* 确保 wrapper 有明确的尺寸 */
-		display: inline-block;
-		user-select: none; /* 防止双击选中文本 */
-		z-index: 100; /* 确保层级最高，不被遮挡 */
-		pointer-events: auto; /* 强制响应鼠标事件 */
-		transition: transform 0.3s ease;
-	}
-
-	#hero-text-wrapper:hover {
-		transform: scale(1.05); /* 仅保留缩放，移除 translateZ */
-	}
-
-	#hidden-text {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		width: auto;
-		/* 移除高度限制，允许文字撑开，配合 mask 显示完整内容 */
-		height: auto;
-		min-width: 120%; /* 稍微宽一点以防万一 */
-		padding: 40px; /* 增加内边距，扩大 mask 的作用范围 */
-		margin: 0;
+		/* overflow: hidden; */ /* 移除overflow hidden以允许边框效果完整显示，但要注意内容裁剪 */
+		/* box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); */ /* 暂时移除阴影，由GSAP控制 */
 		display: flex;
-		flex-direction: column; /* 确保多行垂直居中 */
-		align-items: center;
 		justify-content: center;
-		font-family: 'ZiKuJiangHuGuFengTi', Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
-		font-size: 72px; /* 恢复/放大彩蛋文字 */
-		line-height: 1.2;
-		text-align: center;
-		color: #FFD700; /* 金色 */
-		background: linear-gradient(to bottom, #FFD700, #FDB931);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		filter: drop-shadow(0 0 10px rgba(253, 185, 49, 0.5));
-		z-index: 1;
-		opacity: 0;
-		transition: opacity 0.3s ease;
+		align-items: center;
+		width: auto;
+		max-width: 90%; /* 更大 */
+		height: auto;
+		background: rgba(255, 255, 255, 0.0); /* 初始透明 */
+		/* backdrop-filter: blur(10px); */ /* 稍后动画加入 */
+	}
+
+	#hero-img-element {
+		display: block;
+		width: auto;
+		height: auto;
+		max-width: 100%;
+		max-height: 70vh; /* 更大 */
+		user-select: none;
 		pointer-events: none;
-		/* 允许换行 */
-		white-space: normal;
+		border-radius: 24px;
+		opacity: 0; /* 初始隐藏 */
 	}
 
-	#hero-text {
-		font-family: 'ZiKuJiangHuGuFengTi', Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
-		font-size: 52px; /* 缩小主标题 */
-		margin: 0;
-		color: white;
-		line-height: 1.1;
-		text-align: center;
-		position: relative;
-		/* 文字光效 */
-		text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-		letter-spacing: -0.02em;
-		z-index: 2;
-		transition: -webkit-mask-image 0.1s, mask-image 0.1s;
-		/* 确保背景填充模式正确 */
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		/* 确保文字不会换行，与 hidden-text 保持一致 */
-		white-space: nowrap;
-	}
-
-	/* 激活状态 */
-	:global(.anniversary-active) #hidden-text {
-		opacity: 1;
-		/* 默认完全隐藏，JS会动态修改 mask-image */
-		-webkit-mask-image: radial-gradient(circle at 0 0, transparent 0, transparent 100%);
-		mask-image: radial-gradient(circle at 0 0, transparent 0, transparent 100%);
-		will-change: mask-image;
-	}
-	
-	:global(.anniversary-active) #hero-text {
-		/* 默认完全显示，JS会动态修改 mask-image */
-		will-change: mask-image;
-	}
-
-	/* 透视镜光圈 */
-	#lens-ring {
+	#hero-border-svg {
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: 150px;
-		height: 150px;
-		border-radius: 50%;
-		border: 2px solid rgba(255, 215, 0, 0.5);
-		box-shadow: 0 0 15px rgba(255, 215, 0, 0.3), inset 0 0 10px rgba(255, 215, 0, 0.2);
+		width: 100%;
+		height: 100%;
+		z-index: 10;
 		pointer-events: none;
-		z-index: 3;
-		opacity: 0;
-		transform: translate(-50%, -50%); /* 中心对齐鼠标 */
-		display: none; /* 默认不显示 */
+		overflow: visible;
 	}
 
-	:global(.anniversary-active) #lens-ring {
-		display: block;
-		opacity: 1;
-	}
-	
-	/* 惊艳的流光文字效果 */
-	#hero-text {
-		background: linear-gradient(
-			120deg, 
-			#ffffff 0%, 
-			#e2e2e2 20%, 
-			#ffffff 40%,
-			#b8b8b8 60%,
-			#ffffff 80%,
-			#e2e2e2 100%
-		);
-		background-size: 200% auto;
-		background-clip: text;
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		animation: shine 5s linear infinite;
+	#hero-border-rect {
+		fill: none;
+		stroke: #000000;
+		stroke-width: 2;
+		vector-effect: non-scaling-stroke;
+		/* Stroke dasharray set by JS */
 	}
 
-	@keyframes shine {
-		to {
-			background-position: 200% center;
-		}
+	#nano-canvas {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 5;
+		pointer-events: none;
+		border-radius: 24px;
 	}
+
+	#links {
+		display: flex;
+		gap: 16px;
+		justify-content: center;
+		transform: translateZ(60px); /* 按钮悬浮得更高 */
+		opacity: 0; /* 初始隐藏，等动画结束后显示 */
+	}
+
 
 	#links {
 		display: flex;
@@ -461,117 +394,17 @@ const t = getTranslator(lang);
 </style>
 
 <script>
-	// 3D Tilt & Mouse Glow Effect
+	import { gsap } from "gsap";
+
+	// Mouse Glow Effect & Parallax
 	let hero: HTMLElement | null = null;
 	let container: HTMLElement | null = null;
 	let mouseGlow: HTMLElement | null = null;
-	let heroTextWrapper: HTMLElement | null = null;
-	let heroText: HTMLElement | null = null;
-	let lensRing: HTMLElement | null = null;
-	let isAnniversaryActive = false;
-	let lastMouseX = 0;
-	let lastMouseY = 0;
-
-	let hiddenText: HTMLElement | null = null;
 
 	function initElements() {
 		hero = document.getElementById('hero');
 		container = document.getElementById('container');
 		mouseGlow = document.getElementById('mouse-glow');
-		heroTextWrapper = document.getElementById('hero-text-wrapper');
-		heroText = document.getElementById('hero-text');
-		hiddenText = document.getElementById('hidden-text');
-		lensRing = document.getElementById('lens-ring');
-	}
-
-	function toggleAnniversaryMode(e: MouseEvent) {
-		isAnniversaryActive = !isAnniversaryActive;
-		if (isAnniversaryActive) {
-			document.body.classList.add('anniversary-active');
-			// 立即触发一次透视效果
-			updateLensEffect(e.clientX, e.clientY);
-		} else {
-			document.body.classList.remove('anniversary-active');
-			// Reset mask
-			if (heroText) {
-				heroText.style.maskImage = 'none';
-				heroText.style.webkitMaskImage = 'none';
-			}
-			if (hiddenText) {
-				hiddenText.style.maskImage = 'none';
-				hiddenText.style.webkitMaskImage = 'none';
-			}
-		}
-	}
-
-	// 全局点击事件委托，确保一定能捕获点击
-	function handleGlobalClick(e: MouseEvent) {
-		// 优先尝试通过坐标判断，这比事件冒泡更可靠，特别是当有复杂的 3D 变换时
-		if (heroTextWrapper) {
-			const rect = heroTextWrapper.getBoundingClientRect();
-			// 增加一点点击容错范围 (padding)
-			const padding = 20;
-			if (
-				e.clientX >= rect.left - padding && 
-				e.clientX <= rect.right + padding &&
-				e.clientY >= rect.top - padding && 
-				e.clientY <= rect.bottom + padding
-			) {
-				// 确保点击的是当前组件的元素，而不是覆盖在上面的其他元素（如 RecentActivities）
-				const topElement = document.elementFromPoint(e.clientX, e.clientY);
-				if (topElement && !heroTextWrapper.contains(topElement) && topElement !== heroTextWrapper) {
-					return;
-				}
-
-				initElements();
-				toggleAnniversaryMode(e);
-				return;
-			}
-		}
-
-		// 备用方案：传统的事件冒泡检测
-		const target = e.target as HTMLElement;
-		const wrapper = target.closest('#hero-text-wrapper');
-		if (wrapper) {
-			initElements(); 
-			toggleAnniversaryMode(e);
-		}
-	}
-
-	function updateLensEffect(x: number, y: number) {
-		if (!heroText || !heroTextWrapper || !lensRing || !hiddenText) return;
-
-		const rect = heroTextWrapper.getBoundingClientRect();
-		const localX = x - rect.left;
-		const localY = y - rect.top;
-		
-		// 1. 上层文字 (Hero Text): 挖洞 (中间透明，周围黑/可见)
-		const holeRadius = 75;
-		const fadeRadius = 100;
-		const heroMask = `radial-gradient(circle at ${localX}px ${localY}px, transparent ${holeRadius}px, black ${fadeRadius}px)`;
-		heroText.style.webkitMaskImage = heroMask;
-		heroText.style.maskImage = heroMask;
-
-		// 2. 下层文字 (Hidden Text): 只显示洞 (中间黑/可见，周围透明)
-		// 注意：hidden-text 是居中定位的，坐标系可能和 hero-text-wrapper 不完全一致
-		// 但因为它是绝对定位在 wrapper 里的，且 wrapper 是 relative，所以 localX/Y 应该是通用的
-		// 除非 hidden-text 的 transform 影响了 mask 的坐标系？
-		// CSS mask 是相对于元素自身的 bounding box 的。
-		// hidden-text 的宽度是 auto (可能比 wrapper 宽)，left 是 50%。
-		// 所以 hidden-text 的 (0,0) 点不在 wrapper 的 (0,0) 点。
-		// 我们需要计算鼠标相对于 hidden-text 左上角的坐标。
-		
-		const hiddenRect = hiddenText.getBoundingClientRect();
-		const hiddenX = x - hiddenRect.left;
-		const hiddenY = y - hiddenRect.top;
-
-		const hiddenMask = `radial-gradient(circle at ${hiddenX}px ${hiddenY}px, black ${holeRadius}px, transparent ${fadeRadius}px)`;
-		hiddenText.style.webkitMaskImage = hiddenMask;
-		hiddenText.style.maskImage = hiddenMask;
-
-		// Move lens ring
-		lensRing.style.left = `${localX}px`;
-		lensRing.style.top = `${localY}px`;
 	}
 
 	function handleMouseMove(e: MouseEvent) {
@@ -579,37 +412,12 @@ const t = getTranslator(lang);
 		if (!hero || !container) return;
 
 		const { clientX, clientY } = e;
-		lastMouseX = clientX;
-		lastMouseY = clientY;
-		const { innerWidth, innerHeight } = window;
 
-		// 1. Mouse Glow Position
+		// Mouse Glow Position
 		if (mouseGlow) {
 			mouseGlow.style.setProperty('--mouse-x', `${clientX}px`);
 			mouseGlow.style.setProperty('--mouse-y', `${clientY}px`);
 		}
-
-		// 2. Anniversary Lens Effect
-		if (isAnniversaryActive) {
-			updateLensEffect(clientX, clientY);
-		}
-
-		// 3. 3D Tilt Effect - 已取消
-		/*
-		// 移动端禁用 Tilt
-		if (innerWidth <= 768) return;
-
-		const x = (clientX / innerWidth - 0.5) * 2; // -1 to 1
-		const y = (clientY / innerHeight - 0.5) * 2; // -1 to 1
-
-		// 最大旋转角度
-		const maxRotate = 10;
-		
-		const rotateX = -y * maxRotate; // 鼠标在上方，元素向上仰（X轴负旋转）
-		const rotateY = x * maxRotate;  // 鼠标在右方，元素向右看（Y轴正旋转）
-
-		hero.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-		*/
 	}
 
 	// 视差滚动效果 - Welcome 组件逐渐变暗
@@ -620,39 +428,31 @@ const t = getTranslator(lang);
 		const scrollPosition = window.scrollY;
 		const windowHeight = window.innerHeight;
 
-		// 计算滚动进度 (0-1)，一滚动就开始变化
 		const scrollProgress = Math.min(scrollPosition / windowHeight, 1);
-		const easedProgress = scrollProgress * scrollProgress; // 二次缓动
+		const easedProgress = scrollProgress * scrollProgress;
 
-		// 检测当前主题
 		const isDark = document.documentElement.classList.contains('dark');
 
-		// 应用变暗效果 - 深浅色主题使用不同的遮罩
 		if (isDark) {
-			// 深色主题：使用更深的黑色遮罩
-			const darkness = easedProgress * 0.8; // 0-80% 的黑色透明度
+			const darkness = easedProgress * 0.8;
 			container.style.setProperty('--overlay-opacity', darkness.toString());
 			(container as HTMLElement).style.setProperty('--overlay-color', `rgba(0, 0, 0, ${darkness})`);
 			container.style.setProperty('--overlay-bg', `rgba(0, 0, 0, ${darkness})`);
 		} else {
-			// 浅色主题：使用较浅的灰黑色遮罩
-			const darkness = easedProgress * 0.6; // 0-60% 的黑色透明度
+			const darkness = easedProgress * 0.6;
 			container.style.setProperty('--overlay-opacity', darkness.toString());
 			(container as HTMLElement).style.setProperty('--overlay-color', `rgba(0, 0, 0, ${darkness})`);
 			container.style.setProperty('--overlay-bg', `rgba(0, 0, 0, ${darkness})`);
 		}
 
-		// 通过 filter 实现更自然的变暗
-		const brightness = 100 - (easedProgress * (isDark ? 40 : 30)); // 深色模式变暗更多
-		const contrast = 100 - (easedProgress * 10); // 轻微降低对比度
+		const brightness = 100 - (easedProgress * (isDark ? 40 : 30));
+		const contrast = 100 - (easedProgress * 10);
 		container.style.filter = `brightness(${brightness}%) contrast(${contrast}%)`;
 
-		// 轻微的模糊效果，增加深度感
-		const blur = easedProgress * 2; // 0-2px 模糊
+		const blur = easedProgress * 2;
 		container.style.backdropFilter = `blur(${blur}px)`;
 	}
 
-	// 监听主题变化
 	function observeThemeChange() {
 		const observer = new MutationObserver(() => {
 			handleParallaxScroll();
@@ -663,21 +463,269 @@ const t = getTranslator(lang);
 		});
 	}
 
+	// Intro Animation
+	function initIntroAnimation() {
+		const img = document.getElementById('hero-img-element') as HTMLImageElement;
+		const rect = document.getElementById('hero-border-rect') as unknown as SVGRectElement;
+		const canvas = document.getElementById('nano-canvas') as HTMLCanvasElement;
+		const wrapper = document.getElementById('hero-image-wrapper');
+		
+		if (!img || !rect || !canvas || !wrapper) return;
+
+		// Ensure image is loaded to get correct dimensions for wrapper
+		if (img.complete) {
+			runSequence();
+		} else {
+			img.onload = runSequence;
+		}
+
+		function runSequence() {
+			// 1. Prepare Border
+			// Force a layout calc if needed
+			const totalLength = rect.getTotalLength();
+			// Fallback if totalLength is 0 (e.g. display none or detached)
+			const perimeter = totalLength || (wrapper!.clientWidth + wrapper!.clientHeight) * 2;
+			
+			gsap.set(rect, {
+				strokeDasharray: perimeter,
+				strokeDashoffset: perimeter
+			});
+
+			// 2. Prepare Canvas
+			const w = wrapper!.clientWidth;
+			const h = wrapper!.clientHeight;
+			// Increase resolution for "retina" / crisp nano look
+			const dpr = window.devicePixelRatio || 1;
+			canvas.width = w * dpr;
+			canvas.height = h * dpr;
+			canvas.style.width = `${w}px`;
+			canvas.style.height = `${h}px`;
+			
+			const ctx = canvas.getContext('2d');
+			if (ctx) ctx.scale(dpr, dpr);
+
+			// 3. Animation Timeline
+			const tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+
+			// Step 1: Draw Border (Clockwise)
+			// SVG coords usually start top-left.
+			// To make it look "clockwise" depends on how the rect path is defined.
+			// <rect> usually draws: top-left -> top-right -> bottom-right -> bottom-left -> top-left.
+			// That IS clockwise!
+			tl.to(rect, {
+				strokeDashoffset: 0,
+				duration: 2.5,
+				ease: "power3.inOut"
+			});
+
+			// Step 2: Nano Particle Generate with Image Color Sampling
+			tl.addLabel("particlesStart", "-=0.5");
+			tl.call(() => {
+				if (!ctx) return;
+				
+				// Ensure image is loaded for sampling
+				if (!img.complete) {
+					// Ideally we wait, but since we are in a timeline, we assume preloading or fast local load.
+					// If not ready, we might get empty pixels.
+					// We can force a decode/wait? 
+					// For now, let's proceed. If img not ready, we'll just see black/white particles or nothing.
+				}
+
+				// Create an offscreen canvas to sample image data
+				const offCanvas = document.createElement('canvas');
+				offCanvas.width = w;
+				offCanvas.height = h;
+				const offCtx = offCanvas.getContext('2d');
+				if (!offCtx) return;
+				
+				// Draw image to offscreen canvas
+				// Note: if the image has different aspect ratio than wrapper, we need to match the object-fit: contain logic?
+				// The wrapper is flexible, the img is max-width/max-height.
+				// We should draw the image exactly as it appears.
+				// img.width/img.height might be different from natural dimensions.
+				offCtx.drawImage(img, 0, 0, w, h);
+				
+				// Get pixel data
+				// Warning: This might fail if image is cross-origin and not configured.
+				// Local assets usually fine.
+				let imgData: ImageData | null = null;
+				try {
+					imgData = offCtx.getImageData(0, 0, w, h);
+				} catch (e) {
+					console.warn("Cannot sample image data (CORS?)", e);
+				}
+
+				// Particle System
+				// Denser particles for "generation" effect.
+				// We use a grid approach to ensure coverage, plus some randomness.
+				
+				interface Particle {
+					x: number;
+					y: number;
+					r: number;
+					g: number;
+					b: number;
+					a: number; // original alpha
+					spawnTime: number; // 0 to 1 progress when it appears
+					size: number;
+				}
+				
+				const particles: Particle[] = [];
+				const density = 3; // Step size (pixels). 1 = full resolution (too slow? 1920x1080=2M particles).
+				// density=2 => 500k particles. 
+				// density=4 => 125k particles. 
+				// density=5 => 80k particles. Good balance.
+				
+				// Let's use density = 4 for high density but playable frame rate.
+				const step = 4; 
+				
+				for (let y = 0; y < h; y += step) {
+					for (let x = 0; x < w; x += step) {
+						// Sample color
+						let r=0, g=0, b=0, a=0;
+						if (imgData) {
+							const index = (y * w + x) * 4;
+							r = imgData.data[index];
+							g = imgData.data[index + 1];
+							b = imgData.data[index + 2];
+							a = imgData.data[index + 3] / 255;
+						} else {
+							// Fallback to black particles if no data
+							r=0; g=0; b=0; a=1;
+						}
+						
+						// Skip transparent pixels significantly
+						if (a < 0.1) continue;
+						
+						// Calculate spawn time based on "Uneven Wave from Bottom-Left"
+						// Distance from bottom-left (0, h)
+						// Normalized distance 0 to 1 (approx)
+						const dist = (x + (h - y)) / (w + h);
+						
+						// Add noise for unevenness
+						// We want clumps and irregularity.
+						const noise = (Math.random() - 0.5) * 0.3; 
+						
+						let spawnTime = dist + noise;
+						// Clamp
+						if (spawnTime < 0) spawnTime = 0;
+						
+						particles.push({
+							x, y, r, g, b, a,
+							spawnTime,
+							size: Math.random() < 0.3 ? step : step - 1 // Slight size variation
+						});
+					}
+				}
+				
+				// Also add some "floater" particles that are purely decorative/energy
+				const floatersCount = 2000;
+				for (let i=0; i<floatersCount; i++) {
+					const x = Math.random() * w;
+					const y = Math.random() * h;
+					const dist = (x + (h - y)) / (w + h);
+					particles.push({
+						x, y, r: 0, g: 0, b: 0, a: 0.5,
+						spawnTime: dist + (Math.random() - 0.5) * 0.2,
+						size: 1
+					});
+				}
+
+				let frame = 0;
+				const totalFrames = 240; // 4 seconds for slow generation
+				
+				function render() {
+					if (!ctx) return;
+					ctx.clearRect(0, 0, w, h);
+					
+					const progress = frame / totalFrames;
+					
+					// If complete, we can stop rendering canvas and let image take over?
+					// Or keep canvas if it looks identical.
+					// Since we sampled the image, the canvas *is* the image at low res (step=4).
+					// We need to fade in the real image at the end to get full sharpness.
+					
+					// Draw particles
+					for (let i = 0; i < particles.length; i++) {
+						const p = particles[i];
+						
+						// Check if spawned
+						if (progress > p.spawnTime) {
+							// Particle is alive
+							// Fade in?
+							let alpha = p.a;
+							
+							// Initial "flash" or "growth" upon spawn
+							const age = progress - p.spawnTime;
+							if (age < 0.1) {
+								// Growing/Fading in
+								alpha *= (age / 0.1);
+							}
+							
+							// Optional: "Energy" particles fade out, "Structure" particles stay
+							if (p.size === 1 && p.r === 0) { // Floater logic (hacky check)
+								// Floaters fade out after a while
+								if (age > 0.2) alpha *= (1 - (age - 0.2) * 5); // fast fade
+								if (alpha <= 0) continue;
+							}
+							
+							ctx.fillStyle = `rgba(${p.r}, ${p.g}, ${p.b}, ${alpha})`;
+							ctx.fillRect(p.x, p.y, p.size, p.size);
+						}
+					}
+					
+					if (progress <= 1.5) {
+						frame++;
+						requestAnimationFrame(render);
+					} else {
+						// Animation done
+						ctx.clearRect(0,0,w,h); // clear canvas
+					}
+				}
+				render();
+			}, undefined, "-=0.5");
+
+			// Step 3: Reveal Image (Sync with particle generation)
+			// Instead of a hard clip-path, we rely on the particles filling in the image.
+			// At the end, we cross-fade to the real image for sharpness.
+			// Or we can use the same clip-path but matching the noise? Hard with CSS.
+			// Let's just fade in the real image slowly starting halfway through.
+			
+			// Actually, the user wants "particles generated this image".
+			// So the canvas *is* the generation. The real image should just appear when canvas is full.
+			// But canvas is low res (step=4).
+			// Let's start fading in the real image when progress is near end.
+			
+			tl.to(img, {
+				opacity: 1,
+				duration: 2,
+				ease: "power2.inOut"
+			}, "particlesStart+=2.5"); // Start fading in 2.5s after particles start
+
+			// Step 4: Show Links
+			tl.to("#links", {
+				opacity: 1,
+				duration: 1,
+				y: 0
+			}, "-=0.5");
+		}
+	}
+
 	// 确保在DOM加载完成后执行
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', () => {
 			initElements();
+			initIntroAnimation();
 			window.addEventListener('scroll', handleParallaxScroll, { passive: true });
 			window.addEventListener('mousemove', handleMouseMove, { passive: true });
-			document.addEventListener('click', handleGlobalClick);
 			observeThemeChange();
 			handleParallaxScroll();
 		});
 	} else {
 		initElements();
+		initIntroAnimation();
 		window.addEventListener('scroll', handleParallaxScroll, { passive: true });
 		window.addEventListener('mousemove', handleMouseMove, { passive: true });
-		document.addEventListener('click', handleGlobalClick);
 		observeThemeChange();
 		handleParallaxScroll();
 	}
