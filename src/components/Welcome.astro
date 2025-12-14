@@ -820,29 +820,19 @@ const t = getTranslator(lang);
 		observeThemeChange();
 	}
 
-	// Support standard load and Astro View Transitions
-	// We use a stricter check for DOMContentLoaded to satisfy the requirement "must run after DOM loaded"
-	if (document.readyState === 'loading') {
-		document.addEventListener('DOMContentLoaded', start);
-	} else {
-		// Even if readyState is interactive/complete, we defer to next tick to ensure layout is stable
-		// This helps with "white screen" issues caused by race conditions
-		requestAnimationFrame(start);
-	}
-	
 	// Handle SPA transitions
 	document.addEventListener('astro:page-load', () => {
 		const isHome = document.getElementById('welcome-wrapper');
 		if (isHome) {
 			// We are on the home page: start animation
-			// If navigating from another page, previous cleanup would have run.
-			// If reloading same page, we need to ensure clean state.
 			cleanup(); // Reset state before starting new animation cycle
 			requestAnimationFrame(start);
 		} else {
 			// We are NOT on the home page: clean up resources
-			// This ensures that when we navigate AWAY from home, we clean up
 			cleanup();
 		}
 	});
+
+	// Cleanup before swapping to ensure no artifacts remain
+	document.addEventListener('astro:before-swap', cleanup);
 </script>
