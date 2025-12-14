@@ -30,7 +30,7 @@ const t = getTranslator(lang);
 		margin: 0;
 		min-height: 100vh;
 		position: relative;
-		box-shadow: 0 -20px 50px -20px rgba(0,0,0,0.1);
+		/* box-shadow removed for seamless transition */
 		z-index: 5;
 		display: flex;
 		flex-direction: column;
@@ -68,7 +68,7 @@ const t = getTranslator(lang);
 
 	:global(.dark) #recent-activities {
 		background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-		box-shadow: 0 -20px 50px -20px rgba(0,0,0,0.5);
+		/* box-shadow removed */
 	}
 
 	.content-wrapper {

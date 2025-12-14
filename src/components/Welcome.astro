@@ -54,8 +54,8 @@ const t = getTranslator(lang);
 
 	#container {
 		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
-		height: 100vh;
-		position: fixed;
+		height: 100%;
+		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
@@ -395,6 +395,9 @@ const t = getTranslator(lang);
 
 <script>
 	import { gsap } from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+	gsap.registerPlugin(ScrollTrigger);
 
 	// Mouse Glow Effect & Parallax
 	let hero: HTMLElement | null = null;
@@ -420,42 +423,23 @@ const t = getTranslator(lang);
 		}
 	}
 
-	// 视差滚动效果 - Welcome 组件逐渐变暗
+	// Parallax removed in favor of particle scroll animation
+	/*
 	function handleParallaxScroll() {
-		const container = document.getElementById('container');
-		if (!container) return;
+		// ...
+	}
+	*/
 
-		const scrollPosition = window.scrollY;
-		const windowHeight = window.innerHeight;
+	let isDarkTheme = false;
 
-		const scrollProgress = Math.min(scrollPosition / windowHeight, 1);
-		const easedProgress = scrollProgress * scrollProgress;
-
-		const isDark = document.documentElement.classList.contains('dark');
-
-		if (isDark) {
-			const darkness = easedProgress * 0.8;
-			container.style.setProperty('--overlay-opacity', darkness.toString());
-			(container as HTMLElement).style.setProperty('--overlay-color', `rgba(0, 0, 0, ${darkness})`);
-			container.style.setProperty('--overlay-bg', `rgba(0, 0, 0, ${darkness})`);
-		} else {
-			const darkness = easedProgress * 0.6;
-			container.style.setProperty('--overlay-opacity', darkness.toString());
-			(container as HTMLElement).style.setProperty('--overlay-color', `rgba(0, 0, 0, ${darkness})`);
-			container.style.setProperty('--overlay-bg', `rgba(0, 0, 0, ${darkness})`);
-		}
-
-		const brightness = 100 - (easedProgress * (isDark ? 40 : 30));
-		const contrast = 100 - (easedProgress * 10);
-		container.style.filter = `brightness(${brightness}%) contrast(${contrast}%)`;
-
-		const blur = easedProgress * 2;
-		container.style.backdropFilter = `blur(${blur}px)`;
+	function checkTheme() {
+		isDarkTheme = document.documentElement.classList.contains('dark');
 	}
 
 	function observeThemeChange() {
+		checkTheme(); // Initial check
 		const observer = new MutationObserver(() => {
-			handleParallaxScroll();
+			checkTheme();
 		});
 		observer.observe(document.documentElement, {
 			attributes: true,
@@ -464,13 +448,73 @@ const t = getTranslator(lang);
 	}
 
 	// Intro Animation
+	let particles: any[] = [];
+	let canvasContext: CanvasRenderingContext2D | null = null;
+	let canvasWidth = 0;
+	let canvasHeight = 0;
+	let introComplete = false;
+	let animationFrameId: number | null = null;
+
+	let introTimeline: gsap.core.Timeline | null = null;
+	let scrollTimeline: gsap.core.Timeline | null = null;
+
+	function cleanup() {
+		// Kill specific timelines
+		if (introTimeline) {
+			introTimeline.kill();
+			introTimeline = null;
+		}
+		if (scrollTimeline) {
+			scrollTimeline.kill();
+			scrollTimeline = null;
+		}
+		
+		// Kill Tweens on specific elements to avoid affecting other pages
+		gsap.killTweensOf("#hero-border-rect");
+		gsap.killTweensOf("#hero-img-element");
+		gsap.killTweensOf("#nano-canvas");
+		gsap.killTweensOf("#links");
+		gsap.killTweensOf("#hero-image-wrapper");
+
+		// Kill ScrollTrigger
+		ScrollTrigger.getAll().forEach(st => st.kill());
+		
+		// Cancel animation frame
+		if (animationFrameId) {
+			cancelAnimationFrame(animationFrameId);
+			animationFrameId = null;
+		}
+
+		// Remove event listeners
+		window.removeEventListener('mousemove', handleMouseMove);
+
+		// Reset body overflow
+		document.body.style.overflow = '';
+		
+		// Reset state
+		particles = [];
+		introComplete = false;
+	}
+
 	function initIntroAnimation() {
 		const img = document.getElementById('hero-img-element') as HTMLImageElement;
 		const rect = document.getElementById('hero-border-rect') as unknown as SVGRectElement;
 		const canvas = document.getElementById('nano-canvas') as HTMLCanvasElement;
 		const wrapper = document.getElementById('hero-image-wrapper');
 		
+		// Critical: Check if elements exist
 		if (!img || !rect || !canvas || !wrapper) return;
+
+		// Re-bind listeners
+		window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+		// Reset canvas visibility for intro
+		canvas.style.opacity = '1'; 
+		canvas.style.visibility = 'visible';
+		gsap.set(canvas, { autoAlpha: 1 });
+
+		// Block scroll initially
+		document.body.style.overflow = 'hidden';
 
 		// Ensure image is loaded to get correct dimensions for wrapper
 		if (img.complete) {
@@ -481,9 +525,7 @@ const t = getTranslator(lang);
 
 		function runSequence() {
 			// 1. Prepare Border
-			// Force a layout calc if needed
 			const totalLength = rect.getTotalLength();
-			// Fallback if totalLength is 0 (e.g. display none or detached)
 			const perimeter = totalLength || (wrapper!.clientWidth + wrapper!.clientHeight) * 2;
 			
 			gsap.set(rect, {
@@ -494,7 +536,9 @@ const t = getTranslator(lang);
 			// 2. Prepare Canvas
 			const w = wrapper!.clientWidth;
 			const h = wrapper!.clientHeight;
-			// Increase resolution for "retina" / crisp nano look
+			canvasWidth = w;
+			canvasHeight = h;
+			
 			const dpr = window.devicePixelRatio || 1;
 			canvas.width = w * dpr;
 			canvas.height = h * dpr;
@@ -503,35 +547,38 @@ const t = getTranslator(lang);
 			
 			const ctx = canvas.getContext('2d');
 			if (ctx) ctx.scale(dpr, dpr);
-
+			canvasContext = ctx;
+			
 			// 3. Animation Timeline
-			const tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+			introTimeline = gsap.timeline({ 
+				defaults: { ease: "power2.inOut" },
+				onComplete: () => {
+					introComplete = true;
+					if (animationFrameId) {
+						cancelAnimationFrame(animationFrameId);
+						animationFrameId = null;
+					}
+					// 强制清空一次 Canvas，防止任何残留
+					if (canvasContext) canvasContext.clearRect(0, 0, canvasWidth, canvasHeight);
+					
+					document.body.style.overflow = ''; // Unblock scroll
+					initScrollAnimation(); // Start listening for scroll after intro
+				}
+			});
 
-			// Step 1: Draw Border (Clockwise)
-			// SVG coords usually start top-left.
-			// To make it look "clockwise" depends on how the rect path is defined.
-			// <rect> usually draws: top-left -> top-right -> bottom-right -> bottom-left -> top-left.
-			// That IS clockwise!
-			tl.to(rect, {
+			// Step 1: Draw Border (Clockwise) - Faster
+			introTimeline.to(rect, {
 				strokeDashoffset: 0,
-				duration: 2.5,
+				duration: 1.5,
 				ease: "power3.inOut"
 			});
 
-			// Step 2: Nano Particle Generate with Image Color Sampling
-			tl.addLabel("particlesStart", "-=0.5");
-			tl.call(() => {
+			// Step 2: Nano Particle Generate
+			introTimeline.addLabel("particlesStart", "-=0.2");
+			introTimeline.call(() => {
 				if (!ctx) return;
 				
-				// Ensure image is loaded for sampling
-				if (!img.complete) {
-					// Ideally we wait, but since we are in a timeline, we assume preloading or fast local load.
-					// If not ready, we might get empty pixels.
-					// We can force a decode/wait? 
-					// For now, let's proceed. If img not ready, we'll just see black/white particles or nothing.
-				}
-
-				// Create an offscreen canvas to sample image data
+				// Create offscreen canvas for sampling
 				const offCanvas = document.createElement('canvas');
 				offCanvas.width = w;
 				offCanvas.height = h;
@@ -539,49 +586,21 @@ const t = getTranslator(lang);
 				if (!offCtx) return;
 				
 				// Draw image to offscreen canvas
-				// Note: if the image has different aspect ratio than wrapper, we need to match the object-fit: contain logic?
-				// The wrapper is flexible, the img is max-width/max-height.
-				// We should draw the image exactly as it appears.
-				// img.width/img.height might be different from natural dimensions.
 				offCtx.drawImage(img, 0, 0, w, h);
 				
-				// Get pixel data
-				// Warning: This might fail if image is cross-origin and not configured.
-				// Local assets usually fine.
 				let imgData: ImageData | null = null;
 				try {
 					imgData = offCtx.getImageData(0, 0, w, h);
 				} catch (e) {
-					console.warn("Cannot sample image data (CORS?)", e);
+					console.warn("Cannot sample image data", e);
 				}
 
-				// Particle System
-				// Denser particles for "generation" effect.
-				// We use a grid approach to ensure coverage, plus some randomness.
-				
-				interface Particle {
-					x: number;
-					y: number;
-					r: number;
-					g: number;
-					b: number;
-					a: number; // original alpha
-					spawnTime: number; // 0 to 1 progress when it appears
-					size: number;
-				}
-				
-				const particles: Particle[] = [];
-				const density = 3; // Step size (pixels). 1 = full resolution (too slow? 1920x1080=2M particles).
-				// density=2 => 500k particles. 
-				// density=4 => 125k particles. 
-				// density=5 => 80k particles. Good balance.
-				
-				// Let's use density = 4 for high density but playable frame rate.
-				const step = 4; 
+				// Particle System Setup
+				particles = []; // Clear existing
+				const step = 4; // Density
 				
 				for (let y = 0; y < h; y += step) {
 					for (let x = 0; x < w; x += step) {
-						// Sample color
 						let r=0, g=0, b=0, a=0;
 						if (imgData) {
 							const index = (y * w + x) * 4;
@@ -590,35 +609,27 @@ const t = getTranslator(lang);
 							b = imgData.data[index + 2];
 							a = imgData.data[index + 3] / 255;
 						} else {
-							// Fallback to black particles if no data
 							r=0; g=0; b=0; a=1;
 						}
 						
-						// Skip transparent pixels significantly
 						if (a < 0.1) continue;
 						
-						// Calculate spawn time based on "Uneven Wave from Bottom-Left"
-						// Distance from bottom-left (0, h)
-						// Normalized distance 0 to 1 (approx)
 						const dist = (x + (h - y)) / (w + h);
-						
-						// Add noise for unevenness
-						// We want clumps and irregularity.
 						const noise = (Math.random() - 0.5) * 0.3; 
-						
 						let spawnTime = dist + noise;
-						// Clamp
 						if (spawnTime < 0) spawnTime = 0;
 						
 						particles.push({
 							x, y, r, g, b, a,
 							spawnTime,
-							size: Math.random() < 0.3 ? step : step - 1 // Slight size variation
+							size: Math.random() < 0.3 ? step : step - 1,
+							origX: x, origY: y, // Store original position for scroll anim
+							origR: r, origG: g, origB: b
 						});
 					}
 				}
 				
-				// Also add some "floater" particles that are purely decorative/energy
+				// Floaters
 				const floatersCount = 2000;
 				for (let i=0; i<floatersCount; i++) {
 					const x = Math.random() * w;
@@ -627,45 +638,32 @@ const t = getTranslator(lang);
 					particles.push({
 						x, y, r: 0, g: 0, b: 0, a: 0.5,
 						spawnTime: dist + (Math.random() - 0.5) * 0.2,
-						size: 1
+						size: 1,
+						origX: x, origY: y,
+						origR: 0, origG: 0, origB: 0,
+						isFloater: true
 					});
 				}
 
 				let frame = 0;
-				const totalFrames = 240; // 4 seconds for slow generation
+				const totalFrames = 100; // Faster (was 240)
 				
 				function render() {
-					if (!ctx) return;
+					if (!ctx || introComplete) return; // Stop if intro complete or interrupted
 					ctx.clearRect(0, 0, w, h);
 					
 					const progress = frame / totalFrames;
 					
-					// If complete, we can stop rendering canvas and let image take over?
-					// Or keep canvas if it looks identical.
-					// Since we sampled the image, the canvas *is* the image at low res (step=4).
-					// We need to fade in the real image at the end to get full sharpness.
-					
-					// Draw particles
 					for (let i = 0; i < particles.length; i++) {
 						const p = particles[i];
 						
-						// Check if spawned
 						if (progress > p.spawnTime) {
-							// Particle is alive
-							// Fade in?
 							let alpha = p.a;
-							
-							// Initial "flash" or "growth" upon spawn
 							const age = progress - p.spawnTime;
-							if (age < 0.1) {
-								// Growing/Fading in
-								alpha *= (age / 0.1);
-							}
+							if (age < 0.1) alpha *= (age / 0.1);
 							
-							// Optional: "Energy" particles fade out, "Structure" particles stay
-							if (p.size === 1 && p.r === 0) { // Floater logic (hacky check)
-								// Floaters fade out after a while
-								if (age > 0.2) alpha *= (1 - (age - 0.2) * 5); // fast fade
+							if (p.isFloater) {
+								if (age > 0.2) alpha *= (1 - (age - 0.2) * 5);
 								if (alpha <= 0) continue;
 							}
 							
@@ -676,57 +674,175 @@ const t = getTranslator(lang);
 					
 					if (progress <= 1.5) {
 						frame++;
-						requestAnimationFrame(render);
+						animationFrameId = requestAnimationFrame(render);
 					} else {
-						// Animation done
-						ctx.clearRect(0,0,w,h); // clear canvas
+						// Don't clear! Keep them for scroll animation
 					}
 				}
 				render();
 			}, undefined, "-=0.5");
 
-			// Step 3: Reveal Image (Sync with particle generation)
-			// Instead of a hard clip-path, we rely on the particles filling in the image.
-			// At the end, we cross-fade to the real image for sharpness.
-			// Or we can use the same clip-path but matching the noise? Hard with CSS.
-			// Let's just fade in the real image slowly starting halfway through.
-			
-			// Actually, the user wants "particles generated this image".
-			// So the canvas *is* the generation. The real image should just appear when canvas is full.
-			// But canvas is low res (step=4).
-			// Let's start fading in the real image when progress is near end.
-			
-			tl.to(img, {
-				opacity: 1,
-				duration: 2,
-				ease: "power2.inOut"
-			}, "particlesStart+=2.5"); // Start fading in 2.5s after particles start
-
-			// Step 4: Show Links
-			tl.to("#links", {
+			// Step 3: Reveal Image - Faster
+			introTimeline.to(img, {
 				opacity: 1,
 				duration: 1,
+				ease: "power2.inOut"
+			}, "particlesStart+=1.5");
+
+			// Step 4: Show Links - Faster
+			introTimeline.to("#links", {
+				opacity: 1,
+				duration: 0.5,
 				y: 0
 			}, "-=0.5");
 		}
 	}
 
-	// 确保在DOM加载完成后执行
-	if (document.readyState === 'loading') {
-		document.addEventListener('DOMContentLoaded', () => {
-			initElements();
-			initIntroAnimation();
-			window.addEventListener('scroll', handleParallaxScroll, { passive: true });
-			window.addEventListener('mousemove', handleMouseMove, { passive: true });
-			observeThemeChange();
-			handleParallaxScroll();
+	function initScrollAnimation() {
+		const wrapper = document.getElementById('welcome-wrapper');
+		const heroWrapper = document.getElementById('hero-image-wrapper');
+		const img = document.getElementById('hero-img-element');
+		const canvas = document.getElementById('nano-canvas');
+		const links = document.getElementById('links');
+		const heroBorder = document.getElementById('hero-border-svg');
+
+		if (!wrapper || !heroWrapper || !img || !canvas || !particles.length || !canvasContext) return;
+
+		// 确保 canvas 可见
+		canvas.style.opacity = '1';
+
+		scrollTimeline = gsap.timeline({
+			scrollTrigger: {
+				trigger: wrapper,
+				start: "top top",
+				end: "+=1500", // 滚动距离
+				pin: true,
+				scrub: 0.5, // 增加一点平滑度
+				onLeave: () => {
+					// 动画结束，此时应该是全屏 #f8f9fa 粒子
+				}
+			}
 		});
-	} else {
+
+		const scrollTl = scrollTimeline; // Alias for easier copy-paste logic
+
+		// 0. 隐藏边框和按钮
+		scrollTl.to([links, heroBorder], { opacity: 0, duration: 0.1 }, 0);
+
+		// 1. 容器放大铺满屏幕
+		// 计算需要的 scale 比例。假设 90% 宽，放大到 100% 宽还不够，要覆盖圆角和边距。
+		// 简单起见，放大到 3-4 倍通常足够覆盖（视口比例差异）。
+		scrollTl.to(heroWrapper, {
+			scale: 5, 
+			borderRadius: 0,
+			ease: "power1.inOut",
+			duration: 1
+		}, 0);
+
+		// 2. 图片淡出，只剩粒子
+		scrollTl.to(img, { opacity: 0, duration: 0.2 }, 0);
+
+		// 3. 粒子动画：放大并变色为 RecentActivities 背景色 (#f8f9fa)
+		const animObj = { progress: 0 };
+		
+		scrollTl.to(animObj, {
+			progress: 1,
+			duration: 1,
+			onUpdate: () => {
+				renderScrollFrame(animObj.progress);
+			}
+		}, 0);
+	}
+
+	function renderScrollFrame(progress: number) {
+		if (!canvasContext) return;
+		const ctx = canvasContext;
+		const w = canvasWidth;
+		const h = canvasHeight;
+		
+		ctx.clearRect(0, 0, w, h);
+
+		const centerX = w / 2;
+		const centerY = h / 2;
+		
+		// 变焦效果：粒子向外扩散
+		// 配合容器的 scale，粒子自身的扩散可以稍微小一点，或者为了视觉冲击力更大一点
+		// 这里的 zoom 是相对于 canvas 内部坐标的
+		const zoom = 1 + progress * 2; 
+		
+		// 颜色目标：根据主题动态变化
+		// Light: #f8f9fa (248, 249, 250)
+		// Dark: #0f172a (15, 23, 42)
+		const targetR = isDarkTheme ? 15 : 248;
+		const targetG = isDarkTheme ? 23 : 249;
+		const targetB = isDarkTheme ? 42 : 250;
+		
+		for (let i = 0; i < particles.length; i++) {
+			const p = particles[i];
+			
+			// 计算扩散后的位置
+			let x = (p.origX - centerX) * zoom + centerX;
+			let y = (p.origY - centerY) * zoom + centerY;
+			
+			// 颜色插值
+			// 从原始颜色 -> 目标颜色
+			const r = p.origR + (targetR - p.origR) * progress;
+			const g = p.origG + (targetG - p.origG) * progress;
+			const b = p.origB + (targetB - p.origB) * progress;
+			
+			// 粒子大小随进度增加，为了填满屏幕
+			// 初始大小 p.size (约 3-4px)
+			// 结束时需要很大才能填满空隙（因为粒子间距也在变大）
+			// 容器也在放大 scale=5，所以粒子视觉大小是 (size * scale)
+			// 为了融合，粒子最好变得有些模糊或巨大
+			const size = p.size * (1 + progress * 10); 
+			
+			// Alpha 保持或微调
+			let a = p.a;
+			// 接近结束时，让粒子不透明，以便形成实心背景
+			if (progress > 0.8) {
+				a = Math.min(1, a + (progress - 0.8) * 5);
+			}
+			
+			ctx.fillStyle = `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)}, ${a})`;
+			ctx.fillRect(x, y, size, size);
+		}
+	}
+
+	// Start logic
+	function start() {
+		// Double check if we are in a valid state to start
+		const isHome = document.getElementById('welcome-wrapper');
+		if (!isHome) return;
+
 		initElements();
 		initIntroAnimation();
-		window.addEventListener('scroll', handleParallaxScroll, { passive: true });
-		window.addEventListener('mousemove', handleMouseMove, { passive: true });
 		observeThemeChange();
-		handleParallaxScroll();
 	}
+
+	// Support standard load and Astro View Transitions
+	// We use a stricter check for DOMContentLoaded to satisfy the requirement "must run after DOM loaded"
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', start);
+	} else {
+		// Even if readyState is interactive/complete, we defer to next tick to ensure layout is stable
+		// This helps with "white screen" issues caused by race conditions
+		requestAnimationFrame(start);
+	}
+	
+	// Handle SPA transitions
+	document.addEventListener('astro:page-load', () => {
+		const isHome = document.getElementById('welcome-wrapper');
+		if (isHome) {
+			// We are on the home page: start animation
+			// If navigating from another page, previous cleanup would have run.
+			// If reloading same page, we need to ensure clean state.
+			cleanup(); // Reset state before starting new animation cycle
+			requestAnimationFrame(start);
+		} else {
+			// We are NOT on the home page: clean up resources
+			// This ensures that when we navigate AWAY from home, we clean up
+			cleanup();
+		}
+	});
 </script>
