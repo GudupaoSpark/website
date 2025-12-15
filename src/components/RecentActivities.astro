@@ -4,11 +4,13 @@ import heroImage from '../assets/activity/hero.png';
 import heroImage2 from '../assets/activity/hero2.png';
 const lang = Astro.params.lang || 'en';
 const t = getTranslator(lang);
+const latinLayoutLanguages = ['en', 'es', 'fr'];
+const useLatinLayout = latinLayoutLanguages.includes(lang);
 ---
 
 <section id="recent-activities">
-	<div class="content-wrapper">
-		<h2 class="reveal-text">{t('recentActivities.title')}</h2>
+	<div class={`content-wrapper ${useLatinLayout ? 'content-wrapper-latin' : 'content-wrapper-nonlatin'}`}>
+		<h2 class={`reveal-text recent-activities-title ${useLatinLayout ? 'recent-activities-title-latin' : 'recent-activities-title-nonlatin'}`}>{t('recentActivities.title')}</h2>
 		<div class="activity-card reveal-card" id="activity-card-container">
 			<div class="card-glow"></div>
 			<div class="card-content">
@@ -78,6 +80,22 @@ const t = getTranslator(lang);
 		width: 100%;
 	}
 
+	.content-wrapper-nonlatin {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	@media screen and (min-width: 1024px) {
+		.content-wrapper-nonlatin {
+			align-items: center;
+		}
+
+		#recent-activities .recent-activities-title-nonlatin {
+			font-size: 52px;
+		}
+	}
+
 	#recent-activities h2 {
 		color: #1a1a1a;
 		font-size: 56px;
@@ -90,6 +108,11 @@ const t = getTranslator(lang);
 		letter-spacing: 0.05em;
 		position: relative;
 		display: inline-block;
+	}
+
+	#recent-activities .recent-activities-title-nonlatin {
+		margin-bottom: 40px;
+		max-width: 90%;
 	}
 
 	:global(.dark) #recent-activities h2 {
