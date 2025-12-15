@@ -1,7 +1,8 @@
 ---
 import { getTranslator } from '@gudupao/astro-i18n';
 import logo from '../assets/home/logo.png';
-import background from '../assets/home/background.png';
+import backgroundLight from '../assets/home/background.png';
+import backgroundDark from '../assets/home/background-2.png';
 import heroImage from '../assets/home/hero.png';
 const lang = Astro.params.lang || 'en';
 const t = getTranslator(lang);
@@ -9,7 +10,8 @@ const t = getTranslator(lang);
 
 <div id="welcome-wrapper">
 	<div id="container">
-		<img id="background-image" src={background.src} alt="" draggable="false" />
+		<img id="background-image-light" class="background-image" src={backgroundLight.src} alt="" draggable="false" />
+		<img id="background-image-dark" class="background-image" src={backgroundDark.src} alt="" draggable="false" />
 		<!-- 鼠标光晕层 -->
 		<div id="mouse-glow"></div>
 		<main>
@@ -40,7 +42,7 @@ const t = getTranslator(lang);
 		background: #000;
 	}
 
-	#background-image {
+	.background-image {
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -131,6 +133,18 @@ const t = getTranslator(lang);
 		pointer-events: none;
 		border-radius: 24px;
 		opacity: 0; /* 初始隐藏 */
+	}
+
+	#background-image-dark {
+		display: none;
+	}
+
+	:global(html.dark) #background-image-light {
+		display: none;
+	}
+
+	:global(html.dark) #background-image-dark {
+		display: block;
 	}
 
 	#hero-border-svg {
@@ -816,6 +830,7 @@ const t = getTranslator(lang);
 		if (!isHome) return;
 
 		initElements();
+		checkTheme();
 		initIntroAnimation();
 		observeThemeChange();
 	}
